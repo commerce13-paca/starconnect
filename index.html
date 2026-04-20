@@ -14,7 +14,6 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0a500'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='white' font-size='60' font-family='Arial'%3E⭐%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Lightbox pour la galerie (NOUVEAU) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
     <style>
@@ -64,7 +63,6 @@
         .cert-header { background: rgba(224,165,0,0.12); border: 1px solid rgba(224,165,0,0.3); padding: 8px 18px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
         .theme-toggle { background: #1a1a1a; border: none; padding: 10px 16px; border-radius: 40px; color: #e0a500; cursor: pointer; font-size: 0.9rem; }
         
-        /* NOUVEAU : Zone de notifications */
         .notification-bell {
             position: relative;
             cursor: pointer;
@@ -119,7 +117,6 @@
         body.light-mode .notification-item:hover { background: #f0f0f0; }
         .notification-item.unread { background: rgba(224,165,0,0.1); }
         
-        /* NOUVEAU : Mini lecteur audio */
         .mini-player {
             position: fixed;
             bottom: 20px;
@@ -138,7 +135,6 @@
         .mini-player i { color: #e0a500; cursor: pointer; }
         .mini-player span { font-size: 0.7rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         
-        /* NOUVEAU : Bandeau cookies */
         .cookie-banner {
             position: fixed;
             bottom: 0;
@@ -187,7 +183,6 @@
         .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
         .card-title i { color: #e0a500; font-size: 1.5rem; }
         
-        /* Bouton histoire */
         .story-btn {
             background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
             border: 1px solid #e0a500;
@@ -217,7 +212,6 @@
             color: #050505;
         }
         
-        /* MODAL HISTOIRE */
         .story-modal {
             display: none;
             position: fixed;
@@ -537,13 +531,11 @@
         .post-avatar:hover { transform: scale(1.05); }
         .post-time { font-size: 0.7rem; color: #666; margin-left: 8px; }
         .post-content { margin-bottom: 14px; line-height: 1.6; }
-        /* NOUVEAU : Image dans les posts */
         .post-image { max-width: 100%; border-radius: 12px; margin-top: 10px; cursor: pointer; }
         .post-actions { display: flex; gap: 28px; }
         .post-actions i { color: #555; cursor: pointer; transition: color 0.2s; font-size: 1.1rem; }
         .post-actions i:hover { color: #e0a500; }
         .post-stats { font-size: 0.7rem; color: #666; margin-left: 5px; }
-        /* NOUVEAU : Bouton suppression post */
         .delete-post-btn {
             position: absolute;
             top: 15px;
@@ -582,7 +574,6 @@
         .event-form input { width: 100%; background: #111; border: 1px solid #222; padding: 14px; border-radius: 14px; color: white; margin-bottom: 14px; }
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
         .gallery-item { background: #0a0a0a; border-radius: 20px; overflow: hidden; height: 150px; display: flex; align-items: center; justify-content: center; border: 1px solid #1c1c1c; }
-        /* NOUVEAU : Liens cliquables dans la galerie */
         .gallery-item a { display: block; width: 100%; height: 100%; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
         .admin-hidden-panel { display: none; position: fixed; bottom: 20px; right: 20px; background: #1a1a1a; border: 1px solid #e0a500; border-radius: 20px; padding: 20px; width: 450px; z-index: 1000; max-height: 85vh; overflow-y: auto; }
@@ -671,10 +662,8 @@
         
         .proof-preview { max-width: 100px; max-height: 100px; margin-top: 10px; border-radius: 8px; }
         
-        /* NOUVEAU : Message d'erreur API YouTube */
         .api-error { background: rgba(220,38,38,0.2); border: 1px solid #dc2626; border-radius: 12px; padding: 20px; text-align: center; color: #dc2626; }
         
-        /* ========== NOUVEAU : Styles pour la page À propos ========== */
         .about-mission {
             font-size: 1.1rem;
             line-height: 1.7;
@@ -792,7 +781,7 @@
     </style>
 </head>
 <body>
-    <!-- MODAL HISTOIRE DE BASTA LION -->
+    <!-- MODAL HISTOIRE -->
     <div id="storyModal" class="story-modal">
         <div class="story-modal-content">
             <span class="story-close" onclick="closeStoryModal()">&times;</span>
@@ -876,13 +865,13 @@
         </div>
     </div>
 
-    <!-- NOUVEAU : BANDEAU COOKIES RGPD -->
+    <!-- BANDEAU COOKIES -->
     <div id="cookieBanner" class="cookie-banner">
         <span>🍪 Ce site utilise le stockage local (localStorage) pour son fonctionnement. En continuant, vous acceptez notre politique de confidentialité.</span>
         <button id="acceptCookies" class="cookie-btn">Accepter</button>
     </div>
 
-    <!-- NOUVEAU : MINI LECTEUR AUDIO -->
+    <!-- MINI LECTEUR AUDIO -->
     <div id="miniPlayer" class="mini-player">
         <i id="playerPlayBtn" class="fas fa-play"></i>
         <span id="playerTitle">Aucun titre en lecture</span>
@@ -898,7 +887,6 @@
         <div class="header">
             <div class="logo"><h1>✨ STARCONNECT</h1><p>⚡ plateforme indépendante des artistes malgaches · 2026</p></div>
             <div class="header-controls">
-                <!-- NOUVEAU : Cloche de notifications -->
                 <div class="notification-bell" id="notificationBell">
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="notifBadge">0</span>
@@ -908,7 +896,6 @@
                 <div class="cert-header"><i class="fas fa-shield-alt"></i> CERTIFIED</div>
             </div>
         </div>
-        <!-- NOUVEAU : Dropdown notifications -->
         <div id="notificationDropdown" class="notification-dropdown"></div>
         
         <div class="nav">
@@ -922,7 +909,6 @@
             <button class="nav-btn" data-panel="news"><i class="fas fa-bolt"></i> 🔥 ACTUS</button>
             <button class="nav-btn" data-panel="fans"><i class="fas fa-trophy"></i> 🏆 TOP FANS</button>
             <button class="nav-btn" data-panel="legal"><i class="fas fa-gavel"></i> ⚖️ LÉGAL</button>
-            <!-- NOUVEAU : Bouton À propos -->
             <button class="nav-btn" data-panel="about"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS</button>
         </div>
 
@@ -995,7 +981,7 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-handshake"></i> 🤝 DEVENIR PARTENAIRE</div>
                 <p>Vous êtes artiste ou label ? Vous souhaitez vendre vos produits en France via STARCONNECT ?</p>
-                <div class="partner-form">
+                <div class="partner-form" id="partnerFormContainer">
                     <h3 style="color: #e0a500;">📝 Formulaire de demande</h3>
                     <input type="text" id="partnerName" placeholder="Nom de l'artiste / Label">
                     <input type="email" id="partnerEmail" placeholder="Email de contact">
@@ -1027,7 +1013,6 @@
             <div class="card"><div class="card-title"><i class="fas fa-pen-fancy"></i> ✍️ PUBLIER</div>
                 <div class="new-post">
                     <textarea id="postContent" rows="3" placeholder="Partagez votre soutien... 🔥"></textarea>
-                    <!-- NOUVEAU : Upload d'image pour les posts -->
                     <input type="file" id="postImageInput" accept="image/*" style="margin: 10px 0; background: #0a0a0a; color: white; border: 1px solid #222; border-radius: 12px; padding: 8px;">
                     <button id="publishPostBtn" class="btn"><i class="fas fa-paper-plane"></i> 📢 PUBLIER</button>
                 </div>
@@ -1038,7 +1023,12 @@
         <div id="panel-events" class="panel">
             <div class="card"><div class="card-title"><i class="fas fa-calendar-star"></i> 📅 AGENDA</div>
                 <button id="showEventForm" class="btn" style="margin-bottom: 24px;"><i class="fas fa-plus"></i> PROPOSER UN ÉVÉNEMENT</button>
-                <div id="eventForm" class="event-form"><input type="text" id="eventName" placeholder="Nom"><input type="text" id="eventPlace" placeholder="Lieu"><input type="date" id="eventDate"><button id="submitEvent" class="btn">AJOUTER</button></div>
+                <div id="eventFormContainer" class="event-form">
+                    <input type="text" id="eventName" placeholder="Nom de l'événement">
+                    <input type="text" id="eventPlace" placeholder="Lieu">
+                    <input type="date" id="eventDate">
+                    <button id="submitEvent" class="btn">AJOUTER L'ÉVÉNEMENT</button>
+                </div>
                 <div id="eventsList"></div>
             </div>
         </div>
@@ -1151,7 +1141,6 @@
             </div>
         </div>
 
-        <!-- NOUVEAU : PANEL À PROPOS -->
         <div id="panel-about" class="panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS DE STARCONNECT</div>
@@ -1172,19 +1161,19 @@
                     </div>
                     <div class="team-member">
                         <div class="team-avatar"><i class="fas fa-laptop-code"></i></div>
-                        <div class="team-name">Miora T.</div>
+                        <div class="team-name">Holdest M.</div>
                         <div class="team-role">Développeuse principale</div>
                         <div class="team-desc">Full-stack developer, elle a conçu l'intégralité de la plateforme STARCONNECT.</div>
                     </div>
                     <div class="team-member">
                         <div class="team-avatar"><i class="fas fa-paint-brush"></i></div>
-                        <div class="team-name">Liva K.</div>
+                        <div class="team-name">Antoine B.</div>
                         <div class="team-role">Directeur artistique</div>
                         <div class="team-desc">Designer et créateur des collections personnalisées. Basé à Marseille.</div>
                     </div>
                     <div class="team-member">
                         <div class="team-avatar"><i class="fas fa-handshake"></i></div>
-                        <div class="team-name">Hasina M.</div>
+                        <div class="team-name">Hgb U.</div>
                         <div class="team-role">Responsable partenariats</div>
                         <div class="team-desc">En contact permanent avec les artistes et labels pour développer des collaborations équitables.</div>
                     </div>
@@ -1225,76 +1214,78 @@
 
         <div id="adminPanel" class="admin-hidden-panel">
             <h4><i class="fas fa-lock"></i> 🔐 ESPACE ADMIN</h4>
-            <p style="font-size: 0.7rem; color: #888; margin-bottom: 15px;">Gestion complète du site</p>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">📰 Actualités (RSS + Manuel)</h5>
-                <input type="text" id="adminNewsTitle" placeholder="Titre"><textarea id="adminNewsDesc" rows="2" placeholder="Description"></textarea>
-                <button id="adminAddNews">➕ Ajouter manuel</button>
-                <button id="adminRefreshNews" style="background:#0891b2; margin-top:5px;">🔄 Forcer refresh RSS</button>
+            <input type="password" id="adminPassword" placeholder="Mot de passe admin">
+            <div id="adminContent" style="display: none;">
+                <p style="font-size: 0.7rem; color: #888; margin-bottom: 15px;">Gestion complète du site</p>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">📰 Actualités (RSS + Manuel)</h5>
+                    <input type="text" id="adminNewsTitle" placeholder="Titre"><textarea id="adminNewsDesc" rows="2" placeholder="Description"></textarea>
+                    <button id="adminAddNews">➕ Ajouter manuel</button>
+                    <button id="adminRefreshNews" style="background:#0891b2; margin-top:5px;">🔄 Forcer refresh RSS</button>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">📅 Événements</h5>
+                    <input type="text" id="adminEventName" placeholder="Nom"><input type="text" id="adminEventPlace" placeholder="Lieu"><input type="date" id="adminEventDate">
+                    <button id="adminAddEvent">➕ Ajouter</button>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">🛍️ Produits boutique</h5>
+                    <input type="text" id="adminProductName" placeholder="Nom du produit">
+                    <input type="text" id="adminProductPrice" placeholder="Prix (€)">
+                    <input type="text" id="adminProductArtist" placeholder="Artiste (basta-lion, wawa-sali, etc)">
+                    <input type="text" id="adminProductLink" placeholder="Lien de commande (URL valide)">
+                    <button id="adminAddProduct">➕ Ajouter produit</button>
+                    <div id="productsList" class="artists-management"></div>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">🎨 Créations personnalisées</h5>
+                    <input type="text" id="customName" placeholder="Nom du produit">
+                    <input type="text" id="customPrice" placeholder="Prix (€)">
+                    <input type="text" id="customDesc" placeholder="Description">
+                    <input type="text" id="customIcon" placeholder="Icône (fa-tshirt, fa-mug-hot, etc)">
+                    <button id="adminAddCustom">➕ Ajouter création</button>
+                    <div id="customList" class="artists-management"></div>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">🎤 Artistes</h5>
+                    <input type="text" id="newArtistId" placeholder="ID unique"><input type="text" id="newArtistName" placeholder="Nom">
+                    <input type="text" id="newArtistAvatar" placeholder="Avatar (🎤,🦁,🌊,💖,👑)"><textarea id="newArtistBio" rows="2" placeholder="Biographie"></textarea>
+                    <input type="text" id="newArtistYoutube" placeholder="Stats YouTube"><input type="text" id="newArtistSpotify" placeholder="Stats Spotify">
+                    <input type="date" id="newArtistConcertDate"><button id="adminAddArtist">➕ Ajouter</button>
+                    <div id="artistsList" class="artists-management"></div>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">📋 Demandes partenaires</h5>
+                    <div id="partnerRequestsList"></div>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">✅ Demandes de consentement</h5>
+                    <div id="pendingApprovalsList"></div>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">📄 Preuves de consentement</h5>
+                    <div id="consentProofsList"></div>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
+                    <h5 style="color: #e0a500;">🔧 Outils</h5>
+                    <button id="adminMaintenanceMode" class="warning-btn">🔧 Mode Maintenance</button>
+                    <button id="adminClearFeed" class="danger-btn">🗑️ Effacer tous les posts</button>
+                    <button id="adminResetMana" class="danger-btn">🔄 Réinitialiser MANA</button>
+                    <button id="adminExportData" style="background:#0891b2;">📤 Exporter (JSON)</button>
+                    <button id="adminExportConsentProofs" style="background:#0891b2;">📄 Exporter preuves consentement</button>
+                    <button id="adminImportData" style="background:#0891b2;">📥 Importer</button>
+                    <input type="file" id="importFile" style="display:none" accept=".json">
+                </div>
             </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">📅 Événements</h5>
-                <input type="text" id="adminEventName" placeholder="Nom"><input type="text" id="adminEventPlace" placeholder="Lieu"><input type="date" id="adminEventDate">
-                <button id="adminAddEvent">➕ Ajouter</button>
-            </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">🛍️ Produits boutique</h5>
-                <input type="text" id="adminProductName" placeholder="Nom du produit">
-                <input type="text" id="adminProductPrice" placeholder="Prix (€)">
-                <input type="text" id="adminProductArtist" placeholder="Artiste (basta-lion, wawa-sali, etc)">
-                <input type="text" id="adminProductLink" placeholder="Lien de commande">
-                <button id="adminAddProduct">➕ Ajouter produit</button>
-                <div id="productsList" class="artists-management"></div>
-            </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">🎨 Créations personnalisées</h5>
-                <input type="text" id="customName" placeholder="Nom du produit">
-                <input type="text" id="customPrice" placeholder="Prix (€)">
-                <input type="text" id="customDesc" placeholder="Description">
-                <input type="text" id="customIcon" placeholder="Icône (fa-tshirt, fa-mug-hot, etc)">
-                <button id="adminAddCustom">➕ Ajouter création</button>
-                <div id="customList" class="artists-management"></div>
-            </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">🎤 Artistes</h5>
-                <input type="text" id="newArtistId" placeholder="ID unique"><input type="text" id="newArtistName" placeholder="Nom">
-                <input type="text" id="newArtistAvatar" placeholder="Avatar (🎤,🦁,🌊,💖,👑)"><textarea id="newArtistBio" rows="2" placeholder="Biographie"></textarea>
-                <input type="text" id="newArtistYoutube" placeholder="Stats YouTube"><input type="text" id="newArtistSpotify" placeholder="Stats Spotify">
-                <input type="date" id="newArtistConcertDate"><button id="adminAddArtist">➕ Ajouter</button>
-                <div id="artistsList" class="artists-management"></div>
-            </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">📋 Demandes partenaires</h5>
-                <div id="partnerRequestsList"></div>
-            </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">✅ Demandes de consentement</h5>
-                <div id="pendingApprovalsList"></div>
-            </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">📄 Preuves de consentement</h5>
-                <div id="consentProofsList"></div>
-            </div>
-            
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                <h5 style="color: #e0a500;">🔧 Outils</h5>
-                <button id="adminMaintenanceMode" class="warning-btn">🔧 Mode Maintenance</button>
-                <button id="adminClearFeed" class="danger-btn">🗑️ Effacer tous les posts</button>
-                <button id="adminResetMana" class="danger-btn">🔄 Réinitialiser MANA</button>
-                <button id="adminExportData" style="background:#0891b2;">📤 Exporter (JSON)</button>
-                <button id="adminExportConsentProofs" style="background:#0891b2;">📄 Exporter preuves consentement</button>
-                <button id="adminImportData" style="background:#0891b2;">📥 Importer</button>
-                <input type="file" id="importFile" style="display:none" accept=".json">
-            </div>
-            
             <button id="adminClose">Fermer</button>
         </div>
 
@@ -1312,10 +1303,44 @@
     </div>
 
     <script>
+        // Configuration Formspree
+        const FORMSPREE_ENDPOINTS = {
+            partner: 'https://formspree.io/f/xgvazqkp',
+            event: 'https://formspree.io/f/xgvazqkp',
+            consent: 'https://formspree.io/f/xgvazqkp',
+            adminProduct: 'https://formspree.io/f/xgvazqkp'
+        };
+
+        // Fonction d'envoi Formspree avec fallback localStorage
+        async function submitToFormspree(formType, data) {
+            const endpoint = FORMSPREE_ENDPOINTS[formType];
+            if (!endpoint) return false;
+            
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    addNotification(`✅ Formulaire ${formType} envoyé avec succès !`);
+                    return true;
+                }
+                throw new Error('Formspree error');
+            } catch (error) {
+                console.warn(`Formspree ${formType} failed, using localStorage fallback`);
+                // Fallback localStorage
+                let fallbackData = JSON.parse(localStorage.getItem(`formspree_fallback_${formType}`) || '[]');
+                fallbackData.push({ ...data, timestamp: Date.now() });
+                localStorage.setItem(`formspree_fallback_${formType}`, JSON.stringify(fallbackData));
+                addNotification(`⚠️ Formulaire ${formType} enregistré localement (mode hors-ligne)`);
+                return false;
+            }
+        }
+
         const API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         const BASE_URL = 'https://www.googleapis.com/youtube/v3';
         
-        // Fonctions pour le modal histoire
         function openStoryModal() {
             document.getElementById('storyModal').classList.add('show');
         }
@@ -1330,9 +1355,7 @@
             }
         });
         
-        // ============================================
-        // BASE DE DONNÉES DES ARTISTES
-        // ============================================
+        // Base de données des artistes
         let ARTISTS_DB = {
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -1434,11 +1457,8 @@
         const CACHE_DURATION = 5 * 60 * 1000;
         let pendingAvatarFile = null;
         let pendingConsentRole = "artist";
-        
-        // NOUVEAU : Système de notifications
         let notifications = [];
         
-        // NOUVEAU : Fonction d'ajout de notification
         function addNotification(message, type = 'info') {
             notifications.unshift({
                 id: Date.now(),
@@ -1489,7 +1509,6 @@
             renderNotifications();
         }
         
-        // NOUVEAU : Mini lecteur audio
         let currentTrack = null;
         let audioPlayer = null;
         
@@ -1504,7 +1523,6 @@
             }
             
             if (url && url !== '#') {
-                // Simuler la lecture (dans un vrai site, vous utiliseriez une API audio)
                 playerTitle.innerText = title;
                 player.style.display = 'flex';
                 playBtn.className = 'fas fa-play';
@@ -1519,7 +1537,6 @@
             const playBtn = document.getElementById('playerPlayBtn');
             if (playBtn.classList.contains('fa-play')) {
                 playBtn.className = 'fas fa-pause';
-                // Simulation de lecture
             } else {
                 playBtn.className = 'fas fa-play';
             }
@@ -1533,7 +1550,6 @@
             }
         });
         
-        // NOUVEAU : Bandeau cookies
         function checkCookieConsent() {
             const consent = localStorage.getItem('cookie_consent');
             if (!consent) {
@@ -1547,7 +1563,6 @@
             addNotification('🍪 Merci d\'avoir accepté nos cookies');
         });
         
-        // NOUVEAU : Dropdown notifications toggle
         document.getElementById('notificationBell')?.addEventListener('click', (e) => {
             e.stopPropagation();
             const dropdown = document.getElementById('notificationDropdown');
@@ -1558,7 +1573,6 @@
             document.getElementById('notificationDropdown')?.classList.remove('show');
         });
         
-        // ========== FONCTION POUR RSS GRATUIT ==========
         async function fetchRSSNews() {
             try {
                 console.log("🔄 Chargement des actualités via RSS...");
@@ -1867,7 +1881,6 @@
             
             document.getElementById('artistStats').innerHTML = `<div class="stat-box"><div class="stat-number">${a.youtubeStats}</div><div class="stat-label">📺 YouTube</div></div><div class="stat-box"><div class="stat-number">${a.spotifyStats}</div><div class="stat-label">🎧 Spotify</div></div><div class="stat-box"><div class="stat-number">🏆 ${a.nominations}</div><div class="stat-label">Nominations</div></div>`;
             
-            // Galerie avec Lightbox (NOUVEAU)
             document.getElementById('galleryGrid').innerHTML = a.gallery.map(img => `<div class="gallery-item"><a href="${img}" data-lightbox="gallery"><img src="${img}" alt="${a.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x150?text=${a.name}'"></a></div>`).join('');
             
             const tc = document.getElementById('trackList');
@@ -1937,7 +1950,6 @@
             reader.readAsDataURL(file);
         }
         
-        // NOUVEAU : Gestion d'erreur API YouTube améliorée
         async function searchYouTube(q, m = 6) {
             if (youtubeCache && (Date.now() - lastFetch) < CACHE_DURATION) return youtubeCache;
             try {
@@ -1963,7 +1975,6 @@
             c.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche...</div>'; 
             const v = await searchYouTube(q, 6);
             
-            // NOUVEAU : Message d'erreur si API YouTube est inaccessible
             if (v === null) {
                 c.innerHTML = '<div class="api-error"><i class="fas fa-exclamation-triangle"></i> ⚠️ Limite de recherche YouTube atteinte ou API temporairement indisponible. Veuillez réessayer plus tard.</div>';
                 return;
@@ -1981,7 +1992,6 @@
         
         function renderEvents() { const c = document.getElementById('eventsList'); if (c) c.innerHTML = eventsList.map(e => `<div class="event-item"><div><strong>${escapeHtml(e.name)}</strong><br>${escapeHtml(e.place)}</div><div class="event-date">📅 ${escapeHtml(e.date)}</div></div>`).join(''); }
         
-        // NOUVEAU : Fonction renderFeed avec suppression et images
         function renderFeed() {
             const c = document.getElementById('feedList');
             if (!c) return;
@@ -2002,7 +2012,6 @@
             document.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => { navigator.clipboard.writeText(`🔥 Découvrez ce post sur STARCONNECT : "${decodeURIComponent(btn.getAttribute('data-content'))}"`); addNotification('📋 Lien copié !'); }));
         }
         
-        // NOUVEAU : Fonction deletePost
         function deletePost(postId) {
             if (confirm('⚠️ Supprimer définitivement ce post ?')) {
                 feedPosts = feedPosts.filter(p => p.id !== postId);
@@ -2040,7 +2049,6 @@
             input.click();
         }
         
-        // NOUVEAU : publishPost avec image
         function publishPost(content, imageData) {
             feedPosts.unshift({ id: Date.now(), author: "Fan 🔥", avatar: null, avatarType: "emoji", avatarEmoji: "⭐", content: content, time: Date.now(), image: imageData });
             postLikes[Date.now()] = 0;
@@ -2087,7 +2095,6 @@
         document.getElementById('searchBtn')?.addEventListener('click', () => { const q = document.getElementById('searchInput')?.value.trim(); renderVideos(q || 'Basta Lion'); });
         document.getElementById('searchInput')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') renderVideos(e.target.value.trim()); });
         
-        // NOUVEAU : Publication avec image
         document.getElementById('publishPostBtn')?.addEventListener('click', () => { 
             if (maintenanceMode) { addNotification('⚠️ Mode maintenance, publication désactivée'); return; } 
             const c = document.getElementById('postContent')?.value.trim();
@@ -2109,24 +2116,81 @@
         });
         
         let evForm = false;
-        document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventForm'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
-        document.getElementById('submitEvent')?.addEventListener('click', () => { const n = document.getElementById('eventName')?.value, p = document.getElementById('eventPlace')?.value, d = document.getElementById('eventDate')?.value; if (n && p && d) { eventsList.push({ id: Date.now(), name: `🎤 ${n}`, place: `📍 ${p}`, date: d }); renderEvents(); saveAllData(); document.getElementById('eventName').value = ''; document.getElementById('eventPlace').value = ''; document.getElementById('eventDate').value = ''; document.getElementById('eventForm').style.display = 'none'; evForm = false; addNotification('✅ Événement ajouté !'); } else alert('Remplissez tous les champs'); });
+        document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventFormContainer'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
+        document.getElementById('submitEvent')?.addEventListener('click', () => { const n = document.getElementById('eventName')?.value, p = document.getElementById('eventPlace')?.value, d = document.getElementById('eventDate')?.value; if (n && p && d) { eventsList.push({ id: Date.now(), name: `🎤 ${n}`, place: `📍 ${p}`, date: d }); renderEvents(); saveAllData(); document.getElementById('eventName').value = ''; document.getElementById('eventPlace').value = ''; document.getElementById('eventDate').value = ''; document.getElementById('eventFormContainer').style.display = 'none'; evForm = false; addNotification('✅ Événement ajouté !'); } else alert('Remplissez tous les champs'); });
         
-        document.getElementById('submitPartnerRequest')?.addEventListener('click', () => {
-            const name = document.getElementById('partnerName')?.value, email = document.getElementById('partnerEmail')?.value, phone = document.getElementById('partnerPhone')?.value, paypal = document.getElementById('partnerPaypal')?.value, productType = document.getElementById('partnerProductType')?.value, message = document.getElementById('partnerMessage')?.value;
+        // Formulaire PARTENAIRE avec Formspree
+        document.getElementById('submitPartnerRequest')?.addEventListener('click', async () => {
+            const name = document.getElementById('partnerName')?.value, 
+                  email = document.getElementById('partnerEmail')?.value, 
+                  phone = document.getElementById('partnerPhone')?.value, 
+                  paypal = document.getElementById('partnerPaypal')?.value, 
+                  productType = document.getElementById('partnerProductType')?.value, 
+                  message = document.getElementById('partnerMessage')?.value;
             if (!name || !email) { alert('Nom et email requis'); return; }
             if (!paypal) { alert('Lien PayPal requis pour recevoir vos paiements'); return; }
+            
+            const formData = { name, email, phone, paypal, productType, message, type: 'partner_request', date: new Date().toISOString() };
+            await submitToFormspree('partner', formData);
+            
             PARTNER_REQUESTS.unshift({ id: Date.now(), name, email, phone, paypal, productType, message, status: 'pending', date: Date.now() });
             saveAllData(); renderPartnerRequests();
             document.getElementById('partnerName').value = ''; document.getElementById('partnerEmail').value = ''; document.getElementById('partnerPhone').value = ''; document.getElementById('partnerPaypal').value = ''; document.getElementById('partnerMessage').value = '';
-            addNotification('✅ Demande envoyée ! Nous vous contacterons sous 48h.');
+        });
+        
+        // Formulaire ÉVÉNEMENT avec Formspree
+        const originalSubmitEvent = document.getElementById('submitEvent')?.onclick;
+        document.getElementById('submitEvent')?.addEventListener('click', async () => {
+            const name = document.getElementById('eventName')?.value, place = document.getElementById('eventPlace')?.value, date = document.getElementById('eventDate')?.value;
+            if (name && place && date) {
+                await submitToFormspree('event', { eventName: name, eventPlace: place, eventDate: date, type: 'event_proposal' });
+            }
+        });
+        
+        // Formulaire ADMIN PRODUIT avec Formspree
+        document.getElementById('adminAddProduct')?.addEventListener('click', async () => {
+            const name = document.getElementById('adminProductName')?.value, price = parseFloat(document.getElementById('adminProductPrice')?.value), artist = document.getElementById('adminProductArtist')?.value, link = document.getElementById('adminProductLink')?.value;
+            if (!name || !price || !artist) { alert('Nom, prix et artiste requis'); return; }
+            if (link && !link.startsWith('http') && link !== '#') {
+                alert('⚠️ Le lien doit commencer par http:// ou https://');
+                return;
+            }
+            
+            await submitToFormspree('adminProduct', { productName: name, productPrice: price, productArtist: artist, productLink: link, type: 'admin_product' });
+            
+            PRODUCTS_DB.push({ id: Date.now(), name, price, artist, image: "🎤", link: link || "#" }); 
+            saveAllData(); refreshProductsList(); renderShop(); 
+            document.getElementById('adminProductName').value = ''; document.getElementById('adminProductPrice').value = ''; document.getElementById('adminProductArtist').value = ''; document.getElementById('adminProductLink').value = ''; 
+            addNotification('✅ Produit ajouté'); 
         });
         
         const adminPanel = document.getElementById('adminPanel');
         const mz = document.getElementById('mobileAdminZone');
         let tc = 0, tt;
-        mz?.addEventListener('click', () => { tc++; clearTimeout(tt); tt = setTimeout(() => { tc = 0; }, 1000); if (tc >= 5) { adminPanel.classList.toggle('show'); tc = 0; refreshArtistsList(); refreshProductsList(); refreshCustomList(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); addNotification(adminPanel.classList.contains('show') ? '🔐 Admin ouvert' : 'Admin fermé'); } });
-        document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); adminPanel.classList.toggle('show'); refreshArtistsList(); refreshProductsList(); refreshCustomList(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); } });
+        let adminAuthenticated = false;
+        
+        function checkAdminPassword() {
+            const passwordInput = document.getElementById('adminPassword');
+            const adminContent = document.getElementById('adminContent');
+            if (passwordInput && passwordInput.value === 'admin123') {
+                adminAuthenticated = true;
+                if (adminContent) adminContent.style.display = 'block';
+                addNotification('✅ Accès admin autorisé');
+                refreshArtistsList(); refreshProductsList(); refreshCustomList(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs();
+            } else if (passwordInput && passwordInput.value) {
+                alert('Mot de passe incorrect');
+                passwordInput.value = '';
+            }
+        }
+        
+        document.getElementById('adminPassword')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkAdminPassword();
+        });
+        
+        mz?.addEventListener('click', () => { tc++; clearTimeout(tt); tt = setTimeout(() => { tc = 0; }, 1000); if (tc >= 5) { adminPanel.classList.toggle('show'); tc = 0; if (!adminAuthenticated) document.getElementById('adminContent').style.display = 'none'; addNotification(adminPanel.classList.contains('show') ? '🔐 Admin ouvert' : 'Admin fermé'); } });
+        
+        document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); adminPanel.classList.toggle('show'); if (!adminAuthenticated) document.getElementById('adminContent').style.display = 'none'; } });
+        
         document.getElementById('adminClose')?.addEventListener('click', () => adminPanel.classList.remove('show'));
         document.getElementById('adminAddNews')?.addEventListener('click', () => { const t = document.getElementById('adminNewsTitle')?.value, d = document.getElementById('adminNewsDesc')?.value; if (t && d) { newsItems.unshift({ id: Date.now(), title: t, date: Date.now(), desc: d, source: "Manuel" }); renderNews(); saveAllData(); document.getElementById('adminNewsTitle').value = ''; document.getElementById('adminNewsDesc').value = ''; addNotification('✅ Actu ajoutée'); } else alert('Remplissez titre et description'); });
         
@@ -2138,22 +2202,8 @@
         
         document.getElementById('adminAddEvent')?.addEventListener('click', () => { const n = document.getElementById('adminEventName')?.value, p = document.getElementById('adminEventPlace')?.value, d = document.getElementById('adminEventDate')?.value; if (n && p && d) { eventsList.push({ id: Date.now(), name: n, place: p, date: d }); renderEvents(); saveAllData(); document.getElementById('adminEventName').value = ''; document.getElementById('adminEventPlace').value = ''; document.getElementById('adminEventDate').value = ''; addNotification('✅ Événement ajouté'); } else alert('Remplissez tous les champs'); });
         
-        // NOUVEAU : Validation des URLs pour les produits
-        document.getElementById('adminAddProduct')?.addEventListener('click', () => { 
-            const name = document.getElementById('adminProductName')?.value, price = parseFloat(document.getElementById('adminProductPrice')?.value), artist = document.getElementById('adminProductArtist')?.value, link = document.getElementById('adminProductLink')?.value; 
-            if (!name || !price || !artist) { alert('Nom, prix et artiste requis'); return; }
-            // Validation URL
-            if (link && !link.startsWith('http') && link !== '#') {
-                alert('⚠️ Le lien doit commencer par http:// ou https://');
-                return;
-            }
-            PRODUCTS_DB.push({ id: Date.now(), name, price, artist, image: "🎤", link: link || "#" }); 
-            saveAllData(); refreshProductsList(); renderShop(); 
-            document.getElementById('adminProductName').value = ''; document.getElementById('adminProductPrice').value = ''; document.getElementById('adminProductArtist').value = ''; document.getElementById('adminProductLink').value = ''; 
-            addNotification('✅ Produit ajouté'); 
-        });
-        
         document.getElementById('adminAddCustom')?.addEventListener('click', () => { const name = document.getElementById('customName')?.value, price = parseFloat(document.getElementById('customPrice')?.value), desc = document.getElementById('customDesc')?.value, icon = document.getElementById('customIcon')?.value; if (!name || !desc) { alert('Nom et description requis'); return; } CUSTOM_ITEMS.push({ id: Date.now(), name, price: price || 0, desc, icon: icon || 'fa-tshirt' }); saveAllData(); refreshCustomList(); renderCustomGallery(); document.getElementById('customName').value = ''; document.getElementById('customPrice').value = ''; document.getElementById('customDesc').value = ''; document.getElementById('customIcon').value = ''; addNotification('✅ Création ajoutée'); });
+        
         document.getElementById('adminAddArtist')?.addEventListener('click', () => {
             const id = document.getElementById('newArtistId')?.value.trim().toLowerCase().replace(/\s/g, '-'), name = document.getElementById('newArtistName')?.value.trim(), avatar = document.getElementById('newArtistAvatar')?.value.trim(), bio = document.getElementById('newArtistBio')?.value.trim(), yt = document.getElementById('newArtistYoutube')?.value.trim(), sp = document.getElementById('newArtistSpotify')?.value.trim(), cd = document.getElementById('newArtistConcertDate')?.value;
             if (!id || !name) { alert('ID et Nom sont requis'); return; }
@@ -2162,10 +2212,13 @@
             saveAllData(); renderArtistSelect(); refreshArtistsList(); addNotification(`✅ Artiste ${name} ajouté !`);
             document.getElementById('newArtistId').value = ''; document.getElementById('newArtistName').value = ''; document.getElementById('newArtistAvatar').value = ''; document.getElementById('newArtistBio').value = ''; document.getElementById('newArtistYoutube').value = ''; document.getElementById('newArtistSpotify').value = ''; document.getElementById('newArtistConcertDate').value = '';
         });
+        
         document.getElementById('adminMaintenanceMode')?.addEventListener('click', () => { maintenanceMode = !maintenanceMode; const b = document.getElementById('maintenanceBanner'); if (b) b.style.display = maintenanceMode ? 'block' : 'none'; saveAllData(); addNotification(maintenanceMode ? '🔧 Maintenance ACTIVÉE' : '✅ Maintenance DÉSACTIVÉE'); });
         document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts supprimés'); } });
         document.getElementById('adminResetMana')?.addEventListener('click', () => { if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { const a = getCurrentArtist(); manaScore = a.manaScore; document.getElementById('manaValue').innerText = manaScore; updateStarRating(manaScore); saveAllData(); addNotification('🔄 MANA réinitialisé'); } });
+        
         document.getElementById('adminExportData')?.addEventListener('click', () => { const data = { artists: ARTISTS_DB, products: PRODUCTS_DB, custom: CUSTOM_ITEMS, partners: PARTNER_REQUESTS, news: newsItems, events: eventsList, feed: feedPosts, likes: postLikes, notifications: notifications, exportDate: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `starconnect_backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url); addNotification('📤 Données exportées'); });
+        
         document.getElementById('adminExportConsentProofs')?.addEventListener('click', () => {
             const proofs = {};
             for (const [id, artist] of Object.entries(ARTISTS_DB)) {
@@ -2191,10 +2244,10 @@
             URL.revokeObjectURL(url);
             addNotification('📄 Preuves de consentement exportées');
         });
+        
         document.getElementById('adminImportData')?.addEventListener('click', () => { document.getElementById('importFile')?.click(); });
         document.getElementById('importFile')?.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (ev) => { try { const data = JSON.parse(ev.target.result); if (data.artists) ARTISTS_DB = data.artists; if (data.products) PRODUCTS_DB = data.products; if (data.custom) CUSTOM_ITEMS = data.custom; if (data.partners) PARTNER_REQUESTS = data.partners; if (data.news) newsItems = data.news; if (data.events) eventsList = data.events; if (data.feed) feedPosts = data.feed; if (data.likes) postLikes = data.likes; if (data.notifications) notifications = data.notifications; saveAllData(); loadAllData(); addNotification('✅ Import réussi !'); } catch(err) { alert('Fichier invalide'); } }; reader.readAsText(file); e.target.value = ''; });
         
-        // CORRECTION : Mode clair/sombre corrigé
         const themeBtn = document.getElementById('themeToggleBtn');
         if (localStorage.getItem('starconnect_theme') === 'light') { 
             document.body.classList.add('light-mode'); 
@@ -2225,7 +2278,7 @@
             news: document.getElementById('panel-news'), 
             fans: document.getElementById('panel-fans'), 
             legal: document.getElementById('panel-legal'),
-            about: document.getElementById('panel-about') // NOUVEAU
+            about: document.getElementById('panel-about')
         };
         btns.forEach(btn => btn.addEventListener('click', () => { 
             const id = btn.getAttribute('data-panel'); 
@@ -2264,4 +2317,4 @@
         window.addEventListener('beforeunload', () => { clearInterval(manaInterval); clearInterval(newsInterval); });
     </script>
 </body>
-</html>
+                        </html>
