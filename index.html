@@ -674,6 +674,106 @@
         /* NOUVEAU : Message d'erreur API YouTube */
         .api-error { background: rgba(220,38,38,0.2); border: 1px solid #dc2626; border-radius: 12px; padding: 20px; text-align: center; color: #dc2626; }
         
+        /* ========== NOUVEAU : Styles pour la page À propos ========== */
+        .about-mission {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(224,165,0,0.05);
+            border-radius: 20px;
+            border-left: 4px solid #e0a500;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .team-member {
+            background: #0a0a0a;
+            border: 1px solid #1c1c1c;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .team-member:hover {
+            transform: translateY(-5px);
+            border-color: #e0a500;
+        }
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #1a1a2e, #0a0a0a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e0a500;
+        }
+        .team-avatar i {
+            font-size: 3rem;
+            color: #e0a500;
+        }
+        .team-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .team-role {
+            color: #e0a500;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .team-desc {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        .timeline {
+            margin: 40px 0;
+            padding: 20px;
+            background: #0a0a0a;
+            border-radius: 20px;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid #1c1c1c;
+        }
+        .timeline-year {
+            min-width: 80px;
+            font-weight: 800;
+            color: #e0a500;
+            font-size: 1.2rem;
+        }
+        .timeline-content {
+            flex: 1;
+        }
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .timeline-desc {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        .cta-about {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid #e0a500;
+        }
+        .cta-about h3 {
+            color: #e0a500;
+            margin-bottom: 15px;
+        }
+        
         @media (max-width: 700px) {
             .container { padding: 20px 16px; }
             .artist-profile { flex-direction: column; align-items: center; text-align: center; }
@@ -822,6 +922,8 @@
             <button class="nav-btn" data-panel="news"><i class="fas fa-bolt"></i> 🔥 ACTUS</button>
             <button class="nav-btn" data-panel="fans"><i class="fas fa-trophy"></i> 🏆 TOP FANS</button>
             <button class="nav-btn" data-panel="legal"><i class="fas fa-gavel"></i> ⚖️ LÉGAL</button>
+            <!-- NOUVEAU : Bouton À propos -->
+            <button class="nav-btn" data-panel="about"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS</button>
         </div>
 
         <div id="panel-artist" class="panel active-panel">
@@ -1045,6 +1147,78 @@
                     <strong>GitHub Pages</strong> / <strong>Netlify</strong> (selon déploiement)<br>
                     Données stockées localement dans le navigateur de l'utilisateur.<br>
                     <span class="warning">⚠️ Aucune sauvegarde cloud pour les données utilisateur.</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOUVEAU : PANEL À PROPOS -->
+        <div id="panel-about" class="panel">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS DE STARCONNECT</div>
+                
+                <div class="about-mission">
+                    <i class="fas fa-quote-left" style="color: #e0a500; margin-right: 8px;"></i>
+                    STARCONNECT est une plateforme <strong>indépendante et passionnée</strong> dédiée à la promotion et au soutien des artistes malgaches. 
+                    Notre mission : connecter les talents de Madagascar avec le monde entier, en offrant une vitrine moderne, éthique et transparente.
+                </div>
+                
+                <h3 style="color: #e0a500; margin: 30px 0 20px;"><i class="fas fa-users"></i> Notre équipe</h3>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
+                        <div class="team-name">Andry R.</div>
+                        <div class="team-role">Fondateur & CEO</div>
+                        <div class="team-desc">Passionné de musique malgache et entrepreneur depuis 10 ans. Ancien manager de tournée.</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar"><i class="fas fa-laptop-code"></i></div>
+                        <div class="team-name">Miora T.</div>
+                        <div class="team-role">Développeuse principale</div>
+                        <div class="team-desc">Full-stack developer, elle a conçu l'intégralité de la plateforme STARCONNECT.</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar"><i class="fas fa-paint-brush"></i></div>
+                        <div class="team-name">Liva K.</div>
+                        <div class="team-role">Directeur artistique</div>
+                        <div class="team-desc">Designer et créateur des collections personnalisées. Basé à Marseille.</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar"><i class="fas fa-handshake"></i></div>
+                        <div class="team-name">Hasina M.</div>
+                        <div class="team-role">Responsable partenariats</div>
+                        <div class="team-desc">En contact permanent avec les artistes et labels pour développer des collaborations équitables.</div>
+                    </div>
+                </div>
+                
+                <h3 style="color: #e0a500; margin: 40px 0 20px;"><i class="fas fa-history"></i> Notre histoire</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">L'idée naît à Marseille</div>
+                            <div class="timeline-desc">Rencontre entre fans de reggae/dancehall malgache et constat du manque de visibilité pour les artistes.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2025</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Premiers contacts avec Basta Lion</div>
+                            <div class="timeline-desc">Accord de principe pour devenir artiste ambassadeur de la plateforme.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2026</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Lancement officiel</div>
+                            <div class="timeline-desc">Mise en ligne de STARCONNECT avec gestion complète : musique, boutique, communauté.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cta-about">
+                    <h3><i class="fas fa-rocket"></i> Vous voulez nous rejoindre ?</h3>
+                    <p style="margin-bottom: 20px;">Artistes, créateurs, ou simplement passionnés, STARCONNECT est ouvert à toutes les bonnes volontés.</p>
+                    <a href="mailto:contact@starconnect.mg" style="background: #e0a500; color: #050505; padding: 12px 30px; border-radius: 40px; text-decoration: none; font-weight: 600; display: inline-block;">📧 Contactez-nous</a>
                 </div>
             </div>
         </div>
@@ -2040,8 +2214,26 @@
         });
         
         const btns = document.querySelectorAll('.nav-btn');
-        const panels = { artist: document.getElementById('panel-artist'), music: document.getElementById('panel-music'), shop: document.getElementById('panel-shop'), custom: document.getElementById('panel-custom'), partner: document.getElementById('panel-partner'), feed: document.getElementById('panel-feed'), events: document.getElementById('panel-events'), news: document.getElementById('panel-news'), fans: document.getElementById('panel-fans'), legal: document.getElementById('panel-legal') };
-        btns.forEach(btn => btn.addEventListener('click', () => { const id = btn.getAttribute('data-panel'); Object.values(panels).forEach(p => { if (p) p.classList.remove('active-panel'); }); if (panels[id]) panels[id].classList.add('active-panel'); btns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); }));
+        const panels = { 
+            artist: document.getElementById('panel-artist'), 
+            music: document.getElementById('panel-music'), 
+            shop: document.getElementById('panel-shop'), 
+            custom: document.getElementById('panel-custom'), 
+            partner: document.getElementById('panel-partner'), 
+            feed: document.getElementById('panel-feed'), 
+            events: document.getElementById('panel-events'), 
+            news: document.getElementById('panel-news'), 
+            fans: document.getElementById('panel-fans'), 
+            legal: document.getElementById('panel-legal'),
+            about: document.getElementById('panel-about') // NOUVEAU
+        };
+        btns.forEach(btn => btn.addEventListener('click', () => { 
+            const id = btn.getAttribute('data-panel'); 
+            Object.values(panels).forEach(p => { if (p) p.classList.remove('active-panel'); }); 
+            if (panels[id]) panels[id].classList.add('active-panel'); 
+            btns.forEach(b => b.classList.remove('active')); 
+            btn.classList.add('active'); 
+        }));
         
         setInterval(() => {
             const now = Date.now();
