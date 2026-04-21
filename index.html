@@ -11,7 +11,8 @@
     <meta property="og:title" content="STARCONNECT - Plateforme des Étoiles Malgaches">
     <meta property="og:description" content="Découvrez Basta Lion et les artistes malgaches">
     <meta property="og:type" content="website">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0a500'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='white' font-size='60' font-family='Arial'%3E⭐%3C/text%3E%3C/svg%3E">
+    <!-- VOTRE LOGO EN FAVICON -->
+    <link rel="icon" type="image/png" href="https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/7218955a-0b52-6432-a3aa-e4cb1327ec79.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
@@ -58,7 +59,9 @@
 
         .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
         .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-bottom: 24px; margin-bottom: 32px; border-bottom: 1px solid #1e1e1e; }
+        .logo { display: flex; align-items: center; gap: 15px; }
         .logo h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, #ffffff, #e0a500); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo-img { height: 50px; width: auto; }
         .logo p { font-size: 0.7rem; color: #666; letter-spacing: 0.5px; margin-top: 4px; }
         .cert-header { background: rgba(224,165,0,0.12); border: 1px solid rgba(224,165,0,0.3); padding: 8px 18px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
         .theme-toggle { background: #1a1a1a; border: none; padding: 10px 16px; border-radius: 40px; color: #e0a500; cursor: pointer; font-size: 0.9rem; }
@@ -515,11 +518,13 @@
         .partner-form input, .partner-form textarea, .partner-form select { width: 100%; background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; color: white; margin-bottom: 12px; font-family: inherit; }
         .partner-card { background: #0a0a0a; border: 1px solid #1c1c1c; border-radius: 16px; padding: 16px; margin-bottom: 12px; }
         .partner-status-pending { color: #ffa500; }
+        .partner-status-approved { color: #00a86b; font-weight: bold; }
         
         .custom-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
         .custom-item { background: #0a0a0a; border: 1px solid #1c1c1c; border-radius: 16px; padding: 12px; text-align: center; transition: transform 0.2s; }
         .custom-item:hover { transform: translateY(-5px); border-color: #e0a500; }
-        .custom-image { width: 100%; height: 150px; background: linear-gradient(135deg, #1a1a2e, #0a0a0a); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+        .custom-image { width: 100%; height: 150px; background: linear-gradient(135deg, #1a1a2e, #0a0a0a); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; overflow: hidden; }
+        .custom-image img { width: 100%; height: 100%; object-fit: cover; }
         .custom-image i { font-size: 3rem; color: #e0a500; }
         .custom-title { font-weight: 600; margin-bottom: 5px; }
         .custom-desc { font-size: 0.7rem; color: #888; }
@@ -591,6 +596,7 @@
         .artist-card { background: #0a0a0a; border: 1px solid #1c1c1c; border-radius: 16px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .artist-card span { font-size: 0.9rem; }
         .delete-artist-btn { background: #dc2626; color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .approve-partner-btn { background: #00a86b; color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; margin-left: 5px; }
         
         .modal {
             display: none;
@@ -885,7 +891,14 @@
     
     <div class="container">
         <div class="header">
-            <div class="logo"><h1>✨ STARCONNECT</h1><p>⚡ plateforme indépendante des artistes malgaches · 2026</p></div>
+            <div class="logo">
+                <!-- AFFICHAGE DU LOGO DANS LE HEADER -->
+                <img src="https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/7218955a-0b52-6432-a3aa-e4cb1327ec79.png" alt="Logo STARCONNECT" class="logo-img" style="height: 50px;">
+                <div>
+                    <h1>✨ STARCONNECT</h1>
+                    <p>⚡ plateforme indépendante des artistes malgaches · 2026</p>
+                </div>
+            </div>
             <div class="header-controls">
                 <div class="notification-bell" id="notificationBell">
                     <i class="fas fa-bell"></i>
@@ -1305,10 +1318,10 @@
     <script>
         // Configuration Formspree
         const FORMSPREE_ENDPOINTS = {
-            partner: 'https://formspree.io/f/xdaljabb',
-            event: 'https://formspree.io/f/xdaljabb',
-            consent: 'https://formspree.io/f/xdaljabb',
-            adminProduct: 'https://formspree.io/f/xdaljabb'
+            partner: 'https://formspree.io/f/xgvazqkp',
+            event: 'https://formspree.io/f/xgvazqkp',
+            consent: 'https://formspree.io/f/xgvazqkp',
+            adminProduct: 'https://formspree.io/f/xgvazqkp'
         };
 
         // Fonction d'envoi Formspree avec fallback localStorage
@@ -1329,7 +1342,6 @@
                 throw new Error('Formspree error');
             } catch (error) {
                 console.warn(`Formspree ${formType} failed, using localStorage fallback`);
-                // Fallback localStorage
                 let fallbackData = JSON.parse(localStorage.getItem(`formspree_fallback_${formType}`) || '[]');
                 fallbackData.push({ ...data, timestamp: Date.now() });
                 localStorage.setItem(`formspree_fallback_${formType}`, JSON.stringify(fallbackData));
@@ -1437,6 +1449,26 @@
             }
         };
         
+        // Ajout des deux images d'exemple dans les créations
+        let CUSTOM_ITEMS = [
+            {
+                id: 1,
+                name: "T-shirt Exclusif Basta Lion",
+                price: 29.99,
+                desc: "T-shirt 100% coton avec design exclusif de l'artiste.",
+                icon: "fa-tshirt",
+                image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/51d70529-816c-c2f3-cae7-c2b57349bb03.png"
+            },
+            {
+                id: 2,
+                name: "Hoodie STARCONNECT Édition Limitée",
+                price: 59.99,
+                desc: "Hoodie confortable avec logo brodé. Édition limitée.",
+                icon: "fa-hoodie",
+                image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/578b468b-0ab8-1413-6495-46d9e9da83f2.png"
+            }
+        ];
+        
         function getCertificationBadge(certification) {
             switch(certification) {
                 case 'blue': return '<div class="star-certified-blue" title="🔵 ÉTOILE BLEUE - Légende suprême"></div>';
@@ -1449,7 +1481,6 @@
         }
         
         let PRODUCTS_DB = [];
-        let CUSTOM_ITEMS = [];
         let PARTNER_REQUESTS = [];
         let currentArtistId = "basta-lion";
         let newsItems = [], eventsList = [], feedPosts = [], postLikes = {}, manaScore = 1850, maintenanceMode = false;
@@ -1836,10 +1867,66 @@
         
         function renderShop() { const c = document.getElementById('shopGrid'); if (!c) return; const currentProducts = PRODUCTS_DB.filter(p => p.artist === currentArtistId); if (currentProducts.length === 0) { c.innerHTML = '<div style="text-align:center;padding:40px;">🛍️ Aucun produit disponible pour le moment.</div>'; return; } c.innerHTML = currentProducts.map(p => `<div class="product-card"><div class="product-image"><i class="fas fa-${p.image === '🎤' ? 'microphone-alt' : 'shirt'}"></i></div><div class="product-title">${escapeHtml(p.name)}</div><div class="product-price">${p.price} €</div><button class="product-btn" onclick="window.open('${p.link || '#'}','_blank')">🛒 Commander</button></div>`).join(''); }
         
-        function renderCustomGallery() { const c = document.getElementById('customGallery'); if (!c) return; if (CUSTOM_ITEMS.length === 0) { c.innerHTML = '<div style="text-align:center;padding:40px;">🎨 Aucune création pour le moment.</div>'; return; } c.innerHTML = CUSTOM_ITEMS.map(item => `<div class="custom-item"><div class="custom-image"><i class="fas ${item.icon || 'fa-tshirt'}"></i></div><div class="custom-title">${escapeHtml(item.name)}</div><div class="custom-desc">${escapeHtml(item.desc)}</div><div class="product-price">${item.price === 0 ? 'Sur devis' : item.price + ' €'}</div><button class="product-btn" onclick="window.open('https://facebook.com/starconnect/shop','_blank')">📩 Commander</button></div>`).join(''); }
+        function renderCustomGallery() { 
+            const c = document.getElementById('customGallery'); 
+            if (!c) return; 
+            if (CUSTOM_ITEMS.length === 0) { 
+                c.innerHTML = '<div style="text-align:center;padding:40px;">🎨 Aucune création pour le moment.</div>'; 
+                return; 
+            } 
+            c.innerHTML = CUSTOM_ITEMS.map(item => `
+                <div class="custom-item">
+                    <div class="custom-image">
+                        ${item.image ? `<img src="${item.image}" alt="${item.name}">` : `<i class="fas ${item.icon || 'fa-tshirt'}"></i>`}
+                    </div>
+                    <div class="custom-title">${escapeHtml(item.name)}</div>
+                    <div class="custom-desc">${escapeHtml(item.desc)}</div>
+                    <div class="product-price">${item.price === 0 ? 'Sur devis' : item.price + ' €'}</div>
+                    <button class="product-btn" onclick="window.open('https://facebook.com/starconnect/shop','_blank')">📩 Commander</button>
+                </div>
+            `).join(''); 
+        }
         
-        function renderPartnerRequests() { const c = document.getElementById('partnerRequestsList'); if (!c) return; if (PARTNER_REQUESTS.length === 0) { c.innerHTML = '<p>Aucune demande pour le moment.</p>'; return; } c.innerHTML = PARTNER_REQUESTS.map(r => `<div class="partner-card"><div><strong>${escapeHtml(r.name)}</strong> - ${escapeHtml(r.email)}</div><div>PayPal: ${escapeHtml(r.paypal || 'Non fourni')}</div><div>Produit: ${r.productType}</div><div>Message: ${escapeHtml(r.message.substring(0,100))}...</div><div>Statut: <span class="partner-status-pending">En attente</span></div><button onclick="deletePartnerRequest(${r.id})" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:10px;margin-top:5px;">🗑️ Supprimer</button></div>`).join(''); }
-        function deletePartnerRequest(id) { PARTNER_REQUESTS = PARTNER_REQUESTS.filter(r => r.id !== id); saveAllData(); renderPartnerRequests(); addNotification('Demande supprimée'); }
+        function renderPartnerRequests() { 
+            const c = document.getElementById('partnerRequestsList'); 
+            if (!c) return; 
+            if (PARTNER_REQUESTS.length === 0) { 
+                c.innerHTML = '<p>Aucune demande pour le moment.</p>'; 
+                return; 
+            } 
+            c.innerHTML = PARTNER_REQUESTS.map(r => `
+                <div class="partner-card">
+                    <div>
+                        <strong>${escapeHtml(r.name)}</strong> - ${escapeHtml(r.email)}
+                    </div>
+                    <div>PayPal: ${escapeHtml(r.paypal || 'Non fourni')}</div>
+                    <div>Produit: ${r.productType}</div>
+                    <div>Message: ${escapeHtml(r.message.substring(0,100))}...</div>
+                    <div>Statut: <span class="${r.status === 'approved' ? 'partner-status-approved' : 'partner-status-pending'}">${r.status === 'approved' ? '✅ Approuvé' : '⏳ En attente'}</span></div>
+                    <div>
+                        ${r.status !== 'approved' ? `<button onclick="approvePartnerRequest(${r.id})" class="approve-partner-btn">✅ Approuver</button>` : ''}
+                        <button onclick="deletePartnerRequest(${r.id})" class="delete-artist-btn">🗑️ Supprimer</button>
+                    </div>
+                </div>
+            `).join(''); 
+        }
+        
+        function approvePartnerRequest(id) {
+            const request = PARTNER_REQUESTS.find(r => r.id === id);
+            if (request) {
+                request.status = 'approved';
+                saveAllData();
+                renderPartnerRequests();
+                addNotification(`✅ Partenariat approuvé pour ${request.name}`);
+            }
+        }
+        
+        function deletePartnerRequest(id) { 
+            PARTNER_REQUESTS = PARTNER_REQUESTS.filter(r => r.id !== id); 
+            saveAllData(); 
+            renderPartnerRequests(); 
+            addNotification('Demande supprimée'); 
+        }
         
         function renderArtistSelect() { const s = document.getElementById('artistSelect'); if (!s) return; s.innerHTML = ''; for (const [id, a] of Object.entries(ARTISTS_DB)) { if (a.active !== false) { const o = document.createElement('option'); o.value = id; o.textContent = `${a.avatar || '🎤'} ${a.name}`; if (id === currentArtistId) o.selected = true; s.appendChild(o); } } }
         
@@ -2138,15 +2225,6 @@
             document.getElementById('partnerName').value = ''; document.getElementById('partnerEmail').value = ''; document.getElementById('partnerPhone').value = ''; document.getElementById('partnerPaypal').value = ''; document.getElementById('partnerMessage').value = '';
         });
         
-        // Formulaire ÉVÉNEMENT avec Formspree
-        const originalSubmitEvent = document.getElementById('submitEvent')?.onclick;
-        document.getElementById('submitEvent')?.addEventListener('click', async () => {
-            const name = document.getElementById('eventName')?.value, place = document.getElementById('eventPlace')?.value, date = document.getElementById('eventDate')?.value;
-            if (name && place && date) {
-                await submitToFormspree('event', { eventName: name, eventPlace: place, eventDate: date, type: 'event_proposal' });
-            }
-        });
-        
         // Formulaire ADMIN PRODUIT avec Formspree
         document.getElementById('adminAddProduct')?.addEventListener('click', async () => {
             const name = document.getElementById('adminProductName')?.value, price = parseFloat(document.getElementById('adminProductPrice')?.value), artist = document.getElementById('adminProductArtist')?.value, link = document.getElementById('adminProductLink')?.value;
@@ -2317,4 +2395,4 @@
         window.addEventListener('beforeunload', () => { clearInterval(manaInterval); clearInterval(newsInterval); });
     </script>
 </body>
-                        </html>
+</html>
