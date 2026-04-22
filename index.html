@@ -11,7 +11,6 @@
     <meta property="og:title" content="STARCONNECT - Plateforme des Étoiles Malgaches">
     <meta property="og:description" content="Découvrez Basta Lion et les artistes malgaches">
     <meta property="og:type" content="website">
-    <!-- VOTRE LOGO EN FAVICON -->
     <link rel="icon" type="image/png" href="https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/7218955a-0b52-6432-a3aa-e4cb1327ec79.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -65,6 +64,19 @@
         .logo p { font-size: 0.7rem; color: #666; letter-spacing: 0.5px; margin-top: 4px; }
         .cert-header { background: rgba(224,165,0,0.12); border: 1px solid rgba(224,165,0,0.3); padding: 8px 18px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
         .theme-toggle { background: #1a1a1a; border: none; padding: 10px 16px; border-radius: 40px; color: #e0a500; cursor: pointer; font-size: 0.9rem; }
+        .status-badge {
+            background: #00a86b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+        }
+        .status-badge i { font-size: 0.8rem; }
         
         .notification-bell {
             position: relative;
@@ -769,6 +781,56 @@
             margin-bottom: 15px;
         }
         
+        .donation-box {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 2px solid #e0a500;
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .donation-box h3 {
+            color: #e0a500;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .donation-amounts {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        .donation-btn {
+            background: #1a1a1a;
+            border: 1px solid #e0a500;
+            color: #e0a500;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .donation-btn:hover {
+            background: #e0a500;
+            color: #050505;
+        }
+        .donation-link {
+            display: inline-block;
+            background: #e0a500;
+            color: #050505;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: 0.2s;
+        }
+        .donation-link:hover {
+            transform: scale(1.05);
+            background: #ffc107;
+        }
+        
         @media (max-width: 700px) {
             .container { padding: 20px 16px; }
             .artist-profile { flex-direction: column; align-items: center; text-align: center; }
@@ -827,7 +889,6 @@
             <h3><i class="fas fa-shield-alt"></i> Demande de consentement - Droit à l'image</h3>
             <p>Conformément à l'article 9 du Code civil et au RGPD, toute modification de la photo de profil nécessite le consentement explicite de l'artiste ou de son représentant légal.</p>
             
-            <!-- FORMULAIRE CONSENTEMENT AVEC ENVOI DIRECT FORMSPREE -->
             <form id="consentForm" action="https://formspree.io/f/xdaljabb" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="_subject" value="[STARCONNECT] Demande de consentement">
                 <input type="hidden" name="form_type" value="consent">
@@ -869,7 +930,6 @@
                     <i class="fas fa-gavel"></i> Ce consentement est valable 1 an et pourra être révoqué à tout moment sur simple demande.
                 </p>
                 
-                <!-- Champ fichier caché, rempli dynamiquement -->
                 <input type="file" name="photo" id="consentPhotoInput" accept="image/*" style="display:none;">
                 
                 <div class="modal-buttons">
@@ -901,7 +961,6 @@
     <div class="container">
         <div class="header">
             <div class="logo">
-                <!-- AFFICHAGE DU LOGO DANS LE HEADER -->
                 <img src="https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/7218955a-0b52-6432-a3aa-e4cb1327ec79.png" alt="Logo STARCONNECT" class="logo-img" style="height: 50px;">
                 <div>
                     <h1>✨ STARCONNECT</h1>
@@ -909,6 +968,7 @@
                 </div>
             </div>
             <div class="header-controls">
+                <div class="status-badge"><i class="fas fa-circle"></i> Équipe active : Arnaud, Hgb, Veezir, Holdest</div>
                 <div class="notification-bell" id="notificationBell">
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="notifBadge">0</span>
@@ -929,12 +989,14 @@
             <button class="nav-btn" data-panel="feed"><i class="fas fa-comments"></i> 💬 COMMUNAUTÉ</button>
             <button class="nav-btn" data-panel="events"><i class="fas fa-calendar"></i> 📅 ÉVÉNEMENTS</button>
             <button class="nav-btn" data-panel="news"><i class="fas fa-bolt"></i> 🔥 ACTUS</button>
+            <button class="nav-btn" data-panel="interviews"><i class="fas fa-microphone-alt"></i> 🎙️ INTERVIEWS</button>
             <button class="nav-btn" data-panel="fans"><i class="fas fa-trophy"></i> 🏆 TOP FANS</button>
             <button class="nav-btn" data-panel="legal"><i class="fas fa-gavel"></i> ⚖️ LÉGAL</button>
             <button class="nav-btn" data-panel="about"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS</button>
+            <button class="nav-btn" data-panel="support"><i class="fas fa-heart"></i> 💰 SOUTENIR</button>
         </div>
 
-        <!-- PANELS - IDENTIQUES À L'ORIGINAL -->
+        <!-- PANELS -->
         <div id="panel-artist" class="panel active-panel">
             <div class="card">
                 <div class="artist-profile">
@@ -1004,7 +1066,6 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-handshake"></i> 🤝 DEVENIR PARTENAIRE</div>
                 <p>Vous êtes artiste ou label ? Vous souhaitez vendre vos produits en France via STARCONNECT ?</p>
-                <!-- FORMULAIRE PARTENAIRE DIRECT FORMSPREE -->
                 <form class="partner-form" id="partnerFormContainer" action="https://formspree.io/f/xdaljabb" method="POST">
                     <input type="hidden" name="_subject" value="[STARCONNECT] Demande de partenariat">
                     <input type="hidden" name="form_type" value="partner">
@@ -1049,7 +1110,6 @@
         <div id="panel-events" class="panel">
             <div class="card"><div class="card-title"><i class="fas fa-calendar-star"></i> 📅 AGENDA</div>
                 <button id="showEventForm" class="btn" style="margin-bottom: 24px;"><i class="fas fa-plus"></i> PROPOSER UN ÉVÉNEMENT</button>
-                <!-- FORMULAIRE ÉVÉNEMENT DIRECT FORMSPREE -->
                 <form id="eventFormContainer" class="event-form" action="https://formspree.io/f/xdaljabb" method="POST">
                     <input type="hidden" name="_subject" value="[STARCONNECT] Proposition d'événement">
                     <input type="hidden" name="form_type" value="event">
@@ -1068,6 +1128,32 @@
                 <div style="margin-top: 24px; font-size: 0.65rem; color: #555; text-align: center;">
                     <i class="fas fa-rss"></i> Flux RSS automatique · mise à jour toutes les 2 heures · via RSS2JSON
                 </div>
+            </div>
+        </div>
+
+        <!-- NOUVEAU PANEL INTERVIEWS -->
+        <div id="panel-interviews" class="panel">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-microphone-alt"></i> 🎙️ INTERVIEW EXCLUSIVE</div>
+                <div class="video-card" style="max-width: 100%;">
+                    <iframe src="https://www.youtube.com/embed/a4Oymh5xWBg" allowfullscreen loading="lazy"></iframe>
+                    <p><strong>🎤 BASTA LION - Interview "Colombian" & AEAUSA 2025</strong><br>Découvrez les coulisses du succès international de l'artiste malgache.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title"><i class="fas fa-paper-plane"></i> 📩 INVITER UN ARTISTE À UNE INTERVIEW</div>
+                <p>Vous êtes artiste, manager ou fan ? Proposez un artiste malgache pour une interview exclusive sur STARCONNECT.</p>
+                <form class="partner-form" action="https://formspree.io/f/xdaljabb" method="POST">
+                    <input type="hidden" name="_subject" value="[STARCONNECT] Demande d'interview">
+                    <input type="hidden" name="form_type" value="interview">
+                    <input type="text" name="artistName" placeholder="Nom de l'artiste" required>
+                    <input type="text" name="contactName" placeholder="Votre nom">
+                    <input type="email" name="contactEmail" placeholder="Votre email" required>
+                    <input type="text" name="contactPhone" placeholder="Téléphone (WhatsApp)">
+                    <textarea name="message" rows="4" placeholder="Pourquoi souhaitez-vous cette interview ? Thèmes à aborder..."></textarea>
+                    <button type="submit" class="btn">📨 Envoyer la demande</button>
+                </form>
+                <p style="font-size:0.8rem; margin-top:15px;"><i class="fas fa-info-circle"></i> Nous étudions chaque demande et revenons vers vous sous 48h.</p>
             </div>
         </div>
 
@@ -1184,9 +1270,9 @@
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
-                        <div class="team-name">Andry R.</div>
+                        <div class="team-name">Arnaud R.</div>
                         <div class="team-role">Fondateur & CEO</div>
-                        <div class="team-desc">Passionné de musique malgache et entrepreneur depuis 10 ans. Ancien manager de tournée.</div>
+                        <div class="team-desc">Passionné de musique malgache et entrepreneur. Visionnaire du projet STARCONNECT.</div>
                     </div>
                     <div class="team-member">
                         <div class="team-avatar"><i class="fas fa-laptop-code"></i></div>
@@ -1237,6 +1323,42 @@
                     <h3><i class="fas fa-rocket"></i> Vous voulez nous rejoindre ?</h3>
                     <p style="margin-bottom: 20px;">Artistes, créateurs, ou simplement passionnés, STARCONNECT est ouvert à toutes les bonnes volontés.</p>
                     <a href="mailto:contact@starconnect.mg" style="background: #e0a500; color: #050505; padding: 12px 30px; border-radius: 40px; text-decoration: none; font-weight: 600; display: inline-block;">📧 Contactez-nous</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOUVEAU PANEL SOUTENIR / DONATION -->
+        <div id="panel-support" class="panel">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-heart"></i> 💰 SOUTENIR STARCONNECT</div>
+                
+                <div class="donation-box">
+                    <h3><i class="fas fa-hand-holding-heart"></i> Aidez-nous à faire briller les étoiles malgaches</h3>
+                    <p>STARCONNECT est une plateforme indépendante. Vos dons nous permettent de :</p>
+                    <ul style="text-align: left; max-width: 500px; margin: 20px auto; color: #ccc;">
+                        <li>🎥 Produire des interviews exclusives avec les artistes</li>
+                        <li>🎨 Créer du contenu original (vidéos, articles, photos)</li>
+                        <li>🌍 Promouvoir la musique malgache à l'international</li>
+                        <li>🛠️ Maintenir et améliorer le site</li>
+                    </ul>
+                    
+                    <div class="donation-amounts">
+                        <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">5 €</button>
+                        <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">10 €</button>
+                        <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">20 €</button>
+                        <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">50 €</button>
+                    </div>
+                    
+                    <a href="https://paypal.me/starconnect" target="_blank" class="donation-link">
+                        <i class="fab fa-paypal"></i> Faire un don via PayPal
+                    </a>
+                    <p style="margin-top: 20px; font-size: 0.8rem;">Ou contactez-nous pour un partenariat : <a href="mailto:contact@starconnect.mg" style="color:#e0a500;">contact@starconnect.mg</a></p>
+                </div>
+                
+                <div class="legal-card">
+                    <h3><i class="fas fa-seedling"></i> Vous voulez aider autrement ?</h3>
+                    <p>Partagez notre site, suivez-nous sur les réseaux, ou proposez vos idées ! Chaque geste compte.</p>
+                    <p><i class="fas fa-tshirt"></i> Vous pouvez aussi acheter nos créations personnalisées dans l'onglet "Créations".</p>
                 </div>
             </div>
         </div>
@@ -1333,8 +1455,7 @@
 
     <script>
         // =============================================
-        // JAVASCRIPT ORIGINAL COMPLET (INCHANGÉ)
-        // Seuls les formulaires utilisent maintenant action="https://formspree.io/f/xgvazqkp"
+        // JAVASCRIPT COMPLET (incluant les nouveaux panels)
         // =============================================
 
         const API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
@@ -1436,7 +1557,6 @@
             }
         };
         
-        // Ajout des deux images d'exemple dans les créations
         let CUSTOM_ITEMS = [
             {
                 id: 1,
@@ -2149,7 +2269,6 @@
                 const file = e.target.files[0];
                 if (file) {
                     pendingAvatarFile = file;
-                    // Transférer le fichier dans le formulaire
                     const fileInput = document.getElementById('consentPhotoInput');
                     const dt = new DataTransfer();
                     dt.items.add(file);
@@ -2160,8 +2279,6 @@
             input.click();
         });
         
-        // Le formulaire de consentement est soumis normalement vers Formspree
-        // On garde juste une sauvegarde locale
         document.getElementById('consentForm')?.addEventListener('submit', (e) => {
             const a = getCurrentArtist();
             a.consentStatus = 'pending';
@@ -2173,7 +2290,6 @@
             }
             saveAllData();
             addNotification('✅ Demande de consentement envoyée !');
-            // Le formulaire continue son envoi
         });
         
         document.getElementById('cancelConsent')?.addEventListener('click', () => {
@@ -2208,10 +2324,6 @@
         let evForm = false;
         document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventFormContainer'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
         
-        // Le formulaire événement est soumis directement à Formspree
-        
-        // Le formulaire partenaire est soumis directement à Formspree
-        // On garde juste une copie locale
         document.getElementById('partnerFormContainer')?.addEventListener('submit', (e) => {
             const name = document.getElementById('partnerName')?.value;
             const email = document.getElementById('partnerEmail')?.value;
@@ -2224,10 +2336,8 @@
             saveAllData(); 
             renderPartnerRequests();
             addNotification('✅ Demande de partenariat envoyée !');
-            // Le formulaire continue son envoi
         });
         
-        // Le formulaire événement
         document.getElementById('eventFormContainer')?.addEventListener('submit', (e) => {
             const name = document.getElementById('eventName')?.value;
             const place = document.getElementById('eventPlace')?.value;
@@ -2237,10 +2347,8 @@
             renderEvents(); 
             saveAllData();
             addNotification('✅ Événement proposé !');
-            // Le formulaire continue son envoi
         });
         
-        // Formulaire ADMIN PRODUIT (local uniquement)
         document.getElementById('adminAddProduct')?.addEventListener('click', () => {
             const name = document.getElementById('adminProductName')?.value, price = parseFloat(document.getElementById('adminProductPrice')?.value), artist = document.getElementById('adminProductArtist')?.value, link = document.getElementById('adminProductLink')?.value;
             if (!name || !price || !artist) { alert('Nom, prix et artiste requis'); return; }
@@ -2362,9 +2470,11 @@
             feed: document.getElementById('panel-feed'), 
             events: document.getElementById('panel-events'), 
             news: document.getElementById('panel-news'), 
+            interviews: document.getElementById('panel-interviews'), 
             fans: document.getElementById('panel-fans'), 
             legal: document.getElementById('panel-legal'),
-            about: document.getElementById('panel-about')
+            about: document.getElementById('panel-about'),
+            support: document.getElementById('panel-support')
         };
         btns.forEach(btn => btn.addEventListener('click', () => { 
             const id = btn.getAttribute('data-panel'); 
