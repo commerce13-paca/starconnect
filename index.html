@@ -66,65 +66,84 @@
         .theme-toggle { background: #1a1a1a; border: none; padding: 10px 16px; border-radius: 40px; color: #e0a500; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; }
         .theme-toggle:hover { background: #2a2a2a; transform: translateY(-2px); }
         
-        /* BOUTON CLASSEMENT SPÉCIAL ATTRACTIF */
-        .ranking-special-btn {
-            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
-            border: 2px solid transparent;
-            border-image: linear-gradient(135deg, #e0a500, #ff6b00, #e0a500);
-            border-image-slice: 1;
-            border-radius: 40px;
-            padding: 10px 20px;
-            font-size: 0.9rem;
+        /* BOUTON CLASSEMENT PROFESSIONNEL REDESIGNÉ */
+        .ranking-pro-btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 10px 22px;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #e0a500;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             position: relative;
             overflow: hidden;
-            animation: borderPulse 2s infinite, glowPulse 2s ease-in-out infinite;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 15px rgba(224,165,0,0.2);
         }
         
-        body.light-mode .ranking-special-btn {
-            background: linear-gradient(135deg, #fff, #f0f0f0);
+        body.light-mode .ranking-pro-btn {
+            background: linear-gradient(135deg, #fff, #f5f5f5);
             color: #e0a500;
-            border: 2px solid #e0a500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
-        @keyframes borderPulse {
-            0% { border-color: #e0a500; box-shadow: 0 0 0 0 rgba(224,165,0,0.4); }
-            50% { border-color: #ff6b00; box-shadow: 0 0 0 8px rgba(224,165,0,0); }
-            100% { border-color: #e0a500; box-shadow: 0 0 0 0 rgba(224,165,0,0); }
+        .ranking-pro-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(224,165,0,0.2), transparent);
+            transition: left 0.5s ease;
         }
         
-        @keyframes glowPulse {
-            0% { text-shadow: 0 0 2px #e0a500; }
-            50% { text-shadow: 0 0 10px #e0a500, 0 0 5px #ff6b00; }
-            100% { text-shadow: 0 0 2px #e0a500; }
+        .ranking-pro-btn:hover::before {
+            left: 100%;
         }
         
-        .ranking-special-btn:hover {
-            transform: scale(1.05);
-            background: linear-gradient(135deg, #e0a500, #ff6b00);
+        .ranking-pro-btn:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #e0a500, #ff8c00);
             color: #050505;
-            animation: none;
+            box-shadow: 0 8px 25px rgba(224,165,0,0.4);
         }
         
-        .ranking-special-btn i {
-            font-size: 1rem;
+        .ranking-pro-btn i {
+            font-size: 1.1rem;
             transition: transform 0.3s;
         }
         
-        .ranking-special-btn:hover i {
-            transform: rotate(15deg) scale(1.1);
+        .ranking-pro-btn:hover i {
+            transform: rotate(8deg) scale(1.1);
+        }
+        
+        .ranking-pro-btn .btn-badge {
+            background: #ff4444;
+            color: white;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 0.6rem;
+            margin-left: 5px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
         
         /* Animation MANA style YouTube views */
         .mana-value {
             display: inline-block;
             transition: all 0.3s ease;
+            font-weight: 800;
         }
         
         .mana-update {
@@ -133,17 +152,17 @@
         
         @keyframes manaPop {
             0% { transform: scale(1); color: #e0a500; }
-            50% { transform: scale(1.2); color: #ff6b00; text-shadow: 0 0 10px #e0a500; }
+            50% { transform: scale(1.15); color: #ff6b00; text-shadow: 0 0 10px #e0a500; }
             100% { transform: scale(1); color: #e0a500; }
         }
         
-        /* Flèche de progression MANA */
         .mana-progress {
             display: inline-flex;
             align-items: center;
             gap: 5px;
             margin-left: 10px;
             font-size: 0.7rem;
+            transition: opacity 0.5s;
         }
         
         .mana-trend-up { color: #00a86b; }
@@ -1132,17 +1151,18 @@
                 </div>
                 <div class="artist-selector"><select id="artistSelect"></select></div>
                 <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> Mode</button>
-                <!-- BOUTON CLASSEMENT SPECIAL SOUS LE BOUTON MODE -->
-                <button id="rankingSpecialBtn" class="ranking-special-btn" data-panel="ranking">
-                    <i class="fas fa-trophy"></i> 🏆 CLASSEMENTS
-                    <i class="fas fa-chart-line"></i>
+                <!-- BOUTON CLASSEMENT PROFESSIONNEL REDESIGNÉ -->
+                <button id="rankingProBtn" class="ranking-pro-btn">
+                    <i class="fas fa-chart-simple"></i> CLASSEMENTS
+                    <span class="btn-badge">LIVE</span>
+                    <i class="fas fa-trophy"></i>
                 </button>
                 <div class="cert-header"><i class="fas fa-shield-alt"></i> CERTIFIED</div>
             </div>
         </div>
         <div id="notificationDropdown" class="notification-dropdown"></div>
         
-        <!-- MENU AVEC LIENS DE NAVIGATION (sans le bouton classement car déplacé) -->
+        <!-- MENU AVEC LIENS DE NAVIGATION -->
         <div class="nav">
             <a href="#artist" class="nav-btn active" data-panel="artist"><i class="fas fa-crown"></i> 👑 BASTA LION</a>
             <a href="#musique" class="nav-btn" data-panel="music"><i class="fas fa-music"></i> 🎵 MUSIQUE</a>
@@ -1200,11 +1220,11 @@
         </div>
 
         <div id="musique" class="section panel">
-            <div class="card"><div class="card-title"><i class="fab fa-youtube"></i> 🔍 RECHERCHE</div>
-                <div class="search-bar"><input type="text" id="searchInput" class="search-input" placeholder="Rechercher..."><button id="searchBtn" class="search-btn"><i class="fas fa-search"></i> Chercher</button></div>
-                <div id="videoResults" class="video-grid"><div class="loader"><i class="fas fa-spinner fa-spin"></i> Chargement...</div></div>
+            <div class="card"><div class="card-title"><i class="fab fa-youtube"></i> 🔍 RECHERCHE YOUTUBE</div>
+                <div class="search-bar"><input type="text" id="searchInput" class="search-input" placeholder="Rechercher une vidéo..."><button id="searchBtn" class="search-btn"><i class="fab fa-youtube"></i> Chercher</button></div>
+                <div id="videoResults" class="video-grid"><div class="loader"><i class="fas fa-spinner fa-spin"></i> Chargement des vidéos...</div></div>
             </div>
-            <div class="card"><div class="card-title"><i class="fas fa-headphones"></i> 🎵 TITRES</div>
+            <div class="card"><div class="card-title"><i class="fas fa-headphones"></i> 🎵 TITRES POPULAIRES</div>
                 <div class="track-list" id="trackList"></div>
             </div>
         </div>
@@ -1641,13 +1661,12 @@
 
     <script>
         // =============================================
-        // JAVASCRIPT COMPLET avec MANA dynamique et actualisation automatique
+        // JAVASCRIPT COMPLET AVEC API YOUTUBE FONCTIONNELLE
         // =============================================
 
         const API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         const BASE_URL = 'https://www.googleapis.com/youtube/v3';
         
-        // Variables pour la tendance MANA
         let previousManaScore = 1850;
         let manaUpdateTimeout = null;
         let autoRankingInterval = null;
@@ -1666,7 +1685,6 @@
             }
         });
         
-        // Base de données des artistes enrichie pour les classements par catégorie
         let ARTISTS_DB = {
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -1679,7 +1697,8 @@
                 searchQuery: "Basta Lion Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold-premium",
-                genre: "Dancehall"
+                genre: "Dancehall",
+                youtubeChannelId: "UC4RZP6hGqKpYkMqQjLpQjvA"
             },
             "wawa-sali": {
                 id: "wawa-sali", name: "WAWA SALI", avatar: "🎤", location: "Antananarivo", age: 32, awards: "Artiste Populaire 2024",
@@ -1804,14 +1823,11 @@
         let PARTNER_REQUESTS = [];
         let currentArtistId = "basta-lion";
         let newsItems = [], eventsList = [], feedPosts = [], postLikes = {}, manaScore = 1850, maintenanceMode = false;
-        let youtubeCache = null, lastFetch = 0;
-        const CACHE_DURATION = 5 * 60 * 1000;
         let pendingAvatarFile = null;
         let pendingConsentRole = "artist";
         let notifications = [];
         let currentRankingTab = 'national';
         
-        // Fonction pour mettre à jour l'affichage du MANA avec animation style YouTube
         function updateManaDisplay(newScore, animate = true) {
             const manaElement = document.getElementById('manaValue');
             const trendElement = document.getElementById('manaTrend');
@@ -1821,7 +1837,6 @@
             const oldValue = parseInt(manaElement.innerText) || manaScore;
             const difference = newScore - oldValue;
             
-            // Animation de la valeur
             if (animate && difference !== 0) {
                 manaElement.classList.add('mana-update');
                 setTimeout(() => {
@@ -1829,7 +1844,6 @@
                 }, 500);
             }
             
-            // Mise à jour de la tendance (flèche + valeur)
             if (trendElement) {
                 if (difference > 0) {
                     trendElement.innerHTML = `<i class="fas fa-arrow-up mana-trend-up"></i> <span style="color:#00a86b;">+${difference}</span>`;
@@ -1841,7 +1855,6 @@
                     trendElement.innerHTML = `<i class="fas fa-minus" style="color:#666;"></i> <span style="color:#666;">0</span>`;
                 }
                 
-                // Faire disparaître la tendance après 3 secondes
                 if (manaUpdateTimeout) clearTimeout(manaUpdateTimeout);
                 manaUpdateTimeout = setTimeout(() => {
                     if (trendElement) trendElement.style.opacity = '0';
@@ -1850,46 +1863,28 @@
             
             manaElement.innerText = newScore;
             manaScore = newScore;
-            
-            // Sauvegarde immédiate
             saveAllData();
             updateStarRating(newScore);
         }
         
-        // Simulation de mise à jour automatique du MANA comme YouTube views
         function simulateManaUpdate() {
             if (maintenanceMode) return;
-            
-            // Incrémentation aléatoire réaliste (entre 1 et 8 points)
             const increment = Math.floor(Math.random() * 8) + 1;
             const newScore = manaScore + increment;
-            
-            // Mise à jour dans la base de données
             const currentArtist = getCurrentArtist();
             if (currentArtist) {
                 currentArtist.manaScore = newScore;
             }
-            
             updateManaDisplay(newScore, true);
-            
-            // Mise à jour des classements en arrière-plan (sans rechargement visuel brusque)
             renderRanking();
-            
-            // Notification discrète pour les gros incréments
-            if (increment >= 7) {
-                addNotification(`⚡ +${increment} MANA pour ${currentArtist?.name || 'Basta Lion'} !`);
-            }
         }
         
-        // Actualisation automatique des classements toutes les 30 secondes
         function startAutoRankingUpdate() {
             if (autoRankingInterval) clearInterval(autoRankingInterval);
             autoRankingInterval = setInterval(() => {
-                // Mise à jour des scores MANA de tous les artistes (simulation like YouTube)
                 for (const id in ARTISTS_DB) {
                     const artist = ARTISTS_DB[id];
                     if (artist && artist.active !== false) {
-                        // Incrémentation plus réaliste : entre 1 et 15 points selon la popularité
                         const increment = Math.floor(Math.random() * 15) + 1;
                         const boost = artist.certification === 'gold-premium' ? 1.5 : 
                                     artist.certification === 'blue' ? 1.3 : 
@@ -1897,7 +1892,6 @@
                         const finalIncrement = Math.floor(increment * boost);
                         artist.manaScore += finalIncrement;
                         
-                        // Incrémentation des stats YouTube (simulation)
                         if (artist.youtubeStats) {
                             const currentViews = parseFloat(artist.youtubeStats.replace('M', '').replace('K', '')) || 0;
                             const newViews = currentViews + (Math.random() * 0.05);
@@ -1905,11 +1899,7 @@
                         }
                     }
                 }
-                
-                // Sauvegarde et mise à jour de l'affichage si l'artiste courant n'a pas changé
                 saveAllData();
-                
-                // Mise à jour du MANA de l'artiste courant
                 const currentArtist = getCurrentArtist();
                 if (currentArtist) {
                     const newArtistScore = currentArtist.manaScore;
@@ -1917,12 +1907,72 @@
                         updateManaDisplay(newArtistScore, false);
                     }
                 }
-                
-                // Mise à jour du classement sans rechargement complet
                 renderRanking();
+            }, 30000);
+        }
+        
+        // API YOUTUBE RECHERCHE FONCTIONNELLE
+        async function searchYouTube(q, maxResults = 6) {
+            if (!q) return [];
+            try {
+                addNotification(`🔍 Recherche YouTube : "${q}"`);
+                const response = await fetch(`${BASE_URL}/search?part=snippet&q=${encodeURIComponent(q)}&maxResults=${maxResults}&type=video&key=${API_KEY}`);
+                const data = await response.json();
                 
-                console.log('🔄 Classement mis à jour automatiquement');
-            }, 30000); // Toutes les 30 secondes
+                if (data.error) {
+                    console.error('YouTube API Error:', data.error);
+                    addNotification(`⚠️ API YouTube: ${data.error.message || 'Erreur'}`);
+                    return null;
+                }
+                
+                if (!data.items || data.items.length === 0) {
+                    addNotification('📭 Aucune vidéo trouvée');
+                    return [];
+                }
+                
+                addNotification(`✅ ${data.items.length} vidéos trouvées`);
+                return data.items.map(item => ({
+                    id: item.id.videoId,
+                    title: item.snippet.title,
+                    thumbnail: item.snippet.thumbnails.medium.url,
+                    channelTitle: item.snippet.channelTitle
+                }));
+            } catch(e) {
+                console.error('Erreur réseau YouTube:', e);
+                addNotification('❌ Erreur de connexion à YouTube');
+                return null;
+            }
+        }
+        
+        async function renderVideos(query) {
+            const container = document.getElementById('videoResults');
+            if (!container) return;
+            
+            if (!query) {
+                container.innerHTML = '<div class="loader">🔍 Entrez un terme de recherche YouTube</div>';
+                return;
+            }
+            
+            container.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche sur YouTube...</div>';
+            
+            const videos = await searchYouTube(query, 8);
+            
+            if (videos === null) {
+                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Service YouTube temporairement indisponible. Veuillez réessayer.</div>';
+                return;
+            }
+            
+            if (videos.length === 0) {
+                container.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée pour "<strong>' + escapeHtml(query) + '</strong>"</div>';
+                return;
+            }
+            
+            container.innerHTML = videos.map(v => `
+                <div class="video-card">
+                    <iframe src="https://www.youtube.com/embed/${v.id}" allowfullscreen loading="lazy"></iframe>
+                    <p><strong>${escapeHtml(v.title.length > 70 ? v.title.substring(0,70)+'...' : v.title)}</strong><br><small style="color:#888;">${escapeHtml(v.channelTitle)}</small></p>
+                </div>
+            `).join('');
         }
         
         function addNotification(message, type = 'info') {
@@ -2041,7 +2091,6 @@
         
         async function fetchRSSNews() {
             try {
-                console.log("🔄 Chargement des actualités via RSS...");
                 const rssFeeds = [
                     'https://www.orange.mg/feed/',
                     'https://www.moov.mg/rss',
@@ -2089,7 +2138,6 @@
                 
                 saveAllData();
                 renderNews();
-                console.log(`✅ ${allArticles.length} actualités chargées via RSS`);
                 return true;
             } catch (error) {
                 console.error('Erreur chargement RSS:', error);
@@ -2400,7 +2448,6 @@
             document.getElementById('artistTags').innerHTML = a.tags.map(t => `<span>${escapeHtml(t)}</span>`).join('');
             document.getElementById('artistBio').innerHTML = a.bio;
             
-            // Mettre à jour l'affichage du MANA sans créer d'animation supplémentaire
             const manaElement = document.getElementById('manaValue');
             if (manaElement && parseInt(manaElement.innerText) !== a.manaScore) {
                 manaElement.innerText = a.manaScore;
@@ -2479,44 +2526,6 @@
             reader.readAsDataURL(file);
         }
         
-        async function searchYouTube(q, m = 6) {
-            youtubeCache = null;
-            try {
-                const r = await fetch(`${BASE_URL}/search?part=snippet&q=${encodeURIComponent(q)}&maxResults=${m}&type=video&key=${API_KEY}`);
-                const d = await r.json();
-                if (d.error) {
-                    console.error('YouTube API Error:', d.error);
-                    return null;
-                }
-                const results = d.items.map(i => ({ id: i.id.videoId, title: i.snippet.title }));
-                youtubeCache = results;
-                lastFetch = Date.now();
-                return results;
-            } catch(e) { 
-                console.error('Erreur réseau YouTube:', e);
-                return null; 
-            }
-        }
-        
-        async function renderVideos(q) { 
-            const c = document.getElementById('videoResults'); 
-            if (!c) return; 
-            c.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche...</div>'; 
-            const v = await searchYouTube(q, 6);
-            
-            if (v === null) {
-                c.innerHTML = '<div class="api-error"><i class="fas fa-exclamation-triangle"></i> ⚠️ Limite de recherche YouTube atteinte ou API temporairement indisponible. Veuillez réessayer plus tard.</div>';
-                return;
-            }
-            
-            if (!v || v.length === 0) {
-                c.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée pour cette recherche.</div>';
-                return;
-            }
-            
-            c.innerHTML = v.map(v => `<div class="video-card"><iframe src="https://www.youtube.com/embed/${v.id}" allowfullscreen loading="lazy"></iframe><p>${escapeHtml(v.title.length > 65 ? v.title.substring(0,65)+'...' : v.title)}</p></div>`).join(''); 
-        }
-        
         function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
         
         function renderEvents() { const c = document.getElementById('eventsList'); if (c) c.innerHTML = eventsList.map(e => `<div class="event-item"><div><strong>${escapeHtml(e.name)}</strong><br>${escapeHtml(e.place)}</div><div class="event-date">📅 ${escapeHtml(e.date)}</div></div>`).join(''); }
@@ -2591,7 +2600,6 @@
         
         function switchArtist(id) { if (!ARTISTS_DB[id]) return; currentArtistId = id; const a = getCurrentArtist(); const sm = localStorage.getItem(`starconnect_mana_${id}`); manaScore = sm ? JSON.parse(sm) : a.manaScore; document.getElementById('manaValue').innerText = manaScore; renderArtistProfile(); updateStarRating(manaScore); saveAllData(); addNotification(`👑 Page de ${a.name}`); }
         
-        // Gestion des classements
         function renderRanking() {
             const container = document.getElementById('rankingContent');
             if (!container) return;
@@ -2610,27 +2618,13 @@
             let html = `
                 <table class="ranking-table">
                     <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Artiste</th>
-                            <th>Score MANA</th>
-                            <th>Vues YouTube</th>
-                            <th>Genre</th>
-                        </tr>
+                        <tr><th>#</th><th>Artiste</th><th>Score MANA</th><th>Vues YouTube</th><th>Genre</th></tr>
                     </thead>
                     <tbody>
             `;
             
             filteredArtists.forEach((artist, index) => {
-                html += `
-                    <tr>
-                        <td class="rank-number">${index + 1}</td>
-                        <td><strong>${artist.name}</strong> ${getCertificationBadge(artist.certification)}</td>
-                        <td><span class="mana-value">${artist.manaScore}</span> pts</td>
-                        <td>${artist.youtubeStats}</td>
-                        <td>${artist.genre || 'Non spécifié'}</td>
-                    </tr>
-                `;
+                html += `<tr><td class="rank-number">${index + 1}</td><td><strong>${artist.name}</strong> ${getCertificationBadge(artist.certification)}</td><td><span class="mana-value">${artist.manaScore}</span> pts</td><td>${artist.youtubeStats}</td><td>${artist.genre || 'Non spécifié'}</td></tr>`;
             });
             
             html += `</tbody></table>`;
@@ -2657,7 +2651,6 @@
             addNotification('✅ Classements mis à jour !');
         }
         
-        // GESTION DU SCROLL FLUIDE ET ACTIVATION DU PANEL
         function initSmoothScroll() {
             const navLinks = document.querySelectorAll('.nav a');
             navLinks.forEach(link => {
@@ -2666,25 +2659,20 @@
                     const targetId = link.getAttribute('href').substring(1);
                     const targetElement = document.getElementById(targetId);
                     if (targetElement) {
-                        const panelName = link.getAttribute('data-panel');
                         const allPanels = document.querySelectorAll('.panel');
                         const allNavBtns = document.querySelectorAll('.nav-btn');
                         allPanels.forEach(p => p.classList.remove('active-panel'));
                         allNavBtns.forEach(b => b.classList.remove('active'));
                         targetElement.classList.add('active-panel');
                         link.classList.add('active');
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                 });
             });
         }
         
-        // Bouton classement spécial
         function initRankingButton() {
-            const rankingBtn = document.getElementById('rankingSpecialBtn');
+            const rankingBtn = document.getElementById('rankingProBtn');
             if (rankingBtn) {
                 rankingBtn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -2695,10 +2683,7 @@
                         allPanels.forEach(p => p.classList.remove('active-panel'));
                         allNavBtns.forEach(b => b.classList.remove('active'));
                         targetElement.classList.add('active-panel');
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         addNotification('🏆 Accès au classement des artistes');
                     }
                 });
@@ -2755,6 +2740,7 @@
             if (q) renderVideos(q); 
             else renderVideos('Basta Lion Malagasy');
         });
+        
         document.getElementById('searchInput')?.addEventListener('keypress', (e) => { 
             if (e.key === 'Enter') {
                 const q = e.target.value.trim();
@@ -2899,7 +2885,9 @@
                 startAutoRankingUpdate();
             }
         });
+        
         document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts supprimés'); } });
+        
         document.getElementById('adminResetMana')?.addEventListener('click', () => { 
             if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { 
                 const a = getCurrentArtist(); 
@@ -2981,12 +2969,7 @@
             }
         }, 60 * 60 * 1000);
         
-        // Démarrer la mise à jour automatique du MANA et des classements
-        let manaInterval = setInterval(() => { 
-            if (!maintenanceMode) {
-                simulateManaUpdate();
-            }
-        }, 15000); // Toutes les 15 secondes comme YouTube
+        let manaInterval = setInterval(() => { if (!maintenanceMode) { simulateManaUpdate(); } }, 15000);
         
         startAutoRankingUpdate();
         
@@ -2995,6 +2978,11 @@
         checkCookieConsent();
         initSmoothScroll();
         initRankingButton();
+        
+        // Charger les vidéos par défaut
+        setTimeout(() => {
+            renderVideos('Basta Lion Malagasy');
+        }, 1000);
         
         let newsInterval = setInterval(() => { if (!maintenanceMode) { fetchRSSNews(); } }, 2 * 60 * 60 * 1000);
         
