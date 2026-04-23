@@ -63,7 +63,92 @@
         .logo-img { height: 50px; width: auto; }
         .logo p { font-size: 0.7rem; color: #666; letter-spacing: 0.5px; margin-top: 4px; }
         .cert-header { background: rgba(224,165,0,0.12); border: 1px solid rgba(224,165,0,0.3); padding: 8px 18px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
-        .theme-toggle { background: #1a1a1a; border: none; padding: 10px 16px; border-radius: 40px; color: #e0a500; cursor: pointer; font-size: 0.9rem; }
+        .theme-toggle { background: #1a1a1a; border: none; padding: 10px 16px; border-radius: 40px; color: #e0a500; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; }
+        .theme-toggle:hover { background: #2a2a2a; transform: translateY(-2px); }
+        
+        /* BOUTON CLASSEMENT SPÉCIAL ATTRACTIF */
+        .ranking-special-btn {
+            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #e0a500, #ff6b00, #e0a500);
+            border-image-slice: 1;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #e0a500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            animation: borderPulse 2s infinite, glowPulse 2s ease-in-out infinite;
+        }
+        
+        body.light-mode .ranking-special-btn {
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            color: #e0a500;
+            border: 2px solid #e0a500;
+        }
+        
+        @keyframes borderPulse {
+            0% { border-color: #e0a500; box-shadow: 0 0 0 0 rgba(224,165,0,0.4); }
+            50% { border-color: #ff6b00; box-shadow: 0 0 0 8px rgba(224,165,0,0); }
+            100% { border-color: #e0a500; box-shadow: 0 0 0 0 rgba(224,165,0,0); }
+        }
+        
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 2px #e0a500; }
+            50% { text-shadow: 0 0 10px #e0a500, 0 0 5px #ff6b00; }
+            100% { text-shadow: 0 0 2px #e0a500; }
+        }
+        
+        .ranking-special-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #e0a500, #ff6b00);
+            color: #050505;
+            animation: none;
+        }
+        
+        .ranking-special-btn i {
+            font-size: 1rem;
+            transition: transform 0.3s;
+        }
+        
+        .ranking-special-btn:hover i {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        /* Animation MANA style YouTube views */
+        .mana-value {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .mana-update {
+            animation: manaPop 0.5s ease-out;
+        }
+        
+        @keyframes manaPop {
+            0% { transform: scale(1); color: #e0a500; }
+            50% { transform: scale(1.2); color: #ff6b00; text-shadow: 0 0 10px #e0a500; }
+            100% { transform: scale(1); color: #e0a500; }
+        }
+        
+        /* Flèche de progression MANA */
+        .mana-progress {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+            font-size: 0.7rem;
+        }
+        
+        .mana-trend-up { color: #00a86b; }
+        .mana-trend-down { color: #dc2626; }
+        
         .status-badge {
             background: #00a86b;
             color: white;
@@ -186,7 +271,6 @@
         }
         .header-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
         
-        /* Navigation sous forme de liens avec défilement fluide */
         .nav { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; border-bottom: 1px solid #1e1e1e; padding-bottom: 16px; overflow-x: auto; white-space: nowrap; }
         .nav-btn {
             background: transparent;
@@ -207,9 +291,8 @@
         .nav-btn.active { background: #1a1a1a; color: #e0a500; }
         .nav-btn:hover:not(.active) { background: #111; color: #ccc; }
         
-        /* Sections ciblées par le scroll */
         .section {
-            scroll-margin-top: 100px; /* évite que le header cache la section */
+            scroll-margin-top: 100px;
         }
         
         .panel { display: none; }
@@ -1049,12 +1132,17 @@
                 </div>
                 <div class="artist-selector"><select id="artistSelect"></select></div>
                 <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> Mode</button>
+                <!-- BOUTON CLASSEMENT SPECIAL SOUS LE BOUTON MODE -->
+                <button id="rankingSpecialBtn" class="ranking-special-btn" data-panel="ranking">
+                    <i class="fas fa-trophy"></i> 🏆 CLASSEMENTS
+                    <i class="fas fa-chart-line"></i>
+                </button>
                 <div class="cert-header"><i class="fas fa-shield-alt"></i> CERTIFIED</div>
             </div>
         </div>
         <div id="notificationDropdown" class="notification-dropdown"></div>
         
-        <!-- MENU AVEC LIENS DE NAVIGATION PAR SCROLL FLUIDE -->
+        <!-- MENU AVEC LIENS DE NAVIGATION (sans le bouton classement car déplacé) -->
         <div class="nav">
             <a href="#artist" class="nav-btn active" data-panel="artist"><i class="fas fa-crown"></i> 👑 BASTA LION</a>
             <a href="#musique" class="nav-btn" data-panel="music"><i class="fas fa-music"></i> 🎵 MUSIQUE</a>
@@ -1065,7 +1153,6 @@
             <a href="#evenements" class="nav-btn" data-panel="events"><i class="fas fa-calendar"></i> 📅 ÉVÉNEMENTS</a>
             <a href="#actus" class="nav-btn" data-panel="news"><i class="fas fa-bolt"></i> 🔥 ACTUS</a>
             <a href="#interviews" class="nav-btn" data-panel="interviews"><i class="fas fa-microphone-alt"></i> 🎙️ INTERVIEWS</a>
-            <a href="#classements" class="nav-btn" data-panel="ranking"><i class="fas fa-trophy"></i> 🏆 CLASSEMENTS</a>
             <a href="#topfans" class="nav-btn" data-panel="fans"><i class="fas fa-star"></i> ⭐ TOP FANS</a>
             <a href="#legal" class="nav-btn" data-panel="legal"><i class="fas fa-gavel"></i> ⚖️ LÉGAL</a>
             <a href="#apropos" class="nav-btn" data-panel="about"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS</a>
@@ -1085,7 +1172,13 @@
                             <button class="story-btn" onclick="openStoryModal()"><i class="fas fa-book-open"></i> 📖 Son histoire</button>
                         </h2>
                         <div class="artist-tags" id="artistTags"></div>
-                        <div class="mana"><i class="fas fa-charging-station"></i> ⚡ MANA : <span id="manaValue">1850</span><span id="starRating" class="star-rating"></span><span id="artistLevel" class="artist-level"></span></div>
+                        <div class="mana">
+                            <i class="fas fa-charging-station"></i> ⚡ MANA : 
+                            <span id="manaValue" class="mana-value">1850</span>
+                            <span id="manaTrend" class="mana-progress"></span>
+                            <span id="starRating" class="star-rating"></span>
+                            <span id="artistLevel" class="artist-level"></span>
+                        </div>
                         <div class="bio" id="artistBio"></div>
                     </div>
                 </div>
@@ -1247,7 +1340,7 @@
                     </div>
                 </div>
                 <button id="refreshRankingBtn" class="btn" style="margin-top: 20px;"><i class="fas fa-sync-alt"></i> Actualiser les statistiques</button>
-                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (vues YouTube, popularité, interactions). Mis à jour automatiquement.</p>
+                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (vues YouTube, popularité, interactions). Mise à jour automatique toutes les 30 secondes.</p>
             </div>
         </div>
 
@@ -1548,11 +1641,16 @@
 
     <script>
         // =============================================
-        // JAVASCRIPT COMPLET avec navigation scroll fluide et classements enrichis
+        // JAVASCRIPT COMPLET avec MANA dynamique et actualisation automatique
         // =============================================
 
         const API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         const BASE_URL = 'https://www.googleapis.com/youtube/v3';
+        
+        // Variables pour la tendance MANA
+        let previousManaScore = 1850;
+        let manaUpdateTimeout = null;
+        let autoRankingInterval = null;
         
         function openStoryModal() {
             document.getElementById('storyModal').classList.add('show');
@@ -1648,7 +1746,6 @@
                 certification: "silver",
                 genre: "RnB"
             },
-            // Nouveaux artistes pour enrichir les classements
             "rycia": {
                 id: "rycia", name: "RYCIA", avatar: "🎵", location: "Antananarivo", age: 29, awards: "Prix de la meilleure collaboration",
                 bio: "🎵 <strong>Rycia</strong> est une artiste polyvalente, reine du dancehall et du reggae moderne. <strong>🟡 Certifié ÉTOILE OR STANDARD</strong>",
@@ -1713,6 +1810,120 @@
         let pendingConsentRole = "artist";
         let notifications = [];
         let currentRankingTab = 'national';
+        
+        // Fonction pour mettre à jour l'affichage du MANA avec animation style YouTube
+        function updateManaDisplay(newScore, animate = true) {
+            const manaElement = document.getElementById('manaValue');
+            const trendElement = document.getElementById('manaTrend');
+            
+            if (!manaElement) return;
+            
+            const oldValue = parseInt(manaElement.innerText) || manaScore;
+            const difference = newScore - oldValue;
+            
+            // Animation de la valeur
+            if (animate && difference !== 0) {
+                manaElement.classList.add('mana-update');
+                setTimeout(() => {
+                    manaElement.classList.remove('mana-update');
+                }, 500);
+            }
+            
+            // Mise à jour de la tendance (flèche + valeur)
+            if (trendElement) {
+                if (difference > 0) {
+                    trendElement.innerHTML = `<i class="fas fa-arrow-up mana-trend-up"></i> <span style="color:#00a86b;">+${difference}</span>`;
+                    trendElement.style.opacity = '1';
+                } else if (difference < 0) {
+                    trendElement.innerHTML = `<i class="fas fa-arrow-down mana-trend-down"></i> <span style="color:#dc2626;">${difference}</span>`;
+                    trendElement.style.opacity = '1';
+                } else {
+                    trendElement.innerHTML = `<i class="fas fa-minus" style="color:#666;"></i> <span style="color:#666;">0</span>`;
+                }
+                
+                // Faire disparaître la tendance après 3 secondes
+                if (manaUpdateTimeout) clearTimeout(manaUpdateTimeout);
+                manaUpdateTimeout = setTimeout(() => {
+                    if (trendElement) trendElement.style.opacity = '0';
+                }, 3000);
+            }
+            
+            manaElement.innerText = newScore;
+            manaScore = newScore;
+            
+            // Sauvegarde immédiate
+            saveAllData();
+            updateStarRating(newScore);
+        }
+        
+        // Simulation de mise à jour automatique du MANA comme YouTube views
+        function simulateManaUpdate() {
+            if (maintenanceMode) return;
+            
+            // Incrémentation aléatoire réaliste (entre 1 et 8 points)
+            const increment = Math.floor(Math.random() * 8) + 1;
+            const newScore = manaScore + increment;
+            
+            // Mise à jour dans la base de données
+            const currentArtist = getCurrentArtist();
+            if (currentArtist) {
+                currentArtist.manaScore = newScore;
+            }
+            
+            updateManaDisplay(newScore, true);
+            
+            // Mise à jour des classements en arrière-plan (sans rechargement visuel brusque)
+            renderRanking();
+            
+            // Notification discrète pour les gros incréments
+            if (increment >= 7) {
+                addNotification(`⚡ +${increment} MANA pour ${currentArtist?.name || 'Basta Lion'} !`);
+            }
+        }
+        
+        // Actualisation automatique des classements toutes les 30 secondes
+        function startAutoRankingUpdate() {
+            if (autoRankingInterval) clearInterval(autoRankingInterval);
+            autoRankingInterval = setInterval(() => {
+                // Mise à jour des scores MANA de tous les artistes (simulation like YouTube)
+                for (const id in ARTISTS_DB) {
+                    const artist = ARTISTS_DB[id];
+                    if (artist && artist.active !== false) {
+                        // Incrémentation plus réaliste : entre 1 et 15 points selon la popularité
+                        const increment = Math.floor(Math.random() * 15) + 1;
+                        const boost = artist.certification === 'gold-premium' ? 1.5 : 
+                                    artist.certification === 'blue' ? 1.3 : 
+                                    artist.certification === 'gold' ? 1.2 : 1;
+                        const finalIncrement = Math.floor(increment * boost);
+                        artist.manaScore += finalIncrement;
+                        
+                        // Incrémentation des stats YouTube (simulation)
+                        if (artist.youtubeStats) {
+                            const currentViews = parseFloat(artist.youtubeStats.replace('M', '').replace('K', '')) || 0;
+                            const newViews = currentViews + (Math.random() * 0.05);
+                            artist.youtubeStats = newViews.toFixed(1) + 'M';
+                        }
+                    }
+                }
+                
+                // Sauvegarde et mise à jour de l'affichage si l'artiste courant n'a pas changé
+                saveAllData();
+                
+                // Mise à jour du MANA de l'artiste courant
+                const currentArtist = getCurrentArtist();
+                if (currentArtist) {
+                    const newArtistScore = currentArtist.manaScore;
+                    if (newArtistScore !== manaScore) {
+                        updateManaDisplay(newArtistScore, false);
+                    }
+                }
+                
+                // Mise à jour du classement sans rechargement complet
+                renderRanking();
+                
+                console.log('🔄 Classement mis à jour automatiquement');
+            }, 30000); // Toutes les 30 secondes
+        }
         
         function addNotification(message, type = 'info') {
             notifications.unshift({
@@ -1968,7 +2179,8 @@
                 const sLikes = localStorage.getItem('starconnect_likes');
                 postLikes = sLikes ? JSON.parse(sLikes) : {};
                 const sMana = localStorage.getItem(`starconnect_mana_${currentArtistId}`);
-                manaScore = sMana ? JSON.parse(sMana) : (getCurrentArtist()?.manaScore || 1850);
+                const initialMana = getCurrentArtist()?.manaScore || 1850;
+                manaScore = sMana ? JSON.parse(sMana) : initialMana;
                 const sMaintenance = localStorage.getItem('starconnect_maintenance');
                 maintenanceMode = sMaintenance === 'true';
                 const sNotif = localStorage.getItem('starconnect_notifications');
@@ -2184,10 +2396,17 @@
             }
             
             const certificationBadge = getCertificationBadge(a.certification || 'gold');
-            document.getElementById('artistName').innerHTML = `${a.name} ${certificationBadge}`;
+            document.getElementById('artistName').innerHTML = `${a.name} ${certificationBadge} <button class="story-btn" onclick="openStoryModal()"><i class="fas fa-book-open"></i> 📖 Son histoire</button>`;
             document.getElementById('artistTags').innerHTML = a.tags.map(t => `<span>${escapeHtml(t)}</span>`).join('');
             document.getElementById('artistBio').innerHTML = a.bio;
-            document.getElementById('manaValue').innerText = manaScore;
+            
+            // Mettre à jour l'affichage du MANA sans créer d'animation supplémentaire
+            const manaElement = document.getElementById('manaValue');
+            if (manaElement && parseInt(manaElement.innerText) !== a.manaScore) {
+                manaElement.innerText = a.manaScore;
+                manaScore = a.manaScore;
+            }
+            
             document.getElementById('concertName').innerHTML = a.nextConcert.name;
             
             document.getElementById('artistStats').innerHTML = `<div class="stat-box"><div class="stat-number">${a.youtubeStats}</div><div class="stat-label">📺 YouTube</div></div><div class="stat-box"><div class="stat-number">${a.spotifyStats}</div><div class="stat-label">🎧 Spotify</div></div><div class="stat-box"><div class="stat-number">🏆 ${a.nominations}</div><div class="stat-label">Nominations</div></div>`;
@@ -2203,7 +2422,7 @@
             if (diff <= 0) { document.getElementById('days').innerText = '00'; document.getElementById('hours').innerText = '00'; document.getElementById('minutes').innerText = '00'; document.getElementById('seconds').innerText = '00'; }
             else { document.getElementById('days').innerText = Math.floor(diff / 86400000).toString().padStart(2, '0'); document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0'); document.getElementById('minutes').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0'); document.getElementById('seconds').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0'); }
             renderShop();
-            updateStarRating(manaScore);
+            updateStarRating(a.manaScore);
         }
         
         function openConsentModal() { 
@@ -2406,11 +2625,11 @@
                 html += `
                     <tr>
                         <td class="rank-number">${index + 1}</td>
-                        <td><strong>${artist.name}</strong> ${artist.certification ? getCertificationBadge(artist.certification) : ''}</td>
-                        <td>${artist.manaScore} pts</td>
+                        <td><strong>${artist.name}</strong> ${getCertificationBadge(artist.certification)}</td>
+                        <td><span class="mana-value">${artist.manaScore}</span> pts</td>
                         <td>${artist.youtubeStats}</td>
                         <td>${artist.genre || 'Non spécifié'}</td>
-                    </td>
+                    </tr>
                 `;
             });
             
@@ -2429,9 +2648,10 @@
             saveAllData();
             renderRanking();
             if (currentArtistId) {
-                manaScore = getCurrentArtist().manaScore;
-                document.getElementById('manaValue').innerText = manaScore;
-                updateStarRating(manaScore);
+                const updatedArtist = getCurrentArtist();
+                if (updatedArtist && updatedArtist.manaScore !== manaScore) {
+                    updateManaDisplay(updatedArtist.manaScore, true);
+                }
                 renderArtistProfile();
             }
             addNotification('✅ Classements mis à jour !');
@@ -2443,10 +2663,9 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = link.getAttribute('href').substring(1); // supprime le #
+                    const targetId = link.getAttribute('href').substring(1);
                     const targetElement = document.getElementById(targetId);
                     if (targetElement) {
-                        // Activer le panel correspondant
                         const panelName = link.getAttribute('data-panel');
                         const allPanels = document.querySelectorAll('.panel');
                         const allNavBtns = document.querySelectorAll('.nav-btn');
@@ -2454,7 +2673,6 @@
                         allNavBtns.forEach(b => b.classList.remove('active'));
                         targetElement.classList.add('active-panel');
                         link.classList.add('active');
-                        // Scroll fluide vers la section
                         targetElement.scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
@@ -2462,6 +2680,29 @@
                     }
                 });
             });
+        }
+        
+        // Bouton classement spécial
+        function initRankingButton() {
+            const rankingBtn = document.getElementById('rankingSpecialBtn');
+            if (rankingBtn) {
+                rankingBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetElement = document.getElementById('classements');
+                    if (targetElement) {
+                        const allPanels = document.querySelectorAll('.panel');
+                        const allNavBtns = document.querySelectorAll('.nav-btn');
+                        allPanels.forEach(p => p.classList.remove('active-panel'));
+                        allNavBtns.forEach(b => b.classList.remove('active'));
+                        targetElement.classList.add('active-panel');
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        addNotification('🏆 Accès au classement des artistes');
+                    }
+                });
+            }
         }
         
         document.getElementById('artistAvatar')?.addEventListener('click', () => {
@@ -2488,6 +2729,7 @@
         });
         
         document.getElementById('consentForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
             const a = getCurrentArtist();
             a.consentStatus = 'pending';
             a.consentRequestDate = Date.now();
@@ -2498,6 +2740,7 @@
             }
             saveAllData();
             addNotification('✅ Demande de consentement envoyée !');
+            document.getElementById('consentModal').classList.remove('show');
         });
         
         document.getElementById('cancelConsent')?.addEventListener('click', () => {
@@ -2544,6 +2787,7 @@
         document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventFormContainer'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
         
         document.getElementById('partnerFormContainer')?.addEventListener('submit', (e) => {
+            e.preventDefault();
             const name = document.getElementById('partnerName')?.value;
             const email = document.getElementById('partnerEmail')?.value;
             const phone = document.getElementById('partnerPhone')?.value;
@@ -2555,9 +2799,11 @@
             saveAllData(); 
             renderPartnerRequests();
             addNotification('✅ Demande de partenariat envoyée !');
+            document.getElementById('partnerFormContainer').reset();
         });
         
         document.getElementById('eventFormContainer')?.addEventListener('submit', (e) => {
+            e.preventDefault();
             const name = document.getElementById('eventName')?.value;
             const place = document.getElementById('eventPlace')?.value;
             const date = document.getElementById('eventDate')?.value;
@@ -2566,6 +2812,9 @@
             renderEvents(); 
             saveAllData();
             addNotification('✅ Événement proposé !');
+            document.getElementById('eventFormContainer').reset();
+            document.getElementById('eventFormContainer').style.display = 'none';
+            evForm = false;
         });
         
         document.querySelectorAll('.ranking-tab').forEach(tab => {
@@ -2637,9 +2886,32 @@
             document.getElementById('newArtistId').value = ''; document.getElementById('newArtistName').value = ''; document.getElementById('newArtistAvatar').value = ''; document.getElementById('newArtistBio').value = ''; document.getElementById('newArtistYoutube').value = ''; document.getElementById('newArtistSpotify').value = ''; document.getElementById('newArtistConcertDate').value = '';
         });
         
-        document.getElementById('adminMaintenanceMode')?.addEventListener('click', () => { maintenanceMode = !maintenanceMode; const b = document.getElementById('maintenanceBanner'); if (b) b.style.display = maintenanceMode ? 'block' : 'none'; saveAllData(); addNotification(maintenanceMode ? '🔧 Maintenance ACTIVÉE' : '✅ Maintenance DÉSACTIVÉE'); });
+        document.getElementById('adminMaintenanceMode')?.addEventListener('click', () => { 
+            maintenanceMode = !maintenanceMode; 
+            const b = document.getElementById('maintenanceBanner'); 
+            if (b) b.style.display = maintenanceMode ? 'block' : 'none'; 
+            saveAllData(); 
+            addNotification(maintenanceMode ? '🔧 Maintenance ACTIVÉE' : '✅ Maintenance DÉSACTIVÉE');
+            if (maintenanceMode && autoRankingInterval) {
+                clearInterval(autoRankingInterval);
+                autoRankingInterval = null;
+            } else if (!maintenanceMode && !autoRankingInterval) {
+                startAutoRankingUpdate();
+            }
+        });
         document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts supprimés'); } });
-        document.getElementById('adminResetMana')?.addEventListener('click', () => { if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { const a = getCurrentArtist(); manaScore = a.manaScore; document.getElementById('manaValue').innerText = manaScore; updateStarRating(manaScore); saveAllData(); addNotification('🔄 MANA réinitialisé'); } });
+        document.getElementById('adminResetMana')?.addEventListener('click', () => { 
+            if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { 
+                const a = getCurrentArtist(); 
+                if (a) {
+                    a.manaScore = a.manaScore;
+                    updateManaDisplay(a.manaScore, true);
+                    saveAllData();
+                    renderRanking();
+                    addNotification('🔄 MANA réinitialisé');
+                }
+            } 
+        });
         
         document.getElementById('adminExportData')?.addEventListener('click', () => { const data = { artists: ARTISTS_DB, products: PRODUCTS_DB, custom: CUSTOM_ITEMS, partners: PARTNER_REQUESTS, news: newsItems, events: eventsList, feed: feedPosts, likes: postLikes, notifications: notifications, exportDate: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `starconnect_backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url); addNotification('📤 Données exportées'); });
         
@@ -2675,17 +2947,17 @@
         const themeBtn = document.getElementById('themeToggleBtn');
         if (localStorage.getItem('starconnect_theme') === 'light') { 
             document.body.classList.add('light-mode'); 
-            themeBtn.innerHTML = '<i class="fas fa-sun"></i> Clair'; 
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i> Mode'; 
         } else {
-            themeBtn.innerHTML = '<i class="fas fa-moon"></i> Sombre';
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode';
         }
         themeBtn?.addEventListener('click', () => { 
             document.body.classList.toggle('light-mode'); 
             if (document.body.classList.contains('light-mode')) { 
-                themeBtn.innerHTML = '<i class="fas fa-sun"></i> Clair'; 
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i> Mode'; 
                 localStorage.setItem('starconnect_theme', 'light'); 
             } else { 
-                themeBtn.innerHTML = '<i class="fas fa-moon"></i> Sombre'; 
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode'; 
                 localStorage.setItem('starconnect_theme', 'dark'); 
             } 
         });
@@ -2709,15 +2981,28 @@
             }
         }, 60 * 60 * 1000);
         
-        let manaInterval = setInterval(() => { if (!maintenanceMode) { manaScore += Math.floor(Math.random() * 3); document.getElementById('manaValue').innerText = manaScore; updateStarRating(manaScore); saveAllData(); } }, 60000);
+        // Démarrer la mise à jour automatique du MANA et des classements
+        let manaInterval = setInterval(() => { 
+            if (!maintenanceMode) {
+                simulateManaUpdate();
+            }
+        }, 15000); // Toutes les 15 secondes comme YouTube
+        
+        startAutoRankingUpdate();
         
         loadAllData();
         fetchRSSNews();
         checkCookieConsent();
-        initSmoothScroll(); // Initialisation du scroll fluide
+        initSmoothScroll();
+        initRankingButton();
+        
         let newsInterval = setInterval(() => { if (!maintenanceMode) { fetchRSSNews(); } }, 2 * 60 * 60 * 1000);
         
-        window.addEventListener('beforeunload', () => { clearInterval(manaInterval); clearInterval(newsInterval); });
+        window.addEventListener('beforeunload', () => { 
+            clearInterval(manaInterval); 
+            clearInterval(newsInterval);
+            if (autoRankingInterval) clearInterval(autoRankingInterval);
+        });
     </script>
 </body>
 </html>
