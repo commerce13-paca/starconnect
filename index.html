@@ -186,11 +186,32 @@
         }
         .header-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
         
+        /* Navigation sous forme de liens avec défilement fluide */
         .nav { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; border-bottom: 1px solid #1e1e1e; padding-bottom: 16px; overflow-x: auto; white-space: nowrap; }
-        .nav-btn { background: transparent; border: none; padding: 10px 24px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border-radius: 100px; color: #888; transition: 0.2s; }
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 24px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 100px;
+            color: #888;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
         .nav-btn i { margin-right: 8px; }
         .nav-btn.active { background: #1a1a1a; color: #e0a500; }
         .nav-btn:hover:not(.active) { background: #111; color: #ccc; }
+        
+        /* Sections ciblées par le scroll */
+        .section {
+            scroll-margin-top: 100px; /* évite que le header cache la section */
+        }
+        
         .panel { display: none; }
         .panel.active-panel { display: block; }
         .card { background: #0c0c0c; border-radius: 28px; padding: 28px; margin-bottom: 28px; border: 1px solid #1c1c1c; transition: border-color 0.2s; }
@@ -1033,25 +1054,26 @@
         </div>
         <div id="notificationDropdown" class="notification-dropdown"></div>
         
+        <!-- MENU AVEC LIENS DE NAVIGATION PAR SCROLL FLUIDE -->
         <div class="nav">
-            <button class="nav-btn active" data-panel="artist"><i class="fas fa-crown"></i> 👑 BASTA LION</button>
-            <button class="nav-btn" data-panel="music"><i class="fas fa-music"></i> 🎵 MUSIQUE</button>
-            <button class="nav-btn" data-panel="shop"><i class="fas fa-store"></i> 🛍️ BOUTIQUE</button>
-            <button class="nav-btn" data-panel="custom"><i class="fas fa-palette"></i> 🎨 CRÉATIONS</button>
-            <button class="nav-btn" data-panel="partner"><i class="fas fa-handshake"></i> 🤝 PARTENAIRES</button>
-            <button class="nav-btn" data-panel="feed"><i class="fas fa-comments"></i> 💬 COMMUNAUTÉ</button>
-            <button class="nav-btn" data-panel="events"><i class="fas fa-calendar"></i> 📅 ÉVÉNEMENTS</button>
-            <button class="nav-btn" data-panel="news"><i class="fas fa-bolt"></i> 🔥 ACTUS</button>
-            <button class="nav-btn" data-panel="interviews"><i class="fas fa-microphone-alt"></i> 🎙️ INTERVIEWS</button>
-            <button class="nav-btn" data-panel="ranking"><i class="fas fa-trophy"></i> 🏆 CLASSEMENTS</button>
-            <button class="nav-btn" data-panel="fans"><i class="fas fa-star"></i> ⭐ TOP FANS</button>
-            <button class="nav-btn" data-panel="legal"><i class="fas fa-gavel"></i> ⚖️ LÉGAL</button>
-            <button class="nav-btn" data-panel="about"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS</button>
-            <button class="nav-btn" data-panel="support"><i class="fas fa-heart"></i> 💰 SOUTENIR</button>
+            <a href="#artist" class="nav-btn active" data-panel="artist"><i class="fas fa-crown"></i> 👑 BASTA LION</a>
+            <a href="#musique" class="nav-btn" data-panel="music"><i class="fas fa-music"></i> 🎵 MUSIQUE</a>
+            <a href="#boutique" class="nav-btn" data-panel="shop"><i class="fas fa-store"></i> 🛍️ BOUTIQUE</a>
+            <a href="#creations" class="nav-btn" data-panel="custom"><i class="fas fa-palette"></i> 🎨 CRÉATIONS</a>
+            <a href="#partenaires" class="nav-btn" data-panel="partner"><i class="fas fa-handshake"></i> 🤝 PARTENAIRES</a>
+            <a href="#communaute" class="nav-btn" data-panel="feed"><i class="fas fa-comments"></i> 💬 COMMUNAUTÉ</a>
+            <a href="#evenements" class="nav-btn" data-panel="events"><i class="fas fa-calendar"></i> 📅 ÉVÉNEMENTS</a>
+            <a href="#actus" class="nav-btn" data-panel="news"><i class="fas fa-bolt"></i> 🔥 ACTUS</a>
+            <a href="#interviews" class="nav-btn" data-panel="interviews"><i class="fas fa-microphone-alt"></i> 🎙️ INTERVIEWS</a>
+            <a href="#classements" class="nav-btn" data-panel="ranking"><i class="fas fa-trophy"></i> 🏆 CLASSEMENTS</a>
+            <a href="#topfans" class="nav-btn" data-panel="fans"><i class="fas fa-star"></i> ⭐ TOP FANS</a>
+            <a href="#legal" class="nav-btn" data-panel="legal"><i class="fas fa-gavel"></i> ⚖️ LÉGAL</a>
+            <a href="#apropos" class="nav-btn" data-panel="about"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS</a>
+            <a href="#soutenir" class="nav-btn" data-panel="support"><i class="fas fa-heart"></i> 💰 SOUTENIR</a>
         </div>
 
-        <!-- PANELS -->
-        <div id="panel-artist" class="panel active-panel">
+        <!-- SECTIONS AVEC IDs POUR LE SCROLL -->
+        <div id="artist" class="section panel active-panel">
             <div class="card">
                 <div class="artist-profile">
                     <div class="artist-avatar" id="artistAvatar">
@@ -1084,7 +1106,7 @@
             </div>
         </div>
 
-        <div id="panel-music" class="panel">
+        <div id="musique" class="section panel">
             <div class="card"><div class="card-title"><i class="fab fa-youtube"></i> 🔍 RECHERCHE</div>
                 <div class="search-bar"><input type="text" id="searchInput" class="search-input" placeholder="Rechercher..."><button id="searchBtn" class="search-btn"><i class="fas fa-search"></i> Chercher</button></div>
                 <div id="videoResults" class="video-grid"><div class="loader"><i class="fas fa-spinner fa-spin"></i> Chargement...</div></div>
@@ -1094,7 +1116,7 @@
             </div>
         </div>
 
-        <div id="panel-shop" class="panel">
+        <div id="boutique" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-store"></i> 🛍️ BOUTIQUE OFFICIELLE</div>
                 <p style="margin-bottom: 20px;">Découvrez les produits officiels des artistes. Les bénéfices sont reversés aux artistes.</p>
@@ -1102,7 +1124,7 @@
             </div>
         </div>
 
-        <div id="panel-custom" class="panel">
+        <div id="creations" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-palette"></i> 🎨 CRÉATIONS STARCONNECT</div>
                 <p style="margin-bottom: 20px;">Découvrez nos créations personnalisées. T-shirts, hoodies, accessoires faits main.</p>
@@ -1116,7 +1138,7 @@
             </div>
         </div>
 
-        <div id="panel-partner" class="panel">
+        <div id="partenaires" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-handshake"></i> 🤝 DEVENIR PARTENAIRE</div>
                 <p>Vous êtes artiste ou label ? Vous souhaitez vendre vos produits en France via STARCONNECT ?</p>
@@ -1150,7 +1172,7 @@
             </div>
         </div>
 
-        <div id="panel-feed" class="panel">
+        <div id="communaute" class="section panel">
             <div class="card"><div class="card-title"><i class="fas fa-pen-fancy"></i> ✍️ PUBLIER</div>
                 <div class="new-post">
                     <textarea id="postContent" rows="3" placeholder="Partagez votre soutien... 🔥"></textarea>
@@ -1161,7 +1183,7 @@
             <div class="card"><div class="card-title"><i class="fas fa-users"></i> 💬 FLUX</div><div id="feedList"></div></div>
         </div>
 
-        <div id="panel-events" class="panel">
+        <div id="evenements" class="section panel">
             <div class="card"><div class="card-title"><i class="fas fa-calendar-star"></i> 📅 AGENDA</div>
                 <button id="showEventForm" class="btn" style="margin-bottom: 24px;"><i class="fas fa-plus"></i> PROPOSER UN ÉVÉNEMENT</button>
                 <form id="eventFormContainer" class="event-form" action="https://formspree.io/f/xdaljabb" method="POST">
@@ -1176,7 +1198,7 @@
             </div>
         </div>
 
-        <div id="panel-news" class="panel">
+        <div id="actus" class="section panel">
             <div class="card"><div class="card-title"><i class="fas fa-chart-line"></i> 📰 ACTUALITÉS</div>
                 <div id="newsList"></div>
                 <div style="margin-top: 24px; font-size: 0.65rem; color: #555; text-align: center;">
@@ -1185,7 +1207,7 @@
             </div>
         </div>
 
-        <div id="panel-interviews" class="panel">
+        <div id="interviews" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-microphone-alt"></i> 🎙️ INTERVIEW EXCLUSIVE</div>
                 <div class="video-card" style="max-width: 100%;">
@@ -1211,7 +1233,7 @@
         </div>
 
         <!-- PANEL CLASSEMENTS -->
-        <div id="panel-ranking" class="panel">
+        <div id="classements" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-trophy"></i> 🏆 CLASSEMENT DES ARTISTES MALGACHES</div>
                 <div class="ranking-tabs">
@@ -1229,14 +1251,14 @@
             </div>
         </div>
 
-        <div id="panel-fans" class="panel">
+        <div id="topfans" class="section panel">
             <div class="card"><div class="card-title"><i class="fas fa-star"></i> ⭐ TOP FANS</div>
                 <div class="top-fans-grid" id="topFansList"></div>
                 <div style="margin-top: 20px; text-align: center; font-size: 0.7rem; color: #666;"><i class="fas fa-star"></i> Badges : Or (100+) · Argent (50+) · Bronze (25+)</div>
             </div>
         </div>
 
-        <div id="panel-legal" class="panel">
+        <div id="legal" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-gavel"></i> ⚖️ MENTIONS LÉGALES OFFICIELLES</div>
                 
@@ -1328,7 +1350,7 @@
             </div>
         </div>
 
-        <div id="panel-about" class="panel">
+        <div id="apropos" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS DE STARCONNECT</div>
                 
@@ -1399,7 +1421,7 @@
             </div>
         </div>
 
-        <div id="panel-support" class="panel">
+        <div id="soutenir" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-heart"></i> 💰 SOUTENIR STARCONNECT</div>
                 
@@ -1526,7 +1548,7 @@
 
     <script>
         // =============================================
-        // JAVASCRIPT COMPLET (identique à la version précédente mais avec les corrections demandées)
+        // JAVASCRIPT COMPLET avec navigation scroll fluide et classements enrichis
         // =============================================
 
         const API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
@@ -1546,7 +1568,7 @@
             }
         });
         
-        // Base de données des artistes
+        // Base de données des artistes enrichie pour les classements par catégorie
         let ARTISTS_DB = {
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -1559,7 +1581,7 @@
                 searchQuery: "Basta Lion Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold-premium",
-                genre: "Reggae/Dancehall"
+                genre: "Dancehall"
             },
             "wawa-sali": {
                 id: "wawa-sali", name: "WAWA SALI", avatar: "🎤", location: "Antananarivo", age: 32, awards: "Artiste Populaire 2024",
@@ -1572,7 +1594,7 @@
                 searchQuery: "Wawa Sali Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "blue",
-                genre: "Reggae/Pop"
+                genre: "Reggae"
             },
             "niu-raza": {
                 id: "niu-raza", name: "NIU RAZA", avatar: "🌴", location: "Nosy Be / Antananarivo", age: 45, awards: "Groupe Légendaire",
@@ -1585,7 +1607,7 @@
                 searchQuery: "Niu Raza Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold",
-                genre: "Reggae Roots"
+                genre: "Reggae"
             },
             "mad-max": {
                 id: "mad-max", name: "MAD MAX", avatar: "🎙️", location: "Antananarivo", age: 38, awards: "Légende du Rap Malagasy",
@@ -1598,7 +1620,7 @@
                 searchQuery: "Mad Max Malagasy rap", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold",
-                genre: "Hip-Hop/Rap"
+                genre: "Hip-Hop"
             },
             "ceasar": {
                 id: "ceasar", name: "CEASAR", avatar: "👑", location: "Majunga / Paris", age: 28, awards: "Meilleur Artiste Dancehall 2025",
@@ -1624,7 +1646,30 @@
                 searchQuery: "Wendy Cathalina Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "silver",
-                genre: "RnB/Pop"
+                genre: "RnB"
+            },
+            // Nouveaux artistes pour enrichir les classements
+            "rycia": {
+                id: "rycia", name: "RYCIA", avatar: "🎵", location: "Antananarivo", age: 29, awards: "Prix de la meilleure collaboration",
+                bio: "🎵 <strong>Rycia</strong> est une artiste polyvalente, reine du dancehall et du reggae moderne. <strong>🟡 Certifié ÉTOILE OR STANDARD</strong>",
+                youtubeStats: "1.2M", spotifyStats: "450K", nominations: "2", manaScore: 1350,
+                tags: ["📍 Antananarivo", "🎵 Dancehall/Reggae", "🏆 Meilleure collaboration", "⚡ Influenceuse"],
+                tracks: [{ title: "🔥 Tsiaro", url: "#" }, { title: "💃 Vazy", url: "#" }],
+                nextConcert: { name: "Rycia au Kanto Festival", date: "2026-08-12" },
+                gallery: ["https://via.placeholder.com/300x150?text=Rycia"],
+                searchQuery: "Rycia Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Dancehall"
+            },
+            "kanto-faly": {
+                id: "kanto-faly", name: "KANTO FALY", avatar: "🎸", location: "Fianarantsoa", age: 35, awards: "Groupe Reggae Roots Fetsy 2025",
+                bio: "🎸 <strong>Kanto Faly</strong> est un groupe roots porteur de messages positifs. <strong>⚪ Certifié Argent</strong>",
+                youtubeStats: "980K", spotifyStats: "210K", nominations: "1", manaScore: 1100,
+                tags: ["📍 Fianarantsoa", "🎵 Reggae Roots", "🌍 Conscience", "🍃 Nature"],
+                tracks: [{ title: "🌍 Tontolo", url: "#" }, { title: "✊ Miara", url: "#" }],
+                nextConcert: { name: "Festival Roots", date: "2026-09-05" },
+                gallery: ["https://via.placeholder.com/300x150?text=Kanto+Faly"],
+                searchQuery: "Kanto Faly reggae", active: true,
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Reggae"
             }
         };
         
@@ -2253,7 +2298,7 @@
             c.innerHTML = v.map(v => `<div class="video-card"><iframe src="https://www.youtube.com/embed/${v.id}" allowfullscreen loading="lazy"></iframe><p>${escapeHtml(v.title.length > 65 ? v.title.substring(0,65)+'...' : v.title)}</p></div>`).join(''); 
         }
         
-        function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 24) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
+        function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
         
         function renderEvents() { const c = document.getElementById('eventsList'); if (c) c.innerHTML = eventsList.map(e => `<div class="event-item"><div><strong>${escapeHtml(e.name)}</strong><br>${escapeHtml(e.place)}</div><div class="event-date">📅 ${escapeHtml(e.date)}</div></div>`).join(''); }
         
@@ -2365,7 +2410,7 @@
                         <td>${artist.manaScore} pts</td>
                         <td>${artist.youtubeStats}</td>
                         <td>${artist.genre || 'Non spécifié'}</td>
-                    </tr>
+                    </td>
                 `;
             });
             
@@ -2390,6 +2435,33 @@
                 renderArtistProfile();
             }
             addNotification('✅ Classements mis à jour !');
+        }
+        
+        // GESTION DU SCROLL FLUIDE ET ACTIVATION DU PANEL
+        function initSmoothScroll() {
+            const navLinks = document.querySelectorAll('.nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1); // supprime le #
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        // Activer le panel correspondant
+                        const panelName = link.getAttribute('data-panel');
+                        const allPanels = document.querySelectorAll('.panel');
+                        const allNavBtns = document.querySelectorAll('.nav-btn');
+                        allPanels.forEach(p => p.classList.remove('active-panel'));
+                        allNavBtns.forEach(b => b.classList.remove('active'));
+                        targetElement.classList.add('active-panel');
+                        link.classList.add('active');
+                        // Scroll fluide vers la section
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
         }
         
         document.getElementById('artistAvatar')?.addEventListener('click', () => {
@@ -2618,32 +2690,6 @@
             } 
         });
         
-        const btns = document.querySelectorAll('.nav-btn');
-        const panels = { 
-            artist: document.getElementById('panel-artist'), 
-            music: document.getElementById('panel-music'), 
-            shop: document.getElementById('panel-shop'), 
-            custom: document.getElementById('panel-custom'), 
-            partner: document.getElementById('panel-partner'), 
-            feed: document.getElementById('panel-feed'), 
-            events: document.getElementById('panel-events'), 
-            news: document.getElementById('panel-news'), 
-            interviews: document.getElementById('panel-interviews'), 
-            ranking: document.getElementById('panel-ranking'),
-            fans: document.getElementById('panel-fans'), 
-            legal: document.getElementById('panel-legal'),
-            about: document.getElementById('panel-about'),
-            support: document.getElementById('panel-support')
-        };
-        btns.forEach(btn => btn.addEventListener('click', () => { 
-            const id = btn.getAttribute('data-panel'); 
-            Object.values(panels).forEach(p => { if (p) p.classList.remove('active-panel'); }); 
-            if (panels[id]) panels[id].classList.add('active-panel'); 
-            btns.forEach(b => b.classList.remove('active')); 
-            btn.classList.add('active'); 
-            if (id === 'ranking') renderRanking();
-        }));
-        
         setInterval(() => {
             const now = Date.now();
             let changed = false;
@@ -2668,9 +2714,10 @@
         loadAllData();
         fetchRSSNews();
         checkCookieConsent();
+        initSmoothScroll(); // Initialisation du scroll fluide
         let newsInterval = setInterval(() => { if (!maintenanceMode) { fetchRSSNews(); } }, 2 * 60 * 60 * 1000);
         
         window.addEventListener('beforeunload', () => { clearInterval(manaInterval); clearInterval(newsInterval); });
     </script>
 </body>
-</html>
+    </html>
