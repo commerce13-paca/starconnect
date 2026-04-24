@@ -62,11 +62,68 @@
         .logo h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, #ffffff, #e0a500); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .logo-img { height: 50px; width: auto; }
         .logo p { font-size: 0.7rem; color: #666; letter-spacing: 0.5px; margin-top: 4px; }
-        .cert-header { background: rgba(224,165,0,0.12); border: 1px solid rgba(224,165,0,0.3); padding: 8px 18px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
-        .theme-toggle { background: #1a1a1a; border: none; padding: 10px 16px; border-radius: 40px; color: #e0a500; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; }
-        .theme-toggle:hover { background: #2a2a2a; transform: translateY(-2px); }
         
-        /* BOUTON CLASSEMENT PROFESSIONNEL REDESIGNÉ */
+        /* Section Abonnés */
+        .subscribers-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(224,165,0,0.08);
+            padding: 5px 15px 5px 20px;
+            border-radius: 60px;
+            border: 1px solid rgba(224,165,0,0.25);
+            transition: all 0.3s ease;
+        }
+        .subscribers-section:hover {
+            background: rgba(224,165,0,0.15);
+            border-color: rgba(224,165,0,0.45);
+        }
+        .subscribe-btn {
+            background: linear-gradient(135deg, #e0a500, #ff8c00);
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            color: #050505;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(224,165,0,0.4);
+        }
+        .subscribe-btn:active {
+            transform: translateY(1px);
+        }
+        .subscriber-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .subscriber-count {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #e0a500;
+            line-height: 1.2;
+        }
+        .subscriber-label {
+            font-size: 0.65rem;
+            color: #888;
+            letter-spacing: 0.5px;
+        }
+        .cert-header {
+            background: rgba(224,165,0,0.12);
+            border: 1px solid rgba(224,165,0,0.3);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
         .ranking-pro-btn {
             background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
             border: none;
@@ -86,44 +143,17 @@
             backdrop-filter: blur(4px);
             box-shadow: 0 4px 15px rgba(224,165,0,0.2);
         }
-        
         body.light-mode .ranking-pro-btn {
             background: linear-gradient(135deg, #fff, #f5f5f5);
             color: #e0a500;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        
-        .ranking-pro-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(224,165,0,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .ranking-pro-btn:hover::before {
-            left: 100%;
-        }
-        
         .ranking-pro-btn:hover {
             transform: translateY(-3px);
             background: linear-gradient(135deg, #e0a500, #ff8c00);
             color: #050505;
             box-shadow: 0 8px 25px rgba(224,165,0,0.4);
         }
-        
-        .ranking-pro-btn i {
-            font-size: 1.1rem;
-            transition: transform 0.3s;
-        }
-        
-        .ranking-pro-btn:hover i {
-            transform: rotate(8deg) scale(1.1);
-        }
-        
         .ranking-pro-btn .btn-badge {
             background: #ff4444;
             color: white;
@@ -133,29 +163,24 @@
             margin-left: 5px;
             animation: pulse 1.5s infinite;
         }
-        
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(1.05); }
         }
         
-        /* Animation MANA style YouTube views */
         .mana-value {
             display: inline-block;
             transition: all 0.3s ease;
             font-weight: 800;
         }
-        
         .mana-update {
             animation: manaPop 0.5s ease-out;
         }
-        
         @keyframes manaPop {
             0% { transform: scale(1); color: #e0a500; }
             50% { transform: scale(1.15); color: #ff6b00; text-shadow: 0 0 10px #e0a500; }
             100% { transform: scale(1); color: #e0a500; }
         }
-        
         .mana-progress {
             display: inline-flex;
             align-items: center;
@@ -164,9 +189,7 @@
             font-size: 0.7rem;
             transition: opacity 0.5s;
         }
-        
         .mana-trend-up { color: #00a86b; }
-        .mana-trend-down { color: #dc2626; }
         
         .status-badge {
             background: #00a86b;
@@ -178,10 +201,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            margin-left: 10px;
         }
-        .status-badge i { font-size: 0.8rem; }
-        
         .notification-bell {
             position: relative;
             cursor: pointer;
@@ -233,7 +253,6 @@
             transition: 0.2s;
         }
         .notification-item:hover { background: #2a2a2a; }
-        body.light-mode .notification-item:hover { background: #f0f0f0; }
         .notification-item.unread { background: rgba(224,165,0,0.1); }
         
         .mini-player {
@@ -594,21 +613,6 @@
         .star-rating i { font-size: 0.9rem; color: #ffd700; }
         .star-rating i.far { color: #444; }
         .artist-level { margin-left: 10px; font-size: 0.7rem; color: #e0a500; }
-        
-        .consent-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 40px;
-            margin-left: 12px;
-        }
-        .consent-pending { background: #ff6b00; color: #050505; }
-        .consent-approved { background: #00a86b; color: white; }
-        .consent-signature { background: #0891b2; color: white; }
-        .avatar-locked { opacity: 0.7; cursor: not-allowed !important; }
         
         .artist-profile { display: flex; gap: 40px; flex-wrap: wrap; align-items: center; }
         .artist-avatar { width: 140px; height: 140px; background: linear-gradient(135deg, #2a2a2a, #111); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.8rem; border: 2px solid #e0a500; cursor: pointer; transition: transform 0.2s; overflow: hidden; position: relative; }
@@ -1006,6 +1010,16 @@
             color: #e0a500;
         }
         
+        /* Animation pour le bouton Abonnement */
+        @keyframes subscribePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background: #ffcc00; }
+            100% { transform: scale(1); }
+        }
+        .subscribe-animation {
+            animation: subscribePop 0.3s ease-in-out;
+        }
+        
         @media (max-width: 700px) {
             .container { padding: 20px 16px; }
             .artist-profile { flex-direction: column; align-items: center; text-align: center; }
@@ -1021,6 +1035,9 @@
             .story-btn { margin-left: 0; margin-top: 10px; }
             .notification-dropdown { width: 280px; right: 10px; }
             .ranking-table th, .ranking-table td { padding: 8px 5px; font-size: 0.8rem; }
+            .subscribers-section { padding: 3px 10px 3px 15px; }
+            .subscribe-btn { padding: 5px 15px; font-size: 0.75rem; }
+            .subscriber-count { font-size: 1rem; }
         }
     </style>
 </head>
@@ -1151,12 +1168,23 @@
                 </div>
                 <div class="artist-selector"><select id="artistSelect"></select></div>
                 <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> Mode</button>
-                <!-- BOUTON CLASSEMENT PROFESSIONNEL REDESIGNÉ -->
                 <button id="rankingProBtn" class="ranking-pro-btn">
                     <i class="fas fa-chart-simple"></i> CLASSEMENTS
                     <span class="btn-badge">LIVE</span>
                     <i class="fas fa-trophy"></i>
                 </button>
+                
+                <!-- SECTION ABONNÉS : Bouton S'abonner + Compteur -->
+                <div class="subscribers-section">
+                    <button id="subscribeBtn" class="subscribe-btn">
+                        <i class="fas fa-bell"></i> S'ABONNER
+                    </button>
+                    <div class="subscriber-stats">
+                        <span class="subscriber-count" id="subscriberCount">1 234</span>
+                        <span class="subscriber-label">abonnés</span>
+                    </div>
+                </div>
+                
                 <div class="cert-header"><i class="fas fa-shield-alt"></i> CERTIFIED</div>
             </div>
         </div>
@@ -1174,6 +1202,7 @@
             <a href="#actus" class="nav-btn" data-panel="news"><i class="fas fa-bolt"></i> 🔥 ACTUS</a>
             <a href="#interviews" class="nav-btn" data-panel="interviews"><i class="fas fa-microphone-alt"></i> 🎙️ INTERVIEWS</a>
             <a href="#topfans" class="nav-btn" data-panel="fans"><i class="fas fa-star"></i> ⭐ TOP FANS</a>
+            <a href="#classements" class="nav-btn" data-panel="ranking"><i class="fas fa-trophy"></i> 🏆 CLASSEMENTS</a>
             <a href="#legal" class="nav-btn" data-panel="legal"><i class="fas fa-gavel"></i> ⚖️ LÉGAL</a>
             <a href="#apropos" class="nav-btn" data-panel="about"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS</a>
             <a href="#soutenir" class="nav-btn" data-panel="support"><i class="fas fa-heart"></i> 💰 SOUTENIR</a>
@@ -1641,6 +1670,7 @@
                     <button id="adminExportConsentProofs" style="background:#0891b2;">📄 Exporter preuves consentement</button>
                     <button id="adminImportData" style="background:#0891b2;">📥 Importer</button>
                     <input type="file" id="importFile" style="display:none" accept=".json">
+                    <button id="adminSetSubscribers" style="background:#e0a500; color:#050505;">📊 Modifier le nombre d'abonnés</button>
                 </div>
             </div>
             <button id="adminClose">Fermer</button>
@@ -1670,6 +1700,121 @@
         let previousManaScore = 1850;
         let manaUpdateTimeout = null;
         let autoRankingInterval = null;
+        
+        // ========== SYSTÈME D'ABONNÉS AVEC CROISSANCE AUTOMATIQUE ==========
+        let subscriberCount = 1234; // Nombre de base
+        let lastUpdateTimestamp = Date.now();
+        
+        // Fonction pour formater le nombre d'abonnés (ex: 1234 -> "1 234", 15200 -> "15.2k")
+        function formatSubscriberCount(count) {
+            if (count >= 1000000) {
+                return (count / 1000000).toFixed(1) + 'M';
+            } else if (count >= 1000) {
+                return (count / 1000).toFixed(1) + 'k';
+            }
+            return count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        
+        // Fonction pour mettre à jour l'affichage des abonnés
+        function updateSubscriberDisplay() {
+            const countElement = document.getElementById('subscriberCount');
+            if (countElement) {
+                countElement.textContent = formatSubscriberCount(subscriberCount);
+            }
+            // Sauvegarde dans localStorage
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({
+                count: subscriberCount,
+                timestamp: lastUpdateTimestamp
+            }));
+        }
+        
+        // Fonction pour ajouter des abonnés (croissance naturelle)
+        function addSubscribers(growth) {
+            subscriberCount += growth;
+            updateSubscriberDisplay();
+            // Notification silencieuse (pas de toast pour la croissance auto)
+        }
+        
+        // Fonction pour ajouter un abonné manuel (clic sur le bouton)
+        function addManualSubscriber() {
+            subscriberCount++;
+            updateSubscriberDisplay();
+            // Animation du bouton
+            const btn = document.getElementById('subscribeBtn');
+            if (btn) {
+                btn.classList.add('subscribe-animation');
+                setTimeout(() => {
+                    btn.classList.remove('subscribe-animation');
+                }, 300);
+            }
+            // Message de confirmation pour l'utilisateur
+            showToast('✅ Merci pour votre abonnement !');
+            // Sauvegarde
+            saveSubscriberData();
+        }
+        
+        // Fonction pour calculer la croissance automatique basée sur le temps écoulé
+        function calculateAutomaticGrowth() {
+            const now = Date.now();
+            const elapsedHours = (now - lastUpdateTimestamp) / (1000 * 60 * 60);
+            
+            if (elapsedHours >= 1) {
+                // Croissance réaliste : entre 1 et 5 abonnés par heure
+                // Plus le site a d'abonnés, plus la croissance est rapide
+                let baseGrowth = 1 + Math.floor(Math.random() * 4);
+                // Bonus si déjà beaucoup d'abonnés (effet viral)
+                if (subscriberCount > 5000) baseGrowth += 2;
+                if (subscriberCount > 10000) baseGrowth += 3;
+                
+                const hoursToAdd = Math.floor(elapsedHours);
+                const totalGrowth = baseGrowth * hoursToAdd;
+                
+                if (totalGrowth > 0) {
+                    subscriberCount += totalGrowth;
+                    updateSubscriberDisplay();
+                    // Mettre à jour le timestamp
+                    lastUpdateTimestamp = now;
+                    saveSubscriberData();
+                }
+            }
+        }
+        
+        // Sauvegarde des données abonnés
+        function saveSubscriberData() {
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({
+                count: subscriberCount,
+                timestamp: lastUpdateTimestamp
+            }));
+        }
+        
+        // Chargement des données abonnés
+        function loadSubscriberData() {
+            const saved = localStorage.getItem('starconnect_subscribers');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    subscriberCount = data.count;
+                    lastUpdateTimestamp = data.timestamp;
+                    updateSubscriberDisplay();
+                } catch(e) {
+                    console.error('Erreur chargement abonnés', e);
+                }
+            } else {
+                // Première visite, on initialise
+                subscriberCount = 1234;
+                lastUpdateTimestamp = Date.now();
+                updateSubscriberDisplay();
+            }
+        }
+        
+        // Vérification périodique de la croissance (toutes les heures)
+        function startSubscriberGrowthCheck() {
+            setInterval(() => {
+                calculateAutomaticGrowth();
+            }, 60 * 60 * 1000); // Toutes les heures
+        }
+        
+        // ========== FIN SYSTÈME D'ABONNÉS ==========
         
         function openStoryModal() {
             document.getElementById('storyModal').classList.add('show');
@@ -2201,6 +2346,7 @@
             localStorage.setItem('starconnect_custom', JSON.stringify(CUSTOM_ITEMS));
             localStorage.setItem('starconnect_partners', JSON.stringify(PARTNER_REQUESTS));
             localStorage.setItem('starconnect_notifications', JSON.stringify(notifications));
+            saveSubscriberData();
         }
         
         function loadAllData() {
@@ -2241,6 +2387,8 @@
                 renderArtistSelect(); renderArtistProfile(); renderNews(); renderEvents(); renderFeed(); renderShop(); renderCustomGallery(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); updateTopFans(); renderNotifications(); renderRanking();
                 document.getElementById('manaValue').innerText = manaScore;
                 updateStarRating(manaScore);
+                loadSubscriberData();
+                calculateAutomaticGrowth();
             } catch(e) { console.error(e); }
         }
         
@@ -2932,6 +3080,33 @@
         document.getElementById('adminImportData')?.addEventListener('click', () => { document.getElementById('importFile')?.click(); });
         document.getElementById('importFile')?.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (ev) => { try { const data = JSON.parse(ev.target.result); if (data.artists) ARTISTS_DB = data.artists; if (data.products) PRODUCTS_DB = data.products; if (data.custom) CUSTOM_ITEMS = data.custom; if (data.partners) PARTNER_REQUESTS = data.partners; if (data.news) newsItems = data.news; if (data.events) eventsList = data.events; if (data.feed) feedPosts = data.feed; if (data.likes) postLikes = data.likes; if (data.notifications) notifications = data.notifications; saveAllData(); loadAllData(); addNotification('✅ Import réussi !'); } catch(err) { alert('Fichier invalide'); } }; reader.readAsText(file); e.target.value = ''; });
         
+        // Bouton admin pour modifier le nombre d'abonnés
+        document.getElementById('adminSetSubscribers')?.addEventListener('click', () => {
+            const newCount = prompt('Entrez le nouveau nombre d\'abonnés :', subscriberCount);
+            if (newCount !== null && !isNaN(parseInt(newCount))) {
+                subscriberCount = parseInt(newCount);
+                lastUpdateTimestamp = Date.now();
+                updateSubscriberDisplay();
+                saveSubscriberData();
+                addNotification(`📊 Nombre d'abonnés modifié : ${formatSubscriberCount(subscriberCount)}`);
+            }
+        });
+        
+        // Bouton S'abonner
+        document.getElementById('subscribeBtn')?.addEventListener('click', () => {
+            addManualSubscriber();
+            // Envoi silencieux à Formspree (vous recevez un email)
+            fetch('https://formspree.io/f/xdaljabb', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    _subject: '[STARCONNECT] Nouvel abonné !',
+                    message: `Un nouvel abonné vient de s'abonner à la page STARCONNECT ! Total actuel : ${formatSubscriberCount(subscriberCount)} abonnés.`,
+                    form_type: 'subscriber'
+                })
+            }).catch(e => console.log('Erreur envoi email:', e));
+        });
+        
         const themeBtn = document.getElementById('themeToggleBtn');
         if (localStorage.getItem('starconnect_theme') === 'light') { 
             document.body.classList.add('light-mode'); 
@@ -2972,6 +3147,7 @@
         let manaInterval = setInterval(() => { if (!maintenanceMode) { simulateManaUpdate(); } }, 15000);
         
         startAutoRankingUpdate();
+        startSubscriberGrowthCheck();
         
         loadAllData();
         fetchRSSNews();
