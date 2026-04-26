@@ -42,7 +42,6 @@
         body.light-mode .nav-btn.active { background: #e0e0e0; }
         body.light-mode .bio { color: #555; }
         body.light-mode footer { border-color: #ddd; }
-        body.light-mode .theme-toggle { background: #e0e0e0; color: #333; }
         body.light-mode .fan-card { background: #fff; border: 1px solid #ddd; }
         body.light-mode .countdown { background: #f0f0f0; }
         body.light-mode .countdown-unit { background: #fff; }
@@ -163,6 +162,45 @@
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        /* ===== BOUTON THEME CSS AMÉLIORÉ ===== */
+        .theme-toggle {
+            background: #1a1a1a;
+            border: 1px solid #e0a500;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #e0a500;
+        }
+        body.light-mode .theme-toggle {
+            background: #ffffff;
+            border: 1px solid #e0a500;
+            color: #e0a500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            background: #e0a500;
+            color: #050505;
+            box-shadow: 0 4px 12px rgba(224,165,0,0.3);
+        }
+        body.light-mode .theme-toggle:hover {
+            background: #e0a500;
+            color: #050505;
+        }
+        .theme-toggle i {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .theme-toggle:hover i {
+            transform: rotate(15deg);
         }
         
         .mana-value {
@@ -1243,7 +1281,7 @@
                     <span class="badge" id="notifBadge">0</span>
                 </div>
                 <div class="artist-selector"><select id="artistSelect"></select></div>
-                <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> Mode</button>
+                <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> Mode sombre/clair</button>
                 <button id="rankingProBtn" class="ranking-pro-btn">
                     <i class="fas fa-chart-simple"></i> CLASSEMENTS
                     <span class="btn-badge">LIVE</span>
@@ -1760,10 +1798,10 @@
 
     <script>
         // =============================================
-        // TOUT LE JAVASCRIPT AVEC MAILTO
+        // TOUT LE JAVASCRIPT AVEC MAILTO PERSONNALISÉ
         // =============================================
         
-        // Adresse email de réception des formulaires
+        // Adresse email de réception (MODIFIEZ ICI) ⬇️
         const ADMIN_EMAIL = "starconnect.contact@gmail.com";
         
         // Fonction mailto générique
@@ -1773,9 +1811,7 @@
             return true;
         }
         
-        //===== FORMULAIRES MAILTO =====
-        
-        // Formulaire de consentement
+        //===== FORMULAIRE CONSENTEMENT (PERSONNALISÉ) =====
         document.getElementById('confirmConsentMailto')?.addEventListener('click', () => {
             const signatureName = document.getElementById('signatureName')?.value;
             const consentDate = document.getElementById('consentDate')?.value;
@@ -1793,25 +1829,44 @@
             }
             
             const artist = getCurrentArtist();
-            let body = `DEMANDE DE CONSENTEMENT - ${artist.name}\n\n`;
-            body += `Artiste: ${artist.name}\n`;
-            body += `Rôle: ${consentRole === 'artist' ? 'Artiste lui-même' : 'Manager/Agent'}\n`;
-            body += `Signature: ${signatureName}\n`;
-            body += `Date: ${consentDate}\n`;
-            body += `Certification: ${certified ? 'Oui' : 'Non'}\n`;
-            body += `Utilisation commerciale: ${document.getElementById('consentCommercialCheckbox')?.checked ? 'Oui' : 'Non'}\n\n`;
+            
+            let body = `🟡 NOUVELLE DEMANDE DE CONSENTEMENT - ${artist.name} 🟡\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📌 INFORMATIONS ARTISTE\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `🎤 Artiste : ${artist.name}\n`;
+            body += `👤 Rôle : ${consentRole === 'artist' ? 'Artiste lui-même' : 'Manager / Agent'}\n`;
+            body += `✍️ Signature électronique : ${signatureName}\n`;
+            body += `📅 Date de la demande : ${consentDate}\n\n`;
+            
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `✅ CERTIFICATIONS LÉGALES\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📄 Autorisation de l'artiste : ${certified ? 'OUI ✓' : 'NON ✗'}\n`;
+            body += `🏪 Utilisation commerciale : ${document.getElementById('consentCommercialCheckbox')?.checked ? 'AUTORISÉE ✓' : 'NON AUTORISÉE ✗'}\n\n`;
             
             if (consentRole === 'manager') {
-                body += `Manager: ${document.getElementById('managerName')?.value || ''}\n`;
-                body += `Relation: ${document.getElementById('managerRelation')?.value || ''}\n`;
-                body += `Artiste représenté: ${document.getElementById('artistRepresented')?.value || ''}\n`;
+                body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+                body += `👔 INFORMATIONS MANAGER\n`;
+                body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+                body += `Nom : ${document.getElementById('managerName')?.value || 'Non spécifié'}\n`;
+                body += `Relation avec l'artiste : ${document.getElementById('managerRelation')?.value || 'Non spécifiée'}\n`;
+                body += `Artiste représenté : ${document.getElementById('artistRepresented')?.value || artist.name}\n\n`;
             }
             
-            body += `\n--- Merci de joindre la photo du nouvel avatar ainsi que toute preuve de consentement ---`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📎 PIÈCES JOINTES REQUISES\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `Merci de joindre à cet email :\n`;
+            body += `1️⃣ La photo du nouvel avatar (format JPG/PNG)\n`;
+            body += `2️⃣ Une preuve de consentement signée (PDF ou photo)\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📧 Email généré automatiquement via STARCONNECT\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
             
-            sendMailTo(`CONSENTEMENT - ${artist.name}`, body);
+            sendMailTo(`🟡 CONSENTEMENT - ${artist.name}`, body);
             
-            // Sauvegarde locale de la demande
+            // Sauvegarde locale
             artist.consentStatus = 'pending';
             artist.consentRequestDate = Date.now();
             artist.consentRole = consentRole;
@@ -1827,7 +1882,7 @@
             addNotification('✅ Demande envoyée par email !');
         });
         
-        // Formulaire partenariat
+        //===== FORMULAIRE PARTENARIAT (PERSONNALISÉ) =====
         document.getElementById('submitPartnerMailto')?.addEventListener('click', () => {
             const name = document.getElementById('partnerName')?.value;
             const email = document.getElementById('partnerEmail')?.value;
@@ -1841,15 +1896,31 @@
                 return;
             }
             
-            let body = `DEMANDE DE PARTENARIAT\n\n`;
-            body += `Nom/Artiste: ${name}\n`;
-            body += `Email: ${email}\n`;
-            body += `Téléphone: ${phone || 'Non fourni'}\n`;
-            body += `PayPal: ${paypal || 'Non fourni'}\n`;
-            body += `Type de produit: ${productType}\n`;
-            body += `Message: ${message || 'Non fourni'}\n`;
+            let body = `📋 NOUVELLE DEMANDE DE PARTENARIAT 📋\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `🏢 INFORMATIONS DEMANDEUR\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `Nom / Artiste : ${name}\n`;
+            body += `📧 Email : ${email}\n`;
+            body += `📞 Téléphone : ${phone || 'Non fourni'}\n`;
+            body += `💳 PayPal : ${paypal || 'Non fourni'}\n`;
+            body += `📦 Type de produit : ${productType}\n\n`;
             
-            sendMailTo(`PARTENARIAT - ${name}`, body);
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `💬 MESSAGE DÉTAILLÉ\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `${message || 'Aucun message'}\n\n`;
+            
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📌 À TRAITER DANS LES PLUS BREFS DÉLAIS\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `Commission STARCONNECT : 15%\n`;
+            body += `Reversement artiste : 85%\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📧 Email généré automatiquement via STARCONNECT\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+            
+            sendMailTo(`📋 PARTENARIAT - ${name}`, body);
             
             // Sauvegarde locale
             PARTNER_REQUESTS.unshift({ id: Date.now(), name, email, phone, paypal, productType, message, status: 'pending', date: Date.now() });
@@ -1865,7 +1936,7 @@
             addNotification('✅ Demande envoyée par email !');
         });
         
-        // Formulaire événement
+        //===== FORMULAIRE ÉVÉNEMENT (PERSONNALISÉ) =====
         document.getElementById('submitEventMailto')?.addEventListener('click', () => {
             const name = document.getElementById('eventName')?.value;
             const place = document.getElementById('eventPlace')?.value;
@@ -1876,12 +1947,20 @@
                 return;
             }
             
-            let body = `PROPOSITION D'ÉVÉNEMENT\n\n`;
-            body += `Nom: ${name}\n`;
-            body += `Lieu: ${place}\n`;
-            body += `Date: ${date}\n`;
+            let body = `🎫 PROPOSITION D'ÉVÉNEMENT - ${name} 🎫\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📅 INFORMATIONS ÉVÉNEMENT\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `🏷️ Nom : ${name}\n`;
+            body += `📍 Lieu : ${place}\n`;
+            body += `📆 Date : ${date}\n\n`;
             
-            sendMailTo(`ÉVÉNEMENT - ${name}`, body);
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `✨ À VALIDER PAR L'ÉQUIPE STARCONNECT\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            body += `📧 Email généré automatiquement via STARCONNECT`;
+            
+            sendMailTo(`🎫 ÉVÉNEMENT - ${name}`, body);
             
             eventsList.push({ id: Date.now(), name: `🎤 ${name}`, place: `📍 ${place}`, date });
             renderEvents();
@@ -1895,7 +1974,7 @@
             addNotification('✅ Événement proposé par email !');
         });
         
-        // Formulaire interview
+        //===== FORMULAIRE INTERVIEW (PERSONNALISÉ) =====
         document.getElementById('submitInterviewMailto')?.addEventListener('click', () => {
             const artistName = document.getElementById('interviewArtistName')?.value;
             const contactName = document.getElementById('interviewContactName')?.value;
@@ -1908,14 +1987,29 @@
                 return;
             }
             
-            let body = `DEMANDE D'INTERVIEW\n\n`;
-            body += `Artiste proposé: ${artistName}\n`;
-            body += `Contact: ${contactName || 'Non fourni'}\n`;
-            body += `Email: ${contactEmail}\n`;
-            body += `Téléphone: ${contactPhone || 'Non fourni'}\n`;
-            body += `Message: ${message || 'Non fourni'}\n`;
+            let body = `🎙️ DEMANDE D'INTERVIEW - ${artistName} 🎙️\n\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `🎤 INFORMATIONS ARTISTE\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `Artiste proposé : ${artistName}\n\n`;
             
-            sendMailTo(`INTERVIEW - ${artistName}`, body);
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📞 CONTACT\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `Nom : ${contactName || 'Non fourni'}\n`;
+            body += `Email : ${contactEmail}\n`;
+            body += `Téléphone : ${contactPhone || 'Non fourni'}\n\n`;
+            
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `💬 DEMANDE DÉTAILLÉE\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `${message || 'Aucun message'}\n\n`;
+            
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            body += `📧 Email généré automatiquement via STARCONNECT\n`;
+            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+            
+            sendMailTo(`🎙️ INTERVIEW - ${artistName}`, body);
             
             document.getElementById('interviewArtistName').value = '';
             document.getElementById('interviewContactName').value = '';
@@ -1926,19 +2020,26 @@
             addNotification('✅ Demande d\'interview envoyée par email !');
         });
         
-        // Abonnement (email aussi)
+        // ============ SUBSCRIPTION (FORMSPREE) ============
         document.getElementById('subscribeBtn')?.addEventListener('click', () => {
             addManualSubscriber();
-            let body = `NOUVEL ABONNÉ STARCONNECT !\n\n`;
-            body += `Un fan vient de s'abonner à la page STARCONNECT.\n`;
-            body += `Total actuel : ${formatSubscriberCount(subscriberCount)} abonnés.\n`;
-            body += `Date: ${new Date().toLocaleString()}`;
-            sendMailTo(`ABONNEMENT - Nouveau fan`, body);
+            
+            // Envoi vers Formspree
+            const formspreeUrl = 'https://formspree.io/f/xdaljabb';
+            fetch(formspreeUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: "fan@starconnect.mg",
+                    message: `Nouvel abonnement sur STARCONNECT !\nTotal actuel : ${formatSubscriberCount(subscriberCount)} abonnés.\nDate : ${new Date().toLocaleString()}`
+                })
+            }).catch(err => console.warn("Formspree Error (non bloquant):", err));
+            
+            // Notification visuelle
+            addNotification(`✅ Merci pour votre abonnement !`);
         });
-        
         //==========================================================================
-        // TOUT LE RESTE DU CODE EST IDENTIQUE À L'ORIGINAL (artists_db, fonctions, etc.)
-        // Je le réinclus ici pour que tout fonctionne
+        // TOUT LE RESTE DU CODE (ARTISTS_DB, FONCTIONS, ETC.) - IDENTIQUE À L'ORIGINAL
         //==========================================================================
         
         function openStoryModal() {
@@ -2396,7 +2497,6 @@
         
         function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
         function getCurrentArtist() { return ARTISTS_DB[currentArtistId]; }
-        function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
         
         function saveAllData() {
             localStorage.setItem('starconnect_news', JSON.stringify(newsItems));
@@ -3154,17 +3254,17 @@
         const themeBtn = document.getElementById('themeToggleBtn');
         if (localStorage.getItem('starconnect_theme') === 'light') { 
             document.body.classList.add('light-mode'); 
-            themeBtn.innerHTML = '<i class="fas fa-sun"></i> Mode'; 
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i> Mode clair'; 
         } else {
-            themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode';
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode sombre';
         }
         themeBtn?.addEventListener('click', () => { 
             document.body.classList.toggle('light-mode'); 
             if (document.body.classList.contains('light-mode')) { 
-                themeBtn.innerHTML = '<i class="fas fa-sun"></i> Mode'; 
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i> Mode clair'; 
                 localStorage.setItem('starconnect_theme', 'light'); 
             } else { 
-                themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode'; 
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode sombre'; 
                 localStorage.setItem('starconnect_theme', 'dark'); 
             } 
         });
@@ -3208,4 +3308,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
