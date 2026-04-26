@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -63,7 +64,6 @@
         .logo-img { height: 50px; width: auto; }
         .logo p { font-size: 0.7rem; color: #666; letter-spacing: 0.5px; margin-top: 4px; }
         
-        /* Section Abonnés */
         .subscribers-section {
             display: flex;
             align-items: center;
@@ -95,9 +95,6 @@
         .subscribe-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(224,165,0,0.4);
-        }
-        .subscribe-btn:active {
-            transform: translateY(1px);
         }
         .subscriber-stats {
             display: flex;
@@ -1010,7 +1007,6 @@
             color: #e0a500;
         }
         
-        /* Animation pour le bouton Abonnement */
         @keyframes subscribePop {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); background: #ffcc00; }
@@ -1042,6 +1038,88 @@
     </style>
 </head>
 <body>
+    <script>
+        // =============================================
+        // INITIALISATION DE L'API YOUTUBE
+        // =============================================
+        const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
+        let gapiInitialized = false;
+        
+        function initYouTubeAPI() {
+            if (typeof gapi === 'undefined') {
+                console.warn('API Google non chargée, réessai dans 500ms');
+                setTimeout(initYouTubeAPI, 500);
+                return;
+            }
+            
+            gapi.load('client', function() {
+                gapi.client.init({
+                    apiKey: YOUTUBE_API_KEY,
+                    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest']
+                }).then(function() {
+                    gapiInitialized = true;
+                    console.log('✅ YouTube API initialisée avec succès');
+                    searchYouTubeVideos('Basta Lion Malagasy');
+                }).catch(function(error) {
+                    console.error('❌ Erreur API YouTube:', error);
+                    const container = document.getElementById('videoResults');
+                    if (container) {
+                        container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Service YouTube temporairement indisponible. Veuillez réessayer.</div>';
+                    }
+                });
+            });
+        }
+        
+        window.searchYouTubeVideos = function(query) {
+            const container = document.getElementById('videoResults');
+            if (!container) return;
+            
+            if (!query || query.trim() === '') {
+                container.innerHTML = '<div class="loader">🔍 Entrez un terme de recherche YouTube</div>';
+                return;
+            }
+            
+            container.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche sur YouTube...</div>';
+            
+            if (!gapiInitialized) {
+                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ API YouTube en cours d\'initialisation. Veuillez réessayer.</div>';
+                setTimeout(function() { searchYouTubeVideos(query); }, 1500);
+                return;
+            }
+            
+            gapi.client.youtube.search.list({
+                part: 'snippet',
+                q: query,
+                maxResults: 8,
+                type: 'video',
+                safeSearch: 'none'
+            }).then(function(response) {
+                const videos = response.result.items;
+                
+                if (!videos || videos.length === 0) {
+                    container.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée pour "<strong>' + escapeHtml(query) + '</strong>"</div>';
+                    return;
+                }
+                
+                container.innerHTML = videos.map(function(v) {
+                    return `
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen loading="lazy"></iframe>
+                            <p><strong>${escapeHtml(v.snippet.title.length > 70 ? v.snippet.title.substring(0,70)+'...' : v.snippet.title)}</strong><br><small style="color:#888;">${escapeHtml(v.snippet.channelTitle)}</small></p>
+                        </div>
+                    `;
+                }).join('');
+            }).catch(function(error) {
+                console.error('Erreur recherche YouTube:', error);
+                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Erreur de connexion à YouTube. Veuillez réessayer.</div>';
+            });
+        };
+        
+        function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        
+        document.addEventListener('DOMContentLoaded', initYouTubeAPI);
+    </script>
+
     <!-- MODAL HISTOIRE -->
     <div id="storyModal" class="story-modal">
         <div class="story-modal-content">
@@ -1081,55 +1159,53 @@
         <div class="modal-content">
             <h3><i class="fas fa-shield-alt"></i> Demande de consentement - Droit à l'image</h3>
             <p>Conformément à l'article 9 du Code civil et au RGPD, toute modification de la photo de profil nécessite le consentement explicite de l'artiste ou de son représentant légal.</p>
+            <p style="font-size:0.8rem; background:#0a0a0a; padding:10px; border-radius:12px;">
+                📧 <strong>Comment ça fonctionne ?</strong><br>
+                En cliquant sur "Envoyer", votre email par défaut s'ouvrira avec un message pré-rempli.<br>
+                Ajoutez la photo (en pièce jointe) et envoyez à : <strong>starconnect.consent@gmail.com</strong>
+            </p>
             
-            <form id="consentForm" action="https://formspree.io/f/xdaljabb" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="_subject" value="[STARCONNECT] Demande de consentement">
-                <input type="hidden" name="form_type" value="consent">
-                
-                <div class="consent-role-selector">
-                    <p style="text-align:left; margin-bottom:10px;"><strong>📌 Qui êtes-vous ?</strong></p>
-                    <label id="role-artist-label" onclick="selectConsentRole('artist')">
-                        <input type="radio" name="consentRole" value="artist" checked> 🎤 <strong>Je suis l'artiste moi-même</strong>
-                        <span style="display:block; font-size:0.7rem; color:#888;">Je donne mon propre consentement</span>
-                    </label>
-                    <label id="role-manager-label" onclick="selectConsentRole('manager')">
-                        <input type="radio" name="consentRole" value="manager"> 📋 <strong>Je suis manager / agent / proche</strong>
-                        <span style="display:block; font-size:0.7rem; color:#888;">J'ai reçu une autorisation de l'artiste</span>
-                    </label>
-                </div>
-                
-                <div id="managerFields" style="display:none;" class="consent-signature-field">
-                    <input type="text" name="managerName" id="managerName" placeholder="Votre nom complet (manager/agent)">
-                    <textarea name="managerRelation" id="managerRelation" rows="2" placeholder="Précisez votre relation avec l'artiste (manager, agent, parent, etc.)"></textarea>
-                    <input type="text" name="artistRepresented" id="artistRepresented" placeholder="Nom de l'artiste représenté">
-                </div>
-                
-                <div class="consent-signature-field">
-                    <input type="text" name="signatureName" id="signatureName" placeholder="Signature électronique (nom et prénom)" required>
-                    <input type="date" name="consentDate" id="consentDate" value="2026-04-20">
-                </div>
-                
-                <div class="consent-checkbox">
-                    <input type="checkbox" id="consentCheckbox" name="certify" required>
-                    <label for="consentCheckbox">📄 Je certifie sur l'honneur avoir l'autorisation de l'artiste pour utiliser cette image</label>
-                </div>
-                
-                <div class="consent-checkbox">
-                    <input type="checkbox" id="consentCommercialCheckbox" name="commercialUse">
-                    <label for="consentCommercialCheckbox">🏪 J'autorise l'utilisation commerciale de cette image sur la boutique et les réseaux sociaux</label>
-                </div>
-                
-                <p style="font-size:0.7rem; color:#888; margin-top:15px;">
-                    <i class="fas fa-gavel"></i> Ce consentement est valable 1 an et pourra être révoqué à tout moment sur simple demande.
-                </p>
-                
-                <input type="file" name="photo" id="consentPhotoInput" accept="image/*" style="display:none;">
-                
-                <div class="modal-buttons">
-                    <button type="submit" id="confirmConsent" class="btn-confirm">✓ Envoyer la demande avec preuve</button>
-                    <button type="button" id="cancelConsent" class="btn-cancel">✗ Annuler</button>
-                </div>
-            </form>
+            <div class="consent-role-selector">
+                <p style="text-align:left; margin-bottom:10px;"><strong>📌 Qui êtes-vous ?</strong></p>
+                <label id="role-artist-label" onclick="selectConsentRole('artist')">
+                    <input type="radio" name="consentRole" value="artist" checked> 🎤 <strong>Je suis l'artiste moi-même</strong>
+                    <span style="display:block; font-size:0.7rem; color:#888;">Je donne mon propre consentement</span>
+                </label>
+                <label id="role-manager-label" onclick="selectConsentRole('manager')">
+                    <input type="radio" name="consentRole" value="manager"> 📋 <strong>Je suis manager / agent / proche</strong>
+                    <span style="display:block; font-size:0.7rem; color:#888;">J'ai reçu une autorisation de l'artiste</span>
+                </label>
+            </div>
+            
+            <div id="managerFields" style="display:none;" class="consent-signature-field">
+                <input type="text" id="managerName" placeholder="Votre nom complet (manager/agent)">
+                <textarea id="managerRelation" rows="2" placeholder="Précisez votre relation avec l'artiste (manager, agent, parent, etc.)"></textarea>
+                <input type="text" id="artistRepresented" placeholder="Nom de l'artiste représenté">
+            </div>
+            
+            <div class="consent-signature-field">
+                <input type="text" id="signatureName" placeholder="Signature électronique (nom et prénom)">
+                <input type="date" id="consentDate" value="2026-04-20">
+            </div>
+            
+            <div class="consent-checkbox">
+                <input type="checkbox" id="consentCheckbox">
+                <label for="consentCheckbox">📄 Je certifie sur l'honneur avoir l'autorisation de l'artiste pour utiliser cette image</label>
+            </div>
+            
+            <div class="consent-checkbox">
+                <input type="checkbox" id="consentCommercialCheckbox">
+                <label for="consentCommercialCheckbox">🏪 J'autorise l'utilisation commerciale de cette image sur la boutique et les réseaux sociaux</label>
+            </div>
+            
+            <p style="font-size:0.7rem; color:#888; margin-top:15px;">
+                <i class="fas fa-gavel"></i> Ce consentement est valable 1 an et pourra être révoqué à tout moment sur simple demande.
+            </p>
+            
+            <div class="modal-buttons">
+                <button id="confirmConsentMailto" class="btn-confirm">✉️ Envoyer par email (mailto:)</button>
+                <button id="cancelConsent" class="btn-cancel">✗ Annuler</button>
+            </div>
         </div>
     </div>
 
@@ -1174,7 +1250,6 @@
                     <i class="fas fa-trophy"></i>
                 </button>
                 
-                <!-- SECTION ABONNÉS : Bouton S'abonner + Compteur -->
                 <div class="subscribers-section">
                     <button id="subscribeBtn" class="subscribe-btn">
                         <i class="fas fa-bell"></i> S'ABONNER
@@ -1190,7 +1265,6 @@
         </div>
         <div id="notificationDropdown" class="notification-dropdown"></div>
         
-        <!-- MENU AVEC LIENS DE NAVIGATION -->
         <div class="nav">
             <a href="#artist" class="nav-btn active" data-panel="artist"><i class="fas fa-crown"></i> 👑 BASTA LION</a>
             <a href="#musique" class="nav-btn" data-panel="music"><i class="fas fa-music"></i> 🎵 MUSIQUE</a>
@@ -1208,7 +1282,6 @@
             <a href="#soutenir" class="nav-btn" data-panel="support"><i class="fas fa-heart"></i> 💰 SOUTENIR</a>
         </div>
 
-        <!-- SECTIONS AVEC IDs POUR LE SCROLL -->
         <div id="artist" class="section panel active-panel">
             <div class="card">
                 <div class="artist-profile">
@@ -1250,7 +1323,10 @@
 
         <div id="musique" class="section panel">
             <div class="card"><div class="card-title"><i class="fab fa-youtube"></i> 🔍 RECHERCHE YOUTUBE</div>
-                <div class="search-bar"><input type="text" id="searchInput" class="search-input" placeholder="Rechercher une vidéo..."><button id="searchBtn" class="search-btn"><i class="fab fa-youtube"></i> Chercher</button></div>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une vidéo...">
+                    <button id="searchBtn" class="search-btn" onclick="searchYouTubeVideos(document.getElementById('searchInput').value)"><i class="fab fa-youtube"></i> Chercher</button>
+                </div>
                 <div id="videoResults" class="video-grid"><div class="loader"><i class="fas fa-spinner fa-spin"></i> Chargement des vidéos...</div></div>
             </div>
             <div class="card"><div class="card-title"><i class="fas fa-headphones"></i> 🎵 TITRES POPULAIRES</div>
@@ -1284,22 +1360,22 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-handshake"></i> 🤝 DEVENIR PARTENAIRE</div>
                 <p>Vous êtes artiste ou label ? Vous souhaitez vendre vos produits en France via STARCONNECT ?</p>
-                <form class="partner-form" id="partnerFormContainer" action="https://formspree.io/f/xdaljabb" method="POST">
-                    <input type="hidden" name="_subject" value="[STARCONNECT] Demande de partenariat">
-                    <input type="hidden" name="form_type" value="partner">
+                
+                <div id="partnerFormContainer" class="partner-form">
                     <h3 style="color: #e0a500;">📝 Formulaire de demande</h3>
-                    <input type="text" name="partnerName" id="partnerName" placeholder="Nom de l'artiste / Label" required>
-                    <input type="email" name="partnerEmail" id="partnerEmail" placeholder="Email de contact" required>
-                    <input type="tel" name="partnerPhone" id="partnerPhone" placeholder="Téléphone">
-                    <input type="text" name="partnerPaypal" id="partnerPaypal" placeholder="Lien PayPal pour recevoir vos paiements">
-                    <select name="partnerProductType" id="partnerProductType">
+                    <input type="text" id="partnerName" placeholder="Nom de l'artiste / Label">
+                    <input type="email" id="partnerEmail" placeholder="Email de contact">
+                    <input type="tel" id="partnerPhone" placeholder="Téléphone">
+                    <input type="text" id="partnerPaypal" placeholder="Lien PayPal pour recevoir vos paiements">
+                    <select id="partnerProductType">
                         <option value="t-shirt">T-shirt / Vêtements</option>
                         <option value="accessoire">Accessoires</option>
                         <option value="autre">Autre</option>
                     </select>
-                    <textarea name="partnerMessage" id="partnerMessage" rows="3" placeholder="Décrivez vos produits, quantités, prix souhaité..."></textarea>
-                    <button type="submit" id="submitPartnerRequest" class="btn">📩 Envoyer ma demande</button>
-                </form>
+                    <textarea id="partnerMessage" rows="3" placeholder="Décrivez vos produits, quantités, prix souhaité..."></textarea>
+                    <button id="submitPartnerMailto" class="btn">✉️ Envoyer par email (mailto:)</button>
+                </div>
+                
                 <div style="margin-top: 30px;">
                     <h3 style="color: #e0a500;">📋 Comment ça marche ?</h3>
                     <div class="legal-card">
@@ -1328,14 +1404,12 @@
         <div id="evenements" class="section panel">
             <div class="card"><div class="card-title"><i class="fas fa-calendar-star"></i> 📅 AGENDA</div>
                 <button id="showEventForm" class="btn" style="margin-bottom: 24px;"><i class="fas fa-plus"></i> PROPOSER UN ÉVÉNEMENT</button>
-                <form id="eventFormContainer" class="event-form" action="https://formspree.io/f/xdaljabb" method="POST">
-                    <input type="hidden" name="_subject" value="[STARCONNECT] Proposition d'événement">
-                    <input type="hidden" name="form_type" value="event">
-                    <input type="text" name="eventName" id="eventName" placeholder="Nom de l'événement" required>
-                    <input type="text" name="eventPlace" id="eventPlace" placeholder="Lieu" required>
-                    <input type="date" name="eventDate" id="eventDate" required>
-                    <button type="submit" id="submitEvent" class="btn">AJOUTER L'ÉVÉNEMENT</button>
-                </form>
+                <div id="eventFormContainer" class="event-form" style="display:none;">
+                    <input type="text" id="eventName" placeholder="Nom de l'événement">
+                    <input type="text" id="eventPlace" placeholder="Lieu">
+                    <input type="date" id="eventDate">
+                    <button id="submitEventMailto" class="btn">✉️ Envoyer par email (mailto:)</button>
+                </div>
                 <div id="eventsList"></div>
             </div>
         </div>
@@ -1360,21 +1434,18 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-paper-plane"></i> 📩 INVITER UN ARTISTE À UNE INTERVIEW</div>
                 <p>Vous êtes artiste, manager ou fan ? Proposez un artiste malgache pour une interview exclusive sur STARCONNECT.</p>
-                <form class="partner-form" action="https://formspree.io/f/xdaljabb" method="POST">
-                    <input type="hidden" name="_subject" value="[STARCONNECT] Demande d'interview">
-                    <input type="hidden" name="form_type" value="interview">
-                    <input type="text" name="artistName" placeholder="Nom de l'artiste" required>
-                    <input type="text" name="contactName" placeholder="Votre nom">
-                    <input type="email" name="contactEmail" placeholder="Votre email" required>
-                    <input type="text" name="contactPhone" placeholder="Téléphone (WhatsApp)">
-                    <textarea name="message" rows="4" placeholder="Pourquoi souhaitez-vous cette interview ? Thèmes à aborder..."></textarea>
-                    <button type="submit" class="btn">📨 Envoyer la demande</button>
-                </form>
+                <div class="partner-form">
+                    <input type="text" id="interviewArtistName" placeholder="Nom de l'artiste">
+                    <input type="text" id="interviewContactName" placeholder="Votre nom">
+                    <input type="email" id="interviewContactEmail" placeholder="Votre email">
+                    <input type="text" id="interviewContactPhone" placeholder="Téléphone (WhatsApp)">
+                    <textarea id="interviewMessage" rows="4" placeholder="Pourquoi souhaitez-vous cette interview ? Thèmes à aborder..."></textarea>
+                    <button id="submitInterviewMailto" class="btn">✉️ Envoyer par email (mailto:)</button>
+                </div>
                 <p style="font-size:0.8rem; margin-top:15px;"><i class="fas fa-info-circle"></i> Nous étudions chaque demande et revenons vers vous sous 48h.</p>
             </div>
         </div>
 
-        <!-- PANEL CLASSEMENTS -->
         <div id="classements" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-trophy"></i> 🏆 CLASSEMENT DES ARTISTES MALGACHES</div>
@@ -1384,9 +1455,7 @@
                     <button class="ranking-tab" data-ranking="reggae">🌿 Top Reggae</button>
                 </div>
                 <div class="ranking-table-wrapper">
-                    <div id="rankingContent">
-                        <!-- Rempli dynamiquement -->
-                    </div>
+                    <div id="rankingContent"></div>
                 </div>
                 <button id="refreshRankingBtn" class="btn" style="margin-top: 20px;"><i class="fas fa-sync-alt"></i> Actualiser les statistiques</button>
                 <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (vues YouTube, popularité, interactions). Mise à jour automatique toutes les 30 secondes.</p>
@@ -1691,130 +1760,186 @@
 
     <script>
         // =============================================
-        // JAVASCRIPT COMPLET AVEC API YOUTUBE FONCTIONNELLE
+        // TOUT LE JAVASCRIPT AVEC MAILTO
         // =============================================
-
-        const API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
-        const BASE_URL = 'https://www.googleapis.com/youtube/v3';
         
-        let previousManaScore = 1850;
-        let manaUpdateTimeout = null;
-        let autoRankingInterval = null;
+        // Adresse email de réception des formulaires
+        const ADMIN_EMAIL = "starconnect.contact@gmail.com";
         
-        // ========== SYSTÈME D'ABONNÉS AVEC CROISSANCE AUTOMATIQUE ==========
-        let subscriberCount = 1234; // Nombre de base
-        let lastUpdateTimestamp = Date.now();
-        
-        // Fonction pour formater le nombre d'abonnés (ex: 1234 -> "1 234", 15200 -> "15.2k")
-        function formatSubscriberCount(count) {
-            if (count >= 1000000) {
-                return (count / 1000000).toFixed(1) + 'M';
-            } else if (count >= 1000) {
-                return (count / 1000).toFixed(1) + 'k';
-            }
-            return count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        // Fonction mailto générique
+        function sendMailTo(subject, body) {
+            const mailtoLink = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            return true;
         }
         
-        // Fonction pour mettre à jour l'affichage des abonnés
-        function updateSubscriberDisplay() {
-            const countElement = document.getElementById('subscriberCount');
-            if (countElement) {
-                countElement.textContent = formatSubscriberCount(subscriberCount);
-            }
-            // Sauvegarde dans localStorage
-            localStorage.setItem('starconnect_subscribers', JSON.stringify({
-                count: subscriberCount,
-                timestamp: lastUpdateTimestamp
-            }));
-        }
+        //===== FORMULAIRES MAILTO =====
         
-        // Fonction pour ajouter des abonnés (croissance naturelle)
-        function addSubscribers(growth) {
-            subscriberCount += growth;
-            updateSubscriberDisplay();
-            // Notification silencieuse (pas de toast pour la croissance auto)
-        }
-        
-        // Fonction pour ajouter un abonné manuel (clic sur le bouton)
-        function addManualSubscriber() {
-            subscriberCount++;
-            updateSubscriberDisplay();
-            // Animation du bouton
-            const btn = document.getElementById('subscribeBtn');
-            if (btn) {
-                btn.classList.add('subscribe-animation');
-                setTimeout(() => {
-                    btn.classList.remove('subscribe-animation');
-                }, 300);
-            }
-            // Message de confirmation pour l'utilisateur
-            showToast('✅ Merci pour votre abonnement !');
-            // Sauvegarde
-            saveSubscriberData();
-        }
-        
-        // Fonction pour calculer la croissance automatique basée sur le temps écoulé
-        function calculateAutomaticGrowth() {
-            const now = Date.now();
-            const elapsedHours = (now - lastUpdateTimestamp) / (1000 * 60 * 60);
+        // Formulaire de consentement
+        document.getElementById('confirmConsentMailto')?.addEventListener('click', () => {
+            const signatureName = document.getElementById('signatureName')?.value;
+            const consentDate = document.getElementById('consentDate')?.value;
+            const consentRole = document.querySelector('input[name="consentRole"]:checked')?.value;
+            const certified = document.getElementById('consentCheckbox')?.checked;
             
-            if (elapsedHours >= 1) {
-                // Croissance réaliste : entre 1 et 5 abonnés par heure
-                // Plus le site a d'abonnés, plus la croissance est rapide
-                let baseGrowth = 1 + Math.floor(Math.random() * 4);
-                // Bonus si déjà beaucoup d'abonnés (effet viral)
-                if (subscriberCount > 5000) baseGrowth += 2;
-                if (subscriberCount > 10000) baseGrowth += 3;
-                
-                const hoursToAdd = Math.floor(elapsedHours);
-                const totalGrowth = baseGrowth * hoursToAdd;
-                
-                if (totalGrowth > 0) {
-                    subscriberCount += totalGrowth;
-                    updateSubscriberDisplay();
-                    // Mettre à jour le timestamp
-                    lastUpdateTimestamp = now;
-                    saveSubscriberData();
-                }
+            if (!certified) {
+                alert('Vous devez confirmer l\'autorisation de l\'artiste');
+                return;
             }
-        }
-        
-        // Sauvegarde des données abonnés
-        function saveSubscriberData() {
-            localStorage.setItem('starconnect_subscribers', JSON.stringify({
-                count: subscriberCount,
-                timestamp: lastUpdateTimestamp
-            }));
-        }
-        
-        // Chargement des données abonnés
-        function loadSubscriberData() {
-            const saved = localStorage.getItem('starconnect_subscribers');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    subscriberCount = data.count;
-                    lastUpdateTimestamp = data.timestamp;
-                    updateSubscriberDisplay();
-                } catch(e) {
-                    console.error('Erreur chargement abonnés', e);
-                }
-            } else {
-                // Première visite, on initialise
-                subscriberCount = 1234;
-                lastUpdateTimestamp = Date.now();
-                updateSubscriberDisplay();
+            
+            if (!signatureName) {
+                alert('Veuillez entrer votre signature électronique');
+                return;
             }
-        }
+            
+            const artist = getCurrentArtist();
+            let body = `DEMANDE DE CONSENTEMENT - ${artist.name}\n\n`;
+            body += `Artiste: ${artist.name}\n`;
+            body += `Rôle: ${consentRole === 'artist' ? 'Artiste lui-même' : 'Manager/Agent'}\n`;
+            body += `Signature: ${signatureName}\n`;
+            body += `Date: ${consentDate}\n`;
+            body += `Certification: ${certified ? 'Oui' : 'Non'}\n`;
+            body += `Utilisation commerciale: ${document.getElementById('consentCommercialCheckbox')?.checked ? 'Oui' : 'Non'}\n\n`;
+            
+            if (consentRole === 'manager') {
+                body += `Manager: ${document.getElementById('managerName')?.value || ''}\n`;
+                body += `Relation: ${document.getElementById('managerRelation')?.value || ''}\n`;
+                body += `Artiste représenté: ${document.getElementById('artistRepresented')?.value || ''}\n`;
+            }
+            
+            body += `\n--- Merci de joindre la photo du nouvel avatar ainsi que toute preuve de consentement ---`;
+            
+            sendMailTo(`CONSENTEMENT - ${artist.name}`, body);
+            
+            // Sauvegarde locale de la demande
+            artist.consentStatus = 'pending';
+            artist.consentRequestDate = Date.now();
+            artist.consentRole = consentRole;
+            artist.consentSignature = signatureName;
+            artist.consentDate = consentDate;
+            if (consentRole === 'manager') {
+                artist.consentManagerName = document.getElementById('managerName')?.value;
+                artist.consentRelation = document.getElementById('managerRelation')?.value;
+            }
+            saveAllData();
+            
+            document.getElementById('consentModal').classList.remove('show');
+            addNotification('✅ Demande envoyée par email !');
+        });
         
-        // Vérification périodique de la croissance (toutes les heures)
-        function startSubscriberGrowthCheck() {
-            setInterval(() => {
-                calculateAutomaticGrowth();
-            }, 60 * 60 * 1000); // Toutes les heures
-        }
+        // Formulaire partenariat
+        document.getElementById('submitPartnerMailto')?.addEventListener('click', () => {
+            const name = document.getElementById('partnerName')?.value;
+            const email = document.getElementById('partnerEmail')?.value;
+            const phone = document.getElementById('partnerPhone')?.value;
+            const paypal = document.getElementById('partnerPaypal')?.value;
+            const productType = document.getElementById('partnerProductType')?.value;
+            const message = document.getElementById('partnerMessage')?.value;
+            
+            if (!name || !email) {
+                alert('Veuillez remplir au moins le nom et l\'email');
+                return;
+            }
+            
+            let body = `DEMANDE DE PARTENARIAT\n\n`;
+            body += `Nom/Artiste: ${name}\n`;
+            body += `Email: ${email}\n`;
+            body += `Téléphone: ${phone || 'Non fourni'}\n`;
+            body += `PayPal: ${paypal || 'Non fourni'}\n`;
+            body += `Type de produit: ${productType}\n`;
+            body += `Message: ${message || 'Non fourni'}\n`;
+            
+            sendMailTo(`PARTENARIAT - ${name}`, body);
+            
+            // Sauvegarde locale
+            PARTNER_REQUESTS.unshift({ id: Date.now(), name, email, phone, paypal, productType, message, status: 'pending', date: Date.now() });
+            saveAllData();
+            renderPartnerRequests();
+            
+            document.getElementById('partnerName').value = '';
+            document.getElementById('partnerEmail').value = '';
+            document.getElementById('partnerPhone').value = '';
+            document.getElementById('partnerPaypal').value = '';
+            document.getElementById('partnerMessage').value = '';
+            
+            addNotification('✅ Demande envoyée par email !');
+        });
         
-        // ========== FIN SYSTÈME D'ABONNÉS ==========
+        // Formulaire événement
+        document.getElementById('submitEventMailto')?.addEventListener('click', () => {
+            const name = document.getElementById('eventName')?.value;
+            const place = document.getElementById('eventPlace')?.value;
+            const date = document.getElementById('eventDate')?.value;
+            
+            if (!name || !place || !date) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            let body = `PROPOSITION D'ÉVÉNEMENT\n\n`;
+            body += `Nom: ${name}\n`;
+            body += `Lieu: ${place}\n`;
+            body += `Date: ${date}\n`;
+            
+            sendMailTo(`ÉVÉNEMENT - ${name}`, body);
+            
+            eventsList.push({ id: Date.now(), name: `🎤 ${name}`, place: `📍 ${place}`, date });
+            renderEvents();
+            saveAllData();
+            
+            document.getElementById('eventName').value = '';
+            document.getElementById('eventPlace').value = '';
+            document.getElementById('eventDate').value = '';
+            document.getElementById('eventFormContainer').style.display = 'none';
+            
+            addNotification('✅ Événement proposé par email !');
+        });
+        
+        // Formulaire interview
+        document.getElementById('submitInterviewMailto')?.addEventListener('click', () => {
+            const artistName = document.getElementById('interviewArtistName')?.value;
+            const contactName = document.getElementById('interviewContactName')?.value;
+            const contactEmail = document.getElementById('interviewContactEmail')?.value;
+            const contactPhone = document.getElementById('interviewContactPhone')?.value;
+            const message = document.getElementById('interviewMessage')?.value;
+            
+            if (!artistName || !contactEmail) {
+                alert('Veuillez remplir au moins le nom de l\'artiste et votre email');
+                return;
+            }
+            
+            let body = `DEMANDE D'INTERVIEW\n\n`;
+            body += `Artiste proposé: ${artistName}\n`;
+            body += `Contact: ${contactName || 'Non fourni'}\n`;
+            body += `Email: ${contactEmail}\n`;
+            body += `Téléphone: ${contactPhone || 'Non fourni'}\n`;
+            body += `Message: ${message || 'Non fourni'}\n`;
+            
+            sendMailTo(`INTERVIEW - ${artistName}`, body);
+            
+            document.getElementById('interviewArtistName').value = '';
+            document.getElementById('interviewContactName').value = '';
+            document.getElementById('interviewContactEmail').value = '';
+            document.getElementById('interviewContactPhone').value = '';
+            document.getElementById('interviewMessage').value = '';
+            
+            addNotification('✅ Demande d\'interview envoyée par email !');
+        });
+        
+        // Abonnement (email aussi)
+        document.getElementById('subscribeBtn')?.addEventListener('click', () => {
+            addManualSubscriber();
+            let body = `NOUVEL ABONNÉ STARCONNECT !\n\n`;
+            body += `Un fan vient de s'abonner à la page STARCONNECT.\n`;
+            body += `Total actuel : ${formatSubscriberCount(subscriberCount)} abonnés.\n`;
+            body += `Date: ${new Date().toLocaleString()}`;
+            sendMailTo(`ABONNEMENT - Nouveau fan`, body);
+        });
+        
+        //==========================================================================
+        // TOUT LE RESTE DU CODE EST IDENTIQUE À L'ORIGINAL (artists_db, fonctions, etc.)
+        // Je le réinclus ici pour que tout fonctionne
+        //==========================================================================
         
         function openStoryModal() {
             document.getElementById('storyModal').classList.add('show');
@@ -2012,6 +2137,9 @@
             updateStarRating(newScore);
         }
         
+        let manaUpdateTimeout = null;
+        let autoRankingInterval = null;
+        
         function simulateManaUpdate() {
             if (maintenanceMode) return;
             const increment = Math.floor(Math.random() * 8) + 1;
@@ -2054,70 +2182,6 @@
                 }
                 renderRanking();
             }, 30000);
-        }
-        
-        // API YOUTUBE RECHERCHE FONCTIONNELLE
-        async function searchYouTube(q, maxResults = 6) {
-            if (!q) return [];
-            try {
-                addNotification(`🔍 Recherche YouTube : "${q}"`);
-                const response = await fetch(`${BASE_URL}/search?part=snippet&q=${encodeURIComponent(q)}&maxResults=${maxResults}&type=video&key=${API_KEY}`);
-                const data = await response.json();
-                
-                if (data.error) {
-                    console.error('YouTube API Error:', data.error);
-                    addNotification(`⚠️ API YouTube: ${data.error.message || 'Erreur'}`);
-                    return null;
-                }
-                
-                if (!data.items || data.items.length === 0) {
-                    addNotification('📭 Aucune vidéo trouvée');
-                    return [];
-                }
-                
-                addNotification(`✅ ${data.items.length} vidéos trouvées`);
-                return data.items.map(item => ({
-                    id: item.id.videoId,
-                    title: item.snippet.title,
-                    thumbnail: item.snippet.thumbnails.medium.url,
-                    channelTitle: item.snippet.channelTitle
-                }));
-            } catch(e) {
-                console.error('Erreur réseau YouTube:', e);
-                addNotification('❌ Erreur de connexion à YouTube');
-                return null;
-            }
-        }
-        
-        async function renderVideos(query) {
-            const container = document.getElementById('videoResults');
-            if (!container) return;
-            
-            if (!query) {
-                container.innerHTML = '<div class="loader">🔍 Entrez un terme de recherche YouTube</div>';
-                return;
-            }
-            
-            container.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche sur YouTube...</div>';
-            
-            const videos = await searchYouTube(query, 8);
-            
-            if (videos === null) {
-                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Service YouTube temporairement indisponible. Veuillez réessayer.</div>';
-                return;
-            }
-            
-            if (videos.length === 0) {
-                container.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée pour "<strong>' + escapeHtml(query) + '</strong>"</div>';
-                return;
-            }
-            
-            container.innerHTML = videos.map(v => `
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/${v.id}" allowfullscreen loading="lazy"></iframe>
-                    <p><strong>${escapeHtml(v.title.length > 70 ? v.title.substring(0,70)+'...' : v.title)}</strong><br><small style="color:#888;">${escapeHtml(v.channelTitle)}</small></p>
-                </div>
-            `).join('');
         }
         
         function addNotification(message, type = 'info') {
@@ -2330,8 +2394,9 @@
             if (levelSpan) levelSpan.innerHTML = level;
         }
         
-        function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
         function getCurrentArtist() { return ARTISTS_DB[currentArtistId]; }
+        function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
         
         function saveAllData() {
             localStorage.setItem('starconnect_news', JSON.stringify(newsItems));
@@ -2347,6 +2412,95 @@
             localStorage.setItem('starconnect_partners', JSON.stringify(PARTNER_REQUESTS));
             localStorage.setItem('starconnect_notifications', JSON.stringify(notifications));
             saveSubscriberData();
+        }
+        
+        let subscriberCount = 1234;
+        let lastUpdateTimestamp = Date.now();
+        
+        function formatSubscriberCount(count) {
+            if (count >= 1000000) {
+                return (count / 1000000).toFixed(1) + 'M';
+            } else if (count >= 1000) {
+                return (count / 1000).toFixed(1) + 'k';
+            }
+            return count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        
+        function updateSubscriberDisplay() {
+            const countElement = document.getElementById('subscriberCount');
+            if (countElement) {
+                countElement.textContent = formatSubscriberCount(subscriberCount);
+            }
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({
+                count: subscriberCount,
+                timestamp: lastUpdateTimestamp
+            }));
+        }
+        
+        function addManualSubscriber() {
+            subscriberCount++;
+            updateSubscriberDisplay();
+            const btn = document.getElementById('subscribeBtn');
+            if (btn) {
+                btn.classList.add('subscribe-animation');
+                setTimeout(() => {
+                    btn.classList.remove('subscribe-animation');
+                }, 300);
+            }
+            showToast('✅ Merci pour votre abonnement !');
+            saveSubscriberData();
+        }
+        
+        function calculateAutomaticGrowth() {
+            const now = Date.now();
+            const elapsedHours = (now - lastUpdateTimestamp) / (1000 * 60 * 60);
+            
+            if (elapsedHours >= 1) {
+                let baseGrowth = 1 + Math.floor(Math.random() * 4);
+                if (subscriberCount > 5000) baseGrowth += 2;
+                if (subscriberCount > 10000) baseGrowth += 3;
+                
+                const hoursToAdd = Math.floor(elapsedHours);
+                const totalGrowth = baseGrowth * hoursToAdd;
+                
+                if (totalGrowth > 0) {
+                    subscriberCount += totalGrowth;
+                    updateSubscriberDisplay();
+                    lastUpdateTimestamp = now;
+                    saveSubscriberData();
+                }
+            }
+        }
+        
+        function saveSubscriberData() {
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({
+                count: subscriberCount,
+                timestamp: lastUpdateTimestamp
+            }));
+        }
+        
+        function loadSubscriberData() {
+            const saved = localStorage.getItem('starconnect_subscribers');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    subscriberCount = data.count;
+                    lastUpdateTimestamp = data.timestamp;
+                    updateSubscriberDisplay();
+                } catch(e) {
+                    console.error('Erreur chargement abonnés', e);
+                }
+            } else {
+                subscriberCount = 1234;
+                lastUpdateTimestamp = Date.now();
+                updateSubscriberDisplay();
+            }
+        }
+        
+        function startSubscriberGrowthCheck() {
+            setInterval(() => {
+                calculateAutomaticGrowth();
+            }, 60 * 60 * 1000);
         }
         
         function loadAllData() {
@@ -2632,50 +2786,6 @@
             document.getElementById('consentModal').classList.add('show'); 
         }
         
-        async function submitConsentRequest(file) {
-            const reader = new FileReader();
-            reader.onload = async (ev) => {
-                const artist = getCurrentArtist();
-                const imageData = ev.target.result;
-                const signatureName = document.getElementById('signatureName')?.value;
-                const consentDate = document.getElementById('consentDate')?.value;
-                const consentRole = document.querySelector('input[name="consentRole"]:checked')?.value;
-                
-                if (!signatureName) {
-                    alert('Veuillez entrer votre signature électronique (nom et prénom)');
-                    return;
-                }
-                
-                if (!document.getElementById('consentCheckbox').checked) {
-                    alert('Vous devez confirmer l\'autorisation de l\'artiste');
-                    return;
-                }
-                
-                artist.consentStatus = 'pending';
-                artist.consentRequestDate = Date.now();
-                artist.consentImageData = imageData;
-                artist.consentRole = consentRole;
-                artist.consentSignature = signatureName;
-                artist.consentDate = consentDate;
-                artist.consentProof = imageData;
-                
-                if (consentRole === 'manager') {
-                    artist.consentManagerName = document.getElementById('managerName')?.value;
-                    artist.consentRelation = document.getElementById('managerRelation')?.value;
-                    artist.consentArtistRepresented = document.getElementById('artistRepresented')?.value || artist.name;
-                }
-                
-                saveAllData();
-                renderArtistProfile();
-                renderPendingApprovals();
-                renderConsentProofs();
-                addNotification('✅ Demande de consentement envoyée ! Traitement sous 48h.');
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
-        
         function renderEvents() { const c = document.getElementById('eventsList'); if (c) c.innerHTML = eventsList.map(e => `<div class="event-item"><div><strong>${escapeHtml(e.name)}</strong><br>${escapeHtml(e.place)}</div><div class="event-date">📅 ${escapeHtml(e.date)}</div></div>`).join(''); }
         
         function renderFeed() {
@@ -2851,29 +2961,10 @@
                 const file = e.target.files[0];
                 if (file) {
                     pendingAvatarFile = file;
-                    const fileInput = document.getElementById('consentPhotoInput');
-                    const dt = new DataTransfer();
-                    dt.items.add(file);
-                    fileInput.files = dt.files;
                     openConsentModal();
                 }
             };
             input.click();
-        });
-        
-        document.getElementById('consentForm')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const a = getCurrentArtist();
-            a.consentStatus = 'pending';
-            a.consentRequestDate = Date.now();
-            if (pendingAvatarFile) {
-                const reader = new FileReader();
-                reader.onload = (ev) => { a.consentImageData = ev.target.result; saveAllData(); };
-                reader.readAsDataURL(pendingAvatarFile);
-            }
-            saveAllData();
-            addNotification('✅ Demande de consentement envoyée !');
-            document.getElementById('consentModal').classList.remove('show');
         });
         
         document.getElementById('cancelConsent')?.addEventListener('click', () => {
@@ -2885,15 +2976,15 @@
         
         document.getElementById('searchBtn')?.addEventListener('click', () => { 
             const q = document.getElementById('searchInput')?.value.trim(); 
-            if (q) renderVideos(q); 
-            else renderVideos('Basta Lion Malagasy');
+            if (q) searchYouTubeVideos(q); 
+            else searchYouTubeVideos('Basta Lion Malagasy');
         });
         
         document.getElementById('searchInput')?.addEventListener('keypress', (e) => { 
             if (e.key === 'Enter') {
                 const q = e.target.value.trim();
-                if (q) renderVideos(q); 
-                else renderVideos('Basta Lion Malagasy');
+                if (q) searchYouTubeVideos(q); 
+                else searchYouTubeVideos('Basta Lion Malagasy');
             }
         });
         
@@ -2919,37 +3010,6 @@
         
         let evForm = false;
         document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventFormContainer'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
-        
-        document.getElementById('partnerFormContainer')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('partnerName')?.value;
-            const email = document.getElementById('partnerEmail')?.value;
-            const phone = document.getElementById('partnerPhone')?.value;
-            const paypal = document.getElementById('partnerPaypal')?.value;
-            const productType = document.getElementById('partnerProductType')?.value;
-            const message = document.getElementById('partnerMessage')?.value;
-            
-            PARTNER_REQUESTS.unshift({ id: Date.now(), name, email, phone, paypal, productType, message, status: 'pending', date: Date.now() });
-            saveAllData(); 
-            renderPartnerRequests();
-            addNotification('✅ Demande de partenariat envoyée !');
-            document.getElementById('partnerFormContainer').reset();
-        });
-        
-        document.getElementById('eventFormContainer')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('eventName')?.value;
-            const place = document.getElementById('eventPlace')?.value;
-            const date = document.getElementById('eventDate')?.value;
-            
-            eventsList.push({ id: Date.now(), name: `🎤 ${name}`, place: `📍 ${place}`, date });
-            renderEvents(); 
-            saveAllData();
-            addNotification('✅ Événement proposé !');
-            document.getElementById('eventFormContainer').reset();
-            document.getElementById('eventFormContainer').style.display = 'none';
-            evForm = false;
-        });
         
         document.querySelectorAll('.ranking-tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -3080,7 +3140,6 @@
         document.getElementById('adminImportData')?.addEventListener('click', () => { document.getElementById('importFile')?.click(); });
         document.getElementById('importFile')?.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (ev) => { try { const data = JSON.parse(ev.target.result); if (data.artists) ARTISTS_DB = data.artists; if (data.products) PRODUCTS_DB = data.products; if (data.custom) CUSTOM_ITEMS = data.custom; if (data.partners) PARTNER_REQUESTS = data.partners; if (data.news) newsItems = data.news; if (data.events) eventsList = data.events; if (data.feed) feedPosts = data.feed; if (data.likes) postLikes = data.likes; if (data.notifications) notifications = data.notifications; saveAllData(); loadAllData(); addNotification('✅ Import réussi !'); } catch(err) { alert('Fichier invalide'); } }; reader.readAsText(file); e.target.value = ''; });
         
-        // Bouton admin pour modifier le nombre d'abonnés
         document.getElementById('adminSetSubscribers')?.addEventListener('click', () => {
             const newCount = prompt('Entrez le nouveau nombre d\'abonnés :', subscriberCount);
             if (newCount !== null && !isNaN(parseInt(newCount))) {
@@ -3090,21 +3149,6 @@
                 saveSubscriberData();
                 addNotification(`📊 Nombre d'abonnés modifié : ${formatSubscriberCount(subscriberCount)}`);
             }
-        });
-        
-        // Bouton S'abonner
-        document.getElementById('subscribeBtn')?.addEventListener('click', () => {
-            addManualSubscriber();
-            // Envoi silencieux à Formspree (vous recevez un email)
-            fetch('https://formspree.io/f/xdaljabb', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    _subject: '[STARCONNECT] Nouvel abonné !',
-                    message: `Un nouvel abonné vient de s'abonner à la page STARCONNECT ! Total actuel : ${formatSubscriberCount(subscriberCount)} abonnés.`,
-                    form_type: 'subscriber'
-                })
-            }).catch(e => console.log('Erreur envoi email:', e));
         });
         
         const themeBtn = document.getElementById('themeToggleBtn');
@@ -3155,11 +3199,6 @@
         initSmoothScroll();
         initRankingButton();
         
-        // Charger les vidéos par défaut
-        setTimeout(() => {
-            renderVideos('Basta Lion Malagasy');
-        }, 1000);
-        
         let newsInterval = setInterval(() => { if (!maintenanceMode) { fetchRSSNews(); } }, 2 * 60 * 60 * 1000);
         
         window.addEventListener('beforeunload', () => { 
@@ -3169,4 +3208,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
