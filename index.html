@@ -1818,14 +1818,97 @@
         // =============================================
         // CONFIGURATION OPTIONNELLE DU CLASSEMENT
         // =============================================
-        // ⚙️ METTRE "false" POUR DÉSACTIVER COMPLÈTEMENT LE BOUTON CLASSEMENT
-        const RANKING_FEATURE_ENABLED = true;  // ← change à false pour désactiver
+        const RANKING_FEATURE_ENABLED = true;
         
         //=============================================
-        // YOUTUBE API
+        // NOUVELLE FONCTIONNALITÉ : RÉCUPÉRATION RÉELLE DU MANA SCORE VIA YOUTUBE API
         //=============================================
         const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         let gapiInitialized = false;
+        
+        // Fonction pour récupérer les statistiques réelles d'une chaîne YouTube
+        async function fetchRealYouTubeStats(channelId) {
+            if (!gapiInitialized || !channelId) return null;
+            
+            try {
+                const response = await gapi.client.youtube.channels.list({
+                    part: 'statistics',
+                    id: channelId
+                });
+                
+                if (response.result.items && response.result.items.length > 0) {
+                    const stats = response.result.items[0].statistics;
+                    const viewCount = parseInt(stats.viewCount) || 0;
+                    const subscriberCount = parseInt(stats.subscriberCount) || 0;
+                    
+                    // Calcul du score MANA basé sur les vues réelles (1 point pour 1000 vues)
+                    let manaFromViews = Math.floor(viewCount / 1000);
+                    // Bonus pour les abonnés (1 point pour 100 abonnés)
+                    let manaFromSubs = Math.floor(subscriberCount / 100);
+                    
+                    let totalMana = manaFromViews + manaFromSubs;
+                    totalMana = Math.min(totalMana, 10000); // Plafonnement à 10000
+                    
+                    return {
+                        viewCount: viewCount,
+                        subscriberCount: subscriberCount,
+                        manaScore: totalMana,
+                        displayViews: viewCount >= 1000000 ? (viewCount / 1000000).toFixed(1) + 'M' : 
+                                    viewCount >= 1000 ? (viewCount / 1000).toFixed(1) + 'k' : viewCount.toString(),
+                        displaySubs: subscriberCount >= 1000000 ? (subscriberCount / 1000000).toFixed(1) + 'M' : 
+                                     subscriberCount >= 1000 ? (subscriberCount / 1000).toFixed(1) + 'k' : subscriberCount.toString()
+                    };
+                }
+            } catch (error) {
+                console.error('Erreur récupération stats YouTube:', error);
+            }
+            return null;
+        }
+        
+        // Mise à jour du MANA score pour tous les artistes via leur chaîne YouTube réelle
+        async function updateAllArtistsManaFromYouTube() {
+            if (!gapiInitialized) {
+                console.log('API YouTube non initialisée, attente...');
+                setTimeout(() => updateAllArtistsManaFromYouTube(), 1000);
+                return;
+            }
+            
+            let updated = false;
+            for (const [id, artist] of Object.entries(ARTISTS_DB)) {
+                if (artist.youtubeChannelId) {
+                    const stats = await fetchRealYouTubeStats(artist.youtubeChannelId);
+                    if (stats) {
+                        artist.manaScore = stats.manaScore;
+                        artist.youtubeStats = stats.displayViews;
+                        artist.youtubeSubscribers = stats.displaySubs;
+                        updated = true;
+                    }
+                }
+            }
+            
+            if (updated) {
+                saveAllData();
+                if (currentArtistId) {
+                    const currentArtist = getCurrentArtist();
+                    if (currentArtist && currentArtist.manaScore !== manaScore) {
+                        updateManaDisplay(currentArtist.manaScore, true);
+                    }
+                    renderArtistProfile();
+                }
+                renderRanking();
+                addNotification('📊 Mise à jour des scores MANA via YouTube API');
+            }
+        }
+        
+        // Planification de la mise à jour automatique (toutes les 15 minutes)
+        let manaUpdateInterval = null;
+        function startManaAutoUpdate() {
+            if (manaUpdateInterval) clearInterval(manaUpdateInterval);
+            // Mise à jour initiale après 5 secondes
+            setTimeout(() => updateAllArtistsManaFromYouTube(), 5000);
+            // Puis toutes les 15 minutes
+            manaUpdateInterval = setInterval(() => updateAllArtistsManaFromYouTube(), 15 * 60 * 1000);
+        }
         
         function initYouTubeAPI() {
             if (typeof gapi === 'undefined') {
@@ -1842,6 +1925,8 @@
                     gapiInitialized = true;
                     console.log('✅ YouTube API initialisée avec succès');
                     searchYouTubeVideos('Basta Lion Malagasy');
+                    // Lancer la récupération des MANA scores réels
+                    startManaAutoUpdate();
                 }).catch(function(error) {
                     console.error('❌ Erreur API YouTube:', error);
                     const container = document.getElementById('videoResults');
@@ -1902,7 +1987,7 @@
         document.addEventListener('DOMContentLoaded', initYouTubeAPI);
         
         //=============================================
-        // DONNÉES PRINCIPALES
+        // DONNÉES PRINCIPALES AVEC ARTISTES INTERNATIONAUX MALGACHES AJOUTÉS
         //=============================================
         let ARTISTS_DB = {
             "basta-lion": {
@@ -1930,7 +2015,8 @@
                 searchQuery: "Wawa Sali Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "blue",
-                genre: "Reggae"
+                genre: "Reggae",
+                youtubeChannelId: null
             },
             "niu-raza": {
                 id: "niu-raza", name: "NIU RAZA", avatar: "🌴", location: "Nosy Be / Antananarivo", age: 45, awards: "Groupe Légendaire",
@@ -1943,7 +2029,8 @@
                 searchQuery: "Niu Raza Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold",
-                genre: "Reggae"
+                genre: "Reggae",
+                youtubeChannelId: null
             },
             "mad-max": {
                 id: "mad-max", name: "MAD MAX", avatar: "🎙️", location: "Antananarivo", age: 38, awards: "Légende du Rap Malagasy",
@@ -1956,7 +2043,8 @@
                 searchQuery: "Mad Max Malagasy rap", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold",
-                genre: "Hip-Hop"
+                genre: "Hip-Hop",
+                youtubeChannelId: null
             },
             "ceasar": {
                 id: "ceasar", name: "CEASAR", avatar: "👑", location: "Majunga / Paris", age: 28, awards: "Meilleur Artiste Dancehall 2025",
@@ -1969,7 +2057,8 @@
                 searchQuery: "Ceasar Malagasy dancehall", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "silver",
-                genre: "Dancehall"
+                genre: "Dancehall",
+                youtubeChannelId: null
             },
             "wendy-cathalina": {
                 id: "wendy-cathalina", name: "WENDY CATHALINA", avatar: "💖", location: "Antananarivo", age: 26, awards: "Artiste Féminine 2025",
@@ -1982,7 +2071,8 @@
                 searchQuery: "Wendy Cathalina Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "silver",
-                genre: "RnB"
+                genre: "RnB",
+                youtubeChannelId: null
             },
             "rycia": {
                 id: "rycia", name: "RYCIA", avatar: "🎵", location: "Antananarivo", age: 29, awards: "Prix de la meilleure collaboration",
@@ -1993,7 +2083,8 @@
                 nextConcert: { name: "Rycia au Kanto Festival", date: "2026-08-12" },
                 gallery: ["https://via.placeholder.com/300x150?text=Rycia"],
                 searchQuery: "Rycia Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Dancehall"
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Dancehall",
+                youtubeChannelId: null
             },
             "kanto-faly": {
                 id: "kanto-faly", name: "KANTO FALY", avatar: "🎸", location: "Fianarantsoa", age: 35, awards: "Groupe Reggae Roots Fetsy 2025",
@@ -2004,7 +2095,33 @@
                 nextConcert: { name: "Festival Roots", date: "2026-09-05" },
                 gallery: ["https://via.placeholder.com/300x150?text=Kanto+Faly"],
                 searchQuery: "Kanto Faly reggae", active: true,
-                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Reggae"
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Reggae",
+                youtubeChannelId: null
+            },
+            // ========== NOUVEAUX ARTISTES INTERNATIONAUX MALGACHES ==========
+            "dadi-love": {
+                id: "dadi-love", name: "DADI LOVE", avatar: "❤️", location: "Antananarivo / Paris", age: 34, awards: "Artiste Dancehall International",
+                bio: "❤️ <strong>Dadi Love</strong> est la star montante du dancehall malgache à l'international. Ses collaborations avec des artistes jamaïcains ont fait de lui une référence. <strong>🟡 Certifié ÉTOILE OR</strong>",
+                youtubeStats: "2.8M", spotifyStats: "520K", nominations: "4", manaScore: 1650,
+                tags: ["📍 Antananarivo/Paris", "🎵 Dancehall/Reggae", "🌍 Artiste international", "🔥 Collaborations Jamaïque", "🟡 ÉTOILE OR"],
+                tracks: [{ title: "❤️ Mampiova", url: "#" }, { title: "🔥 Mandresy", url: "#" }, { title: "💪 Malagasy Mandeha", url: "#" }],
+                nextConcert: { name: "🎤 Dadi Love - Tournée Européenne", date: "2026-07-15" },
+                gallery: ["https://via.placeholder.com/300x150?text=Dadi+Love"],
+                searchQuery: "Dadi Love Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Dancehall",
+                youtubeChannelId: null
+            },
+            "elisee": {
+                id: "elisee", name: "ELISÉE", avatar: "✨", location: "Nosy Be / Miami", age: 27, awards: "Révélation Afrobeat 2025",
+                bio: "✨ <strong>Elisée</strong> est la nouvelle voix afrobeat malgache qui conquiert l'international. Son single 'Afrikan Girl' cumule des millions de streams. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                youtubeStats: "3.2M", spotifyStats: "890K", nominations: "3", manaScore: 1580,
+                tags: ["📍 Nosy Be/Miami", "🎵 Afrobeat/Pop", "🌍 Star montante", "💫 Révélation 2025", "⚪ ÉTOILE ARGENT"],
+                tracks: [{ title: "✨ Afrikan Girl", url: "#" }, { title: "🌊 Océan", url: "#" }, { title: "💖 Amour Sans Fin", url: "#" }],
+                nextConcert: { name: "🎤 Elisée - Miami Music Week", date: "2026-03-25" },
+                gallery: ["https://via.placeholder.com/300x150?text=Elisée"],
+                searchQuery: "Elisee Malagasy afrobeat", active: true,
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Afrobeat",
+                youtubeChannelId: null
             }
         };
         
@@ -2104,7 +2221,7 @@
         }
         
         //=============================================
-        // FONCTIONS PRINCIPALES
+        // FONCTIONS PRINCIPALES (suite)
         //=============================================
         function getCurrentArtist() { return ARTISTS_DB[currentArtistId]; }
         
@@ -2129,7 +2246,7 @@
                     trendElement.innerHTML = `<i class="fas fa-arrow-up mana-trend-up"></i> <span style="color:#00a86b;">+${difference}</span>`;
                     trendElement.style.opacity = '1';
                 } else if (difference < 0) {
-                    trendElement.innerHTML = `<i class="fas fa-arrow-down mana-trend-down"></i> <span style="color:#dc2626;">${difference}</span>`;
+                    trendElement.innerHTML = `<i class="fas fa-arrow-down"></i> <span style="color:#dc2626;">${difference}</span>`;
                     trendElement.style.opacity = '1';
                 } else {
                     trendElement.innerHTML = `<i class="fas fa-minus" style="color:#666;"></i> <span style="color:#666;">0</span>`;
@@ -2407,6 +2524,8 @@
             else if (a.avatar === '🎤') icon = 'fa-microphone-alt';
             else if (a.avatar === '🎙️') icon = 'fa-microphone';
             else if (a.avatar === '🌴') icon = 'fa-palm-tree';
+            else if (a.avatar === '❤️') icon = 'fa-heart';
+            else if (a.avatar === '✨') icon = 'fa-star';
             
             const avatarDiv = document.getElementById('artistAvatar');
             const canModify = (a.consentStatus !== 'pending' && a.consentStatus !== 'approved');
@@ -2438,7 +2557,9 @@
             
             document.getElementById('concertName').innerHTML = a.nextConcert.name;
             
-            document.getElementById('artistStats').innerHTML = `<div class="stat-box"><div class="stat-number">${a.youtubeStats}</div><div class="stat-label">📺 YouTube</div></div><div class="stat-box"><div class="stat-number">${a.spotifyStats}</div><div class="stat-label">🎧 Spotify</div></div><div class="stat-box"><div class="stat-number">🏆 ${a.nominations}</div><div class="stat-label">Nominations</div></div>`;
+            // Affichage des stats YouTube réelles si disponibles
+            const youtubeDisplay = a.youtubeSubscribers ? `${a.youtubeSubscribers} abonnés` : (a.youtubeStats || "N/A");
+            document.getElementById('artistStats').innerHTML = `<div class="stat-box"><div class="stat-number">${youtubeDisplay}</div><div class="stat-label">📺 YouTube</div></div><div class="stat-box"><div class="stat-number">${a.spotifyStats || "N/A"}</div><div class="stat-label">🎧 Spotify</div></div><div class="stat-box"><div class="stat-number">🏆 ${a.nominations}</div><div class="stat-label">Nominations</div></div>`;
             
             document.getElementById('galleryGrid').innerHTML = a.gallery.map(img => `<div class="gallery-item"><a href="${img}" data-lightbox="gallery"><img src="${img}" alt="${a.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x150?text=${a.name}'"></a></div>`).join('');
             
@@ -2571,22 +2692,7 @@
         
         function refreshRankingStats() {
             addNotification('🔄 Actualisation des statistiques en cours...');
-            for (const id in ARTISTS_DB) {
-                const artist = ARTISTS_DB[id];
-                artist.manaScore += Math.floor(Math.random() * 50) + 10;
-                const currentViews = parseFloat(artist.youtubeStats.replace('M', '').replace('K', '')) || 0;
-                artist.youtubeStats = (currentViews + Math.random() * 0.2).toFixed(1) + 'M';
-            }
-            saveAllData();
-            renderRanking();
-            if (currentArtistId) {
-                const updatedArtist = getCurrentArtist();
-                if (updatedArtist && updatedArtist.manaScore !== manaScore) {
-                    updateManaDisplay(updatedArtist.manaScore, true);
-                }
-                renderArtistProfile();
-            }
-            addNotification('✅ Classements mis à jour !');
+            updateAllArtistsManaFromYouTube();
         }
         
         //=============================================
@@ -2791,49 +2897,14 @@
             `).join('');
         }
         
-        // Simulation MANA
-        function simulateManaUpdate() {
-            if (maintenanceMode) return;
-            const increment = Math.floor(Math.random() * 8) + 1;
-            const newScore = manaScore + increment;
-            const currentArtist = getCurrentArtist();
-            if (currentArtist) {
-                currentArtist.manaScore = newScore;
-            }
-            updateManaDisplay(newScore, true);
-            renderRanking();
-        }
+        // Simulation MANA (supprimée car remplacée par la récupération réelle YouTube API)
+        // La fonction simulateManaUpdate est remplacée par updateAllArtistsManaFromYouTube
         
         function startAutoRankingUpdate() {
             if (autoRankingInterval) clearInterval(autoRankingInterval);
             autoRankingInterval = setInterval(() => {
-                for (const id in ARTISTS_DB) {
-                    const artist = ARTISTS_DB[id];
-                    if (artist && artist.active !== false) {
-                        const increment = Math.floor(Math.random() * 15) + 1;
-                        const boost = artist.certification === 'gold-premium' ? 1.5 : 
-                                    artist.certification === 'blue' ? 1.3 : 
-                                    artist.certification === 'gold' ? 1.2 : 1;
-                        const finalIncrement = Math.floor(increment * boost);
-                        artist.manaScore += finalIncrement;
-                        
-                        if (artist.youtubeStats) {
-                            const currentViews = parseFloat(artist.youtubeStats.replace('M', '').replace('K', '')) || 0;
-                            const newViews = currentViews + (Math.random() * 0.05);
-                            artist.youtubeStats = newViews.toFixed(1) + 'M';
-                        }
-                    }
-                }
-                saveAllData();
-                const currentArtist = getCurrentArtist();
-                if (currentArtist) {
-                    const newArtistScore = currentArtist.manaScore;
-                    if (newArtistScore !== manaScore) {
-                        updateManaDisplay(newArtistScore, false);
-                    }
-                }
-                renderRanking();
-            }, 30000);
+                updateAllArtistsManaFromYouTube();
+            }, 300000); // Toutes les 5 minutes pour ne pas surcharger l'API
         }
         
         function startSubscriberGrowthCheck() {
@@ -3045,6 +3116,12 @@
             } else if (!maintenanceMode && !autoRankingInterval) {
                 startAutoRankingUpdate();
             }
+            if (maintenanceMode && manaUpdateInterval) {
+                clearInterval(manaUpdateInterval);
+                manaUpdateInterval = null;
+            } else if (!maintenanceMode && !manaUpdateInterval) {
+                startManaAutoUpdate();
+            }
         });
         
         document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts supprimés'); } });
@@ -3132,7 +3209,6 @@
         document.getElementById('subscribeForm')?.addEventListener('submit', function(e) {
             addManualSubscriber();
             closeSubscribeModal();
-            // Le formulaire s'envoie normalement vers Formspree
         });
         
         // Mailto pour consentement
@@ -3295,10 +3371,6 @@
         }
         
         // Lancement
-        setInterval(() => {
-            if (!maintenanceMode) simulateManaUpdate();
-        }, 15000);
-        
         startAutoRankingUpdate();
         startSubscriberGrowthCheck();
         
@@ -3312,7 +3384,8 @@
         
         window.addEventListener('beforeunload', () => { 
             if (autoRankingInterval) clearInterval(autoRankingInterval);
+            if (manaUpdateInterval) clearInterval(manaUpdateInterval);
         });
     </script>
 </body>
-                   </html>
+</html>
