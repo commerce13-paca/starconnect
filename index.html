@@ -91,7 +91,12 @@
             align-items: center;
             gap: 8px;
         }
-        .subscribe-btn:hover {
+        .subscribe-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .subscribe-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(224,165,0,0.4);
         }
@@ -120,6 +125,7 @@
             font-weight: 600;
         }
         
+        /* BOUTON CLASSEMENT VERT FLUO NÉON */
         .ranking-pro-btn {
             background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
             border: none;
@@ -127,7 +133,7 @@
             padding: 10px 22px;
             font-size: 0.85rem;
             font-weight: 700;
-            color: #e0a500;
+            color: #39ff14;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
@@ -137,18 +143,29 @@
             overflow: hidden;
             letter-spacing: 0.5px;
             backdrop-filter: blur(4px);
-            box-shadow: 0 4px 15px rgba(224,165,0,0.2);
+            box-shadow: 0 0 10px rgba(57,255,20,0.5), 0 4px 15px rgba(0,0,0,0.2);
+            animation: neonPulse 2s infinite;
+        }
+        .ranking-pro-btn.hidden-rank {
+            display: none;
+        }
+        @keyframes neonPulse {
+            0% { box-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14; }
+            50% { box-shadow: 0 0 15px #39ff14, 0 0 25px #39ff14; }
+            100% { box-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14; }
         }
         body.light-mode .ranking-pro-btn {
             background: linear-gradient(135deg, #fff, #f5f5f5);
-            color: #e0a500;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            color: #39ff14;
+            box-shadow: 0 0 10px rgba(57,255,20,0.5);
+            text-shadow: 0 0 2px rgba(0,0,0,0.2);
         }
         .ranking-pro-btn:hover {
             transform: translateY(-3px);
-            background: linear-gradient(135deg, #e0a500, #ff8c00);
+            background: linear-gradient(135deg, #39ff14, #2ecc71);
             color: #050505;
-            box-shadow: 0 8px 25px rgba(224,165,0,0.4);
+            box-shadow: 0 8px 25px rgba(57,255,20,0.6);
+            animation: none;
         }
         .ranking-pro-btn .btn-badge {
             background: #ff4444;
@@ -164,7 +181,6 @@
             50% { opacity: 0.8; transform: scale(1.05); }
         }
         
-        /* ===== BOUTON THEME CSS AMÉLIORÉ ===== */
         .theme-toggle {
             background: #1a1a1a;
             border: 1px solid #e0a500;
@@ -190,10 +206,6 @@
             background: #e0a500;
             color: #050505;
             box-shadow: 0 4px 12px rgba(224,165,0,0.3);
-        }
-        body.light-mode .theme-toggle:hover {
-            background: #e0a500;
-            color: #050505;
         }
         .theme-toggle i {
             font-size: 1rem;
@@ -1045,6 +1057,71 @@
             color: #e0a500;
         }
         
+        /* MODAL SUBSCRIBE CLASSIQUE */
+        .subscribe-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+        .subscribe-modal.show {
+            display: flex;
+        }
+        .subscribe-modal-content {
+            background: #1a1a1a;
+            border: 2px solid #e0a500;
+            border-radius: 28px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+        }
+        body.light-mode .subscribe-modal-content {
+            background: #ffffff;
+        }
+        .subscribe-modal-content input {
+            width: 100%;
+            padding: 14px;
+            margin: 15px 0;
+            border-radius: 40px;
+            border: 1px solid #333;
+            background: #0a0a0a;
+            color: white;
+            font-size: 1rem;
+        }
+        body.light-mode .subscribe-modal-content input {
+            background: #f5f5f5;
+            color: #333;
+            border-color: #ddd;
+        }
+        .subscribe-modal-content button {
+            background: #e0a500;
+            color: #050505;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        .subscribe-modal-content button:hover {
+            background: #ffc107;
+            transform: scale(1.02);
+        }
+        .close-modal {
+            float: right;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #e0a500;
+            margin-top: -15px;
+        }
+        
         @keyframes subscribePop {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); background: #ffcc00; }
@@ -1076,87 +1153,21 @@
     </style>
 </head>
 <body>
-    <script>
-        // =============================================
-        // INITIALISATION DE L'API YOUTUBE
-        // =============================================
-        const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
-        let gapiInitialized = false;
-        
-        function initYouTubeAPI() {
-            if (typeof gapi === 'undefined') {
-                console.warn('API Google non chargée, réessai dans 500ms');
-                setTimeout(initYouTubeAPI, 500);
-                return;
-            }
-            
-            gapi.load('client', function() {
-                gapi.client.init({
-                    apiKey: YOUTUBE_API_KEY,
-                    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest']
-                }).then(function() {
-                    gapiInitialized = true;
-                    console.log('✅ YouTube API initialisée avec succès');
-                    searchYouTubeVideos('Basta Lion Malagasy');
-                }).catch(function(error) {
-                    console.error('❌ Erreur API YouTube:', error);
-                    const container = document.getElementById('videoResults');
-                    if (container) {
-                        container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Service YouTube temporairement indisponible. Veuillez réessayer.</div>';
-                    }
-                });
-            });
-        }
-        
-        window.searchYouTubeVideos = function(query) {
-            const container = document.getElementById('videoResults');
-            if (!container) return;
-            
-            if (!query || query.trim() === '') {
-                container.innerHTML = '<div class="loader">🔍 Entrez un terme de recherche YouTube</div>';
-                return;
-            }
-            
-            container.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche sur YouTube...</div>';
-            
-            if (!gapiInitialized) {
-                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ API YouTube en cours d\'initialisation. Veuillez réessayer.</div>';
-                setTimeout(function() { searchYouTubeVideos(query); }, 1500);
-                return;
-            }
-            
-            gapi.client.youtube.search.list({
-                part: 'snippet',
-                q: query,
-                maxResults: 8,
-                type: 'video',
-                safeSearch: 'none'
-            }).then(function(response) {
-                const videos = response.result.items;
-                
-                if (!videos || videos.length === 0) {
-                    container.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée pour "<strong>' + escapeHtml(query) + '</strong>"</div>';
-                    return;
-                }
-                
-                container.innerHTML = videos.map(function(v) {
-                    return `
-                        <div class="video-card">
-                            <iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen loading="lazy"></iframe>
-                            <p><strong>${escapeHtml(v.snippet.title.length > 70 ? v.snippet.title.substring(0,70)+'...' : v.snippet.title)}</strong><br><small style="color:#888;">${escapeHtml(v.snippet.channelTitle)}</small></p>
-                        </div>
-                    `;
-                }).join('');
-            }).catch(function(error) {
-                console.error('Erreur recherche YouTube:', error);
-                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Erreur de connexion à YouTube. Veuillez réessayer.</div>';
-            });
-        };
-        
-        function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-        
-        document.addEventListener('DOMContentLoaded', initYouTubeAPI);
-    </script>
+    <!-- POPUP ABONNEMENT CLASSIQUE -->
+    <div id="subscribeModal" class="subscribe-modal">
+        <div class="subscribe-modal-content">
+            <span class="close-modal" onclick="closeSubscribeModal()">&times;</span>
+            <i class="fas fa-bell" style="font-size: 2rem; color: #e0a500;"></i>
+            <h3 style="margin: 10px 0;">✉️ Abonnez-vous</h3>
+            <p>Recevez les actualités exclusives des artistes malgaches</p>
+            <form id="subscribeForm" method="POST" action="https://formspree.io/f/xdaljabb">
+                <input type="email" name="email" placeholder="Votre adresse email" required>
+                <input type="hidden" name="_subject" value="Nouvel abonné STARCONNECT">
+                <button type="submit">✅ S'abonner</button>
+            </form>
+            <p style="font-size: 0.7rem; margin-top: 15px;">Aucun spam, désabonnement en 1 clic.</p>
+        </div>
+    </div>
 
     <!-- MODAL HISTOIRE -->
     <div id="storyModal" class="story-modal">
@@ -1223,7 +1234,7 @@
             
             <div class="consent-signature-field">
                 <input type="text" id="signatureName" placeholder="Signature électronique (nom et prénom)">
-                <input type="date" id="consentDate" value="2026-04-20">
+                <input type="date" id="consentDate" value="2026-04-27">
             </div>
             
             <div class="consent-checkbox">
@@ -1282,6 +1293,7 @@
                 </div>
                 <div class="artist-selector"><select id="artistSelect"></select></div>
                 <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> Mode sombre/clair</button>
+                <!-- Bouton classement vert fluo néon (optionnel) -->
                 <button id="rankingProBtn" class="ranking-pro-btn">
                     <i class="fas fa-chart-simple"></i> CLASSEMENTS
                     <span class="btn-badge">LIVE</span>
@@ -1386,10 +1398,16 @@
                 <p style="margin-bottom: 20px;">Découvrez nos créations personnalisées. T-shirts, hoodies, accessoires faits main.</p>
                 <div id="customGallery" class="custom-gallery"></div>
                 
+                <!-- INTÉGRATION DIRECTE FACEBOOK (VIDEO + PAGE) -->
                 <div class="facebook-card" style="margin-top: 30px;">
                     <h3><i class="fab fa-facebook"></i> Suivez nos créations sur Facebook</h3>
                     <p style="color: rgba(255,255,255,0.9); margin-bottom: 15px;">Découvrez nos modèles, commandez directement sur notre page</p>
-                    <a href="https://www.facebook.com/share/1B1LfVHNVU/" target="_blank" class="facebook-btn"><i class="fab fa-facebook"></i> Nous suivre sur Facebook</a>
+                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <!-- Lecteur vidéo Facebook intégré -->
+                        <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F801118096127529%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden; border-radius: 12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        <!-- Lien vers la page Facebook -->
+                        <a href="https://www.facebook.com/share/1B1LfVHNVU/" target="_blank" class="facebook-btn" style="align-self: center;"><i class="fab fa-facebook"></i> Nous suivre sur Facebook</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1798,264 +1816,94 @@
 
     <script>
         // =============================================
-        // TOUT LE JAVASCRIPT AVEC MAILTO PERSONNALISÉ
+        // CONFIGURATION OPTIONNELLE DU CLASSEMENT
         // =============================================
+        // ⚙️ METTRE "false" POUR DÉSACTIVER COMPLÈTEMENT LE BOUTON CLASSEMENT
+        const RANKING_FEATURE_ENABLED = true;  // ← change à false pour désactiver
         
-        // Adresse email de réception (MODIFIEZ ICI) ⬇️
-        const ADMIN_EMAIL = "starconnect.contact@gmail.com";
+        //=============================================
+        // YOUTUBE API
+        //=============================================
+        const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
+        let gapiInitialized = false;
         
-        // Fonction mailto générique
-        function sendMailTo(subject, body) {
-            const mailtoLink = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
-            return true;
+        function initYouTubeAPI() {
+            if (typeof gapi === 'undefined') {
+                console.warn('API Google non chargée, réessai dans 500ms');
+                setTimeout(initYouTubeAPI, 500);
+                return;
+            }
+            
+            gapi.load('client', function() {
+                gapi.client.init({
+                    apiKey: YOUTUBE_API_KEY,
+                    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest']
+                }).then(function() {
+                    gapiInitialized = true;
+                    console.log('✅ YouTube API initialisée avec succès');
+                    searchYouTubeVideos('Basta Lion Malagasy');
+                }).catch(function(error) {
+                    console.error('❌ Erreur API YouTube:', error);
+                    const container = document.getElementById('videoResults');
+                    if (container) {
+                        container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Service YouTube temporairement indisponible. Veuillez réessayer.</div>';
+                    }
+                });
+            });
         }
         
-        //===== FORMULAIRE CONSENTEMENT (PERSONNALISÉ) =====
-        document.getElementById('confirmConsentMailto')?.addEventListener('click', () => {
-            const signatureName = document.getElementById('signatureName')?.value;
-            const consentDate = document.getElementById('consentDate')?.value;
-            const consentRole = document.querySelector('input[name="consentRole"]:checked')?.value;
-            const certified = document.getElementById('consentCheckbox')?.checked;
+        window.searchYouTubeVideos = function(query) {
+            const container = document.getElementById('videoResults');
+            if (!container) return;
             
-            if (!certified) {
-                alert('Vous devez confirmer l\'autorisation de l\'artiste');
+            if (!query || query.trim() === '') {
+                container.innerHTML = '<div class="loader">🔍 Entrez un terme de recherche YouTube</div>';
                 return;
             }
             
-            if (!signatureName) {
-                alert('Veuillez entrer votre signature électronique');
+            container.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche sur YouTube...</div>';
+            
+            if (!gapiInitialized) {
+                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ API YouTube en cours d\'initialisation. Veuillez réessayer.</div>';
+                setTimeout(function() { searchYouTubeVideos(query); }, 1500);
                 return;
             }
             
-            const artist = getCurrentArtist();
-            
-            let body = `🟡 NOUVELLE DEMANDE DE CONSENTEMENT - ${artist.name} 🟡\n\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📌 INFORMATIONS ARTISTE\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `🎤 Artiste : ${artist.name}\n`;
-            body += `👤 Rôle : ${consentRole === 'artist' ? 'Artiste lui-même' : 'Manager / Agent'}\n`;
-            body += `✍️ Signature électronique : ${signatureName}\n`;
-            body += `📅 Date de la demande : ${consentDate}\n\n`;
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `✅ CERTIFICATIONS LÉGALES\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📄 Autorisation de l'artiste : ${certified ? 'OUI ✓' : 'NON ✗'}\n`;
-            body += `🏪 Utilisation commerciale : ${document.getElementById('consentCommercialCheckbox')?.checked ? 'AUTORISÉE ✓' : 'NON AUTORISÉE ✗'}\n\n`;
-            
-            if (consentRole === 'manager') {
-                body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-                body += `👔 INFORMATIONS MANAGER\n`;
-                body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-                body += `Nom : ${document.getElementById('managerName')?.value || 'Non spécifié'}\n`;
-                body += `Relation avec l'artiste : ${document.getElementById('managerRelation')?.value || 'Non spécifiée'}\n`;
-                body += `Artiste représenté : ${document.getElementById('artistRepresented')?.value || artist.name}\n\n`;
-            }
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📎 PIÈCES JOINTES REQUISES\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `Merci de joindre à cet email :\n`;
-            body += `1️⃣ La photo du nouvel avatar (format JPG/PNG)\n`;
-            body += `2️⃣ Une preuve de consentement signée (PDF ou photo)\n\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📧 Email généré automatiquement via STARCONNECT\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-            
-            sendMailTo(`🟡 CONSENTEMENT - ${artist.name}`, body);
-            
-            // Sauvegarde locale
-            artist.consentStatus = 'pending';
-            artist.consentRequestDate = Date.now();
-            artist.consentRole = consentRole;
-            artist.consentSignature = signatureName;
-            artist.consentDate = consentDate;
-            if (consentRole === 'manager') {
-                artist.consentManagerName = document.getElementById('managerName')?.value;
-                artist.consentRelation = document.getElementById('managerRelation')?.value;
-            }
-            saveAllData();
-            
-            document.getElementById('consentModal').classList.remove('show');
-            addNotification('✅ Demande envoyée par email !');
-        });
+            gapi.client.youtube.search.list({
+                part: 'snippet',
+                q: query,
+                maxResults: 8,
+                type: 'video',
+                safeSearch: 'none'
+            }).then(function(response) {
+                const videos = response.result.items;
+                
+                if (!videos || videos.length === 0) {
+                    container.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée pour "<strong>' + escapeHtml(query) + '</strong>"</div>';
+                    return;
+                }
+                
+                container.innerHTML = videos.map(function(v) {
+                    return `
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen loading="lazy"></iframe>
+                            <p><strong>${escapeHtml(v.snippet.title.length > 70 ? v.snippet.title.substring(0,70)+'...' : v.snippet.title)}</strong><br><small style="color:#888;">${escapeHtml(v.snippet.channelTitle)}</small></p>
+                        </div>
+                    `;
+                }).join('');
+            }).catch(function(error) {
+                console.error('Erreur recherche YouTube:', error);
+                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Erreur de connexion à YouTube. Veuillez réessayer.</div>';
+            });
+        };
         
-        //===== FORMULAIRE PARTENARIAT (PERSONNALISÉ) =====
-        document.getElementById('submitPartnerMailto')?.addEventListener('click', () => {
-            const name = document.getElementById('partnerName')?.value;
-            const email = document.getElementById('partnerEmail')?.value;
-            const phone = document.getElementById('partnerPhone')?.value;
-            const paypal = document.getElementById('partnerPaypal')?.value;
-            const productType = document.getElementById('partnerProductType')?.value;
-            const message = document.getElementById('partnerMessage')?.value;
-            
-            if (!name || !email) {
-                alert('Veuillez remplir au moins le nom et l\'email');
-                return;
-            }
-            
-            let body = `📋 NOUVELLE DEMANDE DE PARTENARIAT 📋\n\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `🏢 INFORMATIONS DEMANDEUR\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `Nom / Artiste : ${name}\n`;
-            body += `📧 Email : ${email}\n`;
-            body += `📞 Téléphone : ${phone || 'Non fourni'}\n`;
-            body += `💳 PayPal : ${paypal || 'Non fourni'}\n`;
-            body += `📦 Type de produit : ${productType}\n\n`;
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `💬 MESSAGE DÉTAILLÉ\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `${message || 'Aucun message'}\n\n`;
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📌 À TRAITER DANS LES PLUS BREFS DÉLAIS\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `Commission STARCONNECT : 15%\n`;
-            body += `Reversement artiste : 85%\n\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📧 Email généré automatiquement via STARCONNECT\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-            
-            sendMailTo(`📋 PARTENARIAT - ${name}`, body);
-            
-            // Sauvegarde locale
-            PARTNER_REQUESTS.unshift({ id: Date.now(), name, email, phone, paypal, productType, message, status: 'pending', date: Date.now() });
-            saveAllData();
-            renderPartnerRequests();
-            
-            document.getElementById('partnerName').value = '';
-            document.getElementById('partnerEmail').value = '';
-            document.getElementById('partnerPhone').value = '';
-            document.getElementById('partnerPaypal').value = '';
-            document.getElementById('partnerMessage').value = '';
-            
-            addNotification('✅ Demande envoyée par email !');
-        });
+        function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
         
-        //===== FORMULAIRE ÉVÉNEMENT (PERSONNALISÉ) =====
-        document.getElementById('submitEventMailto')?.addEventListener('click', () => {
-            const name = document.getElementById('eventName')?.value;
-            const place = document.getElementById('eventPlace')?.value;
-            const date = document.getElementById('eventDate')?.value;
-            
-            if (!name || !place || !date) {
-                alert('Veuillez remplir tous les champs');
-                return;
-            }
-            
-            let body = `🎫 PROPOSITION D'ÉVÉNEMENT - ${name} 🎫\n\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📅 INFORMATIONS ÉVÉNEMENT\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `🏷️ Nom : ${name}\n`;
-            body += `📍 Lieu : ${place}\n`;
-            body += `📆 Date : ${date}\n\n`;
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `✨ À VALIDER PAR L'ÉQUIPE STARCONNECT\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-            body += `📧 Email généré automatiquement via STARCONNECT`;
-            
-            sendMailTo(`🎫 ÉVÉNEMENT - ${name}`, body);
-            
-            eventsList.push({ id: Date.now(), name: `🎤 ${name}`, place: `📍 ${place}`, date });
-            renderEvents();
-            saveAllData();
-            
-            document.getElementById('eventName').value = '';
-            document.getElementById('eventPlace').value = '';
-            document.getElementById('eventDate').value = '';
-            document.getElementById('eventFormContainer').style.display = 'none';
-            
-            addNotification('✅ Événement proposé par email !');
-        });
+        document.addEventListener('DOMContentLoaded', initYouTubeAPI);
         
-        //===== FORMULAIRE INTERVIEW (PERSONNALISÉ) =====
-        document.getElementById('submitInterviewMailto')?.addEventListener('click', () => {
-            const artistName = document.getElementById('interviewArtistName')?.value;
-            const contactName = document.getElementById('interviewContactName')?.value;
-            const contactEmail = document.getElementById('interviewContactEmail')?.value;
-            const contactPhone = document.getElementById('interviewContactPhone')?.value;
-            const message = document.getElementById('interviewMessage')?.value;
-            
-            if (!artistName || !contactEmail) {
-                alert('Veuillez remplir au moins le nom de l\'artiste et votre email');
-                return;
-            }
-            
-            let body = `🎙️ DEMANDE D'INTERVIEW - ${artistName} 🎙️\n\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `🎤 INFORMATIONS ARTISTE\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `Artiste proposé : ${artistName}\n\n`;
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📞 CONTACT\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `Nom : ${contactName || 'Non fourni'}\n`;
-            body += `Email : ${contactEmail}\n`;
-            body += `Téléphone : ${contactPhone || 'Non fourni'}\n\n`;
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `💬 DEMANDE DÉTAILLÉE\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `${message || 'Aucun message'}\n\n`;
-            
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            body += `📧 Email généré automatiquement via STARCONNECT\n`;
-            body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-            
-            sendMailTo(`🎙️ INTERVIEW - ${artistName}`, body);
-            
-            document.getElementById('interviewArtistName').value = '';
-            document.getElementById('interviewContactName').value = '';
-            document.getElementById('interviewContactEmail').value = '';
-            document.getElementById('interviewContactPhone').value = '';
-            document.getElementById('interviewMessage').value = '';
-            
-            addNotification('✅ Demande d\'interview envoyée par email !');
-        });
-        
-        // ============ SUBSCRIPTION (FORMSPREE) ============
-        document.getElementById('subscribeBtn')?.addEventListener('click', () => {
-            addManualSubscriber();
-            
-            // Envoi vers Formspree
-            const formspreeUrl = 'https://formspree.io/f/xdaljabb';
-            fetch(formspreeUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: "fan@starconnect.mg",
-                    message: `Nouvel abonnement sur STARCONNECT !\nTotal actuel : ${formatSubscriberCount(subscriberCount)} abonnés.\nDate : ${new Date().toLocaleString()}`
-                })
-            }).catch(err => console.warn("Formspree Error (non bloquant):", err));
-            
-            // Notification visuelle
-            addNotification(`✅ Merci pour votre abonnement !`);
-        });
-        //==========================================================================
-        // TOUT LE RESTE DU CODE (ARTISTS_DB, FONCTIONS, ETC.) - IDENTIQUE À L'ORIGINAL
-        //==========================================================================
-        
-        function openStoryModal() {
-            document.getElementById('storyModal').classList.add('show');
-        }
-        
-        function closeStoryModal() {
-            document.getElementById('storyModal').classList.remove('show');
-        }
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeStoryModal();
-            }
-        });
-        
+        //=============================================
+        // DONNÉES PRINCIPALES
+        //=============================================
         let ARTISTS_DB = {
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -2199,6 +2047,67 @@
         let notifications = [];
         let currentRankingTab = 'national';
         
+        let subscriberCount = 1234;
+        let lastUpdateTimestamp = Date.now();
+        
+        function formatSubscriberCount(count) {
+            if (count >= 1000000) {
+                return (count / 1000000).toFixed(1) + 'M';
+            } else if (count >= 1000) {
+                return (count / 1000).toFixed(1) + 'k';
+            }
+            return count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        
+        function updateSubscriberDisplay() {
+            const countElement = document.getElementById('subscriberCount');
+            if (countElement) {
+                countElement.textContent = formatSubscriberCount(subscriberCount);
+            }
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({
+                count: subscriberCount,
+                timestamp: lastUpdateTimestamp
+            }));
+        }
+        
+        function addManualSubscriber() {
+            subscriberCount++;
+            updateSubscriberDisplay();
+            const btn = document.getElementById('subscribeBtn');
+            if (btn) {
+                btn.classList.add('subscribe-animation');
+                setTimeout(() => {
+                    btn.classList.remove('subscribe-animation');
+                }, 300);
+            }
+            showToast('✅ Merci pour votre abonnement !');
+            saveSubscriberData();
+        }
+        
+        function saveSubscriberData() {
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({
+                count: subscriberCount,
+                timestamp: lastUpdateTimestamp
+            }));
+        }
+        
+        function loadSubscriberData() {
+            const saved = localStorage.getItem('starconnect_subscribers');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    subscriberCount = data.count;
+                    lastUpdateTimestamp = data.timestamp;
+                    updateSubscriberDisplay();
+                } catch(e) {}
+            }
+        }
+        
+        //=============================================
+        // FONCTIONS PRINCIPALES
+        //=============================================
+        function getCurrentArtist() { return ARTISTS_DB[currentArtistId]; }
+        
         function updateManaDisplay(newScore, animate = true) {
             const manaElement = document.getElementById('manaValue');
             const trendElement = document.getElementById('manaTrend');
@@ -2241,244 +2150,6 @@
         let manaUpdateTimeout = null;
         let autoRankingInterval = null;
         
-        function simulateManaUpdate() {
-            if (maintenanceMode) return;
-            const increment = Math.floor(Math.random() * 8) + 1;
-            const newScore = manaScore + increment;
-            const currentArtist = getCurrentArtist();
-            if (currentArtist) {
-                currentArtist.manaScore = newScore;
-            }
-            updateManaDisplay(newScore, true);
-            renderRanking();
-        }
-        
-        function startAutoRankingUpdate() {
-            if (autoRankingInterval) clearInterval(autoRankingInterval);
-            autoRankingInterval = setInterval(() => {
-                for (const id in ARTISTS_DB) {
-                    const artist = ARTISTS_DB[id];
-                    if (artist && artist.active !== false) {
-                        const increment = Math.floor(Math.random() * 15) + 1;
-                        const boost = artist.certification === 'gold-premium' ? 1.5 : 
-                                    artist.certification === 'blue' ? 1.3 : 
-                                    artist.certification === 'gold' ? 1.2 : 1;
-                        const finalIncrement = Math.floor(increment * boost);
-                        artist.manaScore += finalIncrement;
-                        
-                        if (artist.youtubeStats) {
-                            const currentViews = parseFloat(artist.youtubeStats.replace('M', '').replace('K', '')) || 0;
-                            const newViews = currentViews + (Math.random() * 0.05);
-                            artist.youtubeStats = newViews.toFixed(1) + 'M';
-                        }
-                    }
-                }
-                saveAllData();
-                const currentArtist = getCurrentArtist();
-                if (currentArtist) {
-                    const newArtistScore = currentArtist.manaScore;
-                    if (newArtistScore !== manaScore) {
-                        updateManaDisplay(newArtistScore, false);
-                    }
-                }
-                renderRanking();
-            }, 30000);
-        }
-        
-        function addNotification(message, type = 'info') {
-            notifications.unshift({
-                id: Date.now(),
-                message: message,
-                time: Date.now(),
-                read: false,
-                type: type
-            });
-            if (notifications.length > 50) notifications.pop();
-            saveAllData();
-            renderNotifications();
-            showToast(message);
-        }
-        
-        function showToast(message) {
-            let n = document.createElement('div');
-            n.className = 'notification';
-            n.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
-            document.body.appendChild(n);
-            setTimeout(() => n.remove(), 3000);
-        }
-        
-        function renderNotifications() {
-            const badge = document.getElementById('notifBadge');
-            const unreadCount = notifications.filter(n => !n.read).length;
-            if (badge) badge.innerText = unreadCount;
-            
-            const dropdown = document.getElementById('notificationDropdown');
-            if (!dropdown) return;
-            
-            if (notifications.length === 0) {
-                dropdown.innerHTML = '<div class="notification-item">Aucune notification</div>';
-                return;
-            }
-            
-            dropdown.innerHTML = notifications.map(n => `
-                <div class="notification-item ${n.read ? '' : 'unread'}" onclick="markNotificationRead(${n.id})">
-                    ${n.message}
-                    <br><small>${getRelativeTime(n.time)}</small>
-                </div>
-            `).join('');
-        }
-        
-        function markNotificationRead(id) {
-            const notif = notifications.find(n => n.id === id);
-            if (notif) notif.read = true;
-            saveAllData();
-            renderNotifications();
-        }
-        
-        let currentTrack = null;
-        let audioPlayer = null;
-        
-        function playTrack(title, url) {
-            const player = document.getElementById('miniPlayer');
-            const playerTitle = document.getElementById('playerTitle');
-            const playBtn = document.getElementById('playerPlayBtn');
-            
-            if (audioPlayer) {
-                audioPlayer.pause();
-                audioPlayer = null;
-            }
-            
-            if (url && url !== '#') {
-                playerTitle.innerText = title;
-                player.style.display = 'flex';
-                playBtn.className = 'fas fa-play';
-                currentTrack = { title, url };
-                addNotification(`🎵 Lecture en cours : ${title}`);
-            } else {
-                addNotification(`⚠️ Titre non disponible : ${title}`);
-            }
-        }
-        
-        document.getElementById('playerPlayBtn')?.addEventListener('click', () => {
-            const playBtn = document.getElementById('playerPlayBtn');
-            if (playBtn.classList.contains('fa-play')) {
-                playBtn.className = 'fas fa-pause';
-            } else {
-                playBtn.className = 'fas fa-play';
-            }
-        });
-        
-        document.getElementById('playerCloseBtn')?.addEventListener('click', () => {
-            document.getElementById('miniPlayer').style.display = 'none';
-            if (audioPlayer) {
-                audioPlayer.pause();
-                audioPlayer = null;
-            }
-        });
-        
-        function checkCookieConsent() {
-            const consent = localStorage.getItem('cookie_consent');
-            if (!consent) {
-                document.getElementById('cookieBanner').classList.add('show');
-            }
-        }
-        
-        document.getElementById('acceptCookies')?.addEventListener('click', () => {
-            localStorage.setItem('cookie_consent', 'accepted');
-            document.getElementById('cookieBanner').classList.remove('show');
-            addNotification('🍪 Merci d\'avoir accepté nos cookies');
-        });
-        
-        document.getElementById('notificationBell')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const dropdown = document.getElementById('notificationDropdown');
-            dropdown.classList.toggle('show');
-        });
-        
-        document.addEventListener('click', () => {
-            document.getElementById('notificationDropdown')?.classList.remove('show');
-        });
-        
-        async function fetchRSSNews() {
-            try {
-                const rssFeeds = [
-                    'https://www.orange.mg/feed/',
-                    'https://www.moov.mg/rss',
-                    'https://lexpress.mg/feed/',
-                    'https://www.midi-madagasikara.mg/feed/'
-                ];
-                
-                let allArticles = [];
-                
-                for (const feedUrl of rssFeeds) {
-                    try {
-                        const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
-                        const response = await fetch(proxyUrl);
-                        const data = await response.json();
-                        
-                        if (data.status === 'ok' && data.items) {
-                            const articles = data.items.slice(0, 5).map(item => ({
-                                id: Date.now() + Math.random(),
-                                title: item.title,
-                                date: new Date(item.pubDate).getTime(),
-                                desc: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) : item.title,
-                                link: item.link,
-                                source: feedUrl.includes('orange') ? 'Orange Madagascar' : 
-                                        feedUrl.includes('moov') ? 'Moov Madagascar' :
-                                        feedUrl.includes('lexpress') ? 'L\'Express de Madagascar' : 'Midi Madagasikara'
-                            }));
-                            allArticles.push(...articles);
-                        }
-                    } catch(e) {
-                        console.warn(`Erreur sur flux ${feedUrl}:`, e);
-                    }
-                }
-                
-                if (allArticles.length === 0) {
-                    allArticles = [
-                        { id: Date.now(), title: "Basta Lion en concert à Antananarivo le 20 Mars", date: Date.now(), desc: "L'artiste malgache Basta Lion se produira au Palais des Sports.", link: "#", source: "Actualités" },
-                        { id: Date.now() + 1, title: "Nouvel album de Wawa Sali en préparation", date: Date.now() - 86400000, desc: "Wawa Sali annonce un nouvel album pour 2026.", link: "#", source: "Actualités" },
-                        { id: Date.now() + 2, title: "Madagascar Music Awards : les nominations", date: Date.now() - 172800000, desc: "Découvrez les artistes nommés pour les MMA 2026.", link: "#", source: "Actualités" }
-                    ];
-                }
-                
-                allArticles.sort((a,b) => b.date - a.date);
-                newsItems = [...allArticles, ...newsItems.filter(n => !n.source || n.source === 'Manuel')];
-                if (newsItems.length > 40) newsItems = newsItems.slice(0, 40);
-                
-                saveAllData();
-                renderNews();
-                return true;
-            } catch (error) {
-                console.error('Erreur chargement RSS:', error);
-                return false;
-            }
-        }
-        
-        function renderNews() {
-            const container = document.getElementById('newsList');
-            if (!container) return;
-            if (!newsItems || newsItems.length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;">📭 Aucune actualité pour le moment<br><small>Les actualités se chargeront automatiquement via RSS</small></div>';
-                return;
-            }
-            container.innerHTML = newsItems.map(item => `
-                <div class="news-item">
-                    <div style="flex:1;">
-                        <strong>📰 ${escapeHtml(item.title)}</strong>
-                        <br>
-                        <small style="color:#888;">
-                            ⏱️ ${getRelativeTime(item.date)} 
-                            ${item.source ? `<span class="news-source">📡 ${escapeHtml(item.source)}</span>` : ''}
-                        </small>
-                        <p style="margin-top:8px;">${escapeHtml(item.desc && item.desc.length > 200 ? item.desc.substring(0,200)+'...' : item.desc)}</p>
-                        ${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="news-link"><i class="fas fa-external-link-alt"></i> Lire l'article complet →</a>` : ''}
-                    </div>
-                    <div class="news-badge">📰</div>
-                </div>
-            `).join('');
-        }
-        
         function updateStarRating(score) {
             let stars = 0, level = "";
             if (score >= 2000) { stars = 5; level = "🌟 Légende"; }
@@ -2496,7 +2167,6 @@
         }
         
         function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
-        function getCurrentArtist() { return ARTISTS_DB[currentArtistId]; }
         
         function saveAllData() {
             localStorage.setItem('starconnect_news', JSON.stringify(newsItems));
@@ -2512,95 +2182,6 @@
             localStorage.setItem('starconnect_partners', JSON.stringify(PARTNER_REQUESTS));
             localStorage.setItem('starconnect_notifications', JSON.stringify(notifications));
             saveSubscriberData();
-        }
-        
-        let subscriberCount = 1234;
-        let lastUpdateTimestamp = Date.now();
-        
-        function formatSubscriberCount(count) {
-            if (count >= 1000000) {
-                return (count / 1000000).toFixed(1) + 'M';
-            } else if (count >= 1000) {
-                return (count / 1000).toFixed(1) + 'k';
-            }
-            return count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        }
-        
-        function updateSubscriberDisplay() {
-            const countElement = document.getElementById('subscriberCount');
-            if (countElement) {
-                countElement.textContent = formatSubscriberCount(subscriberCount);
-            }
-            localStorage.setItem('starconnect_subscribers', JSON.stringify({
-                count: subscriberCount,
-                timestamp: lastUpdateTimestamp
-            }));
-        }
-        
-        function addManualSubscriber() {
-            subscriberCount++;
-            updateSubscriberDisplay();
-            const btn = document.getElementById('subscribeBtn');
-            if (btn) {
-                btn.classList.add('subscribe-animation');
-                setTimeout(() => {
-                    btn.classList.remove('subscribe-animation');
-                }, 300);
-            }
-            showToast('✅ Merci pour votre abonnement !');
-            saveSubscriberData();
-        }
-        
-        function calculateAutomaticGrowth() {
-            const now = Date.now();
-            const elapsedHours = (now - lastUpdateTimestamp) / (1000 * 60 * 60);
-            
-            if (elapsedHours >= 1) {
-                let baseGrowth = 1 + Math.floor(Math.random() * 4);
-                if (subscriberCount > 5000) baseGrowth += 2;
-                if (subscriberCount > 10000) baseGrowth += 3;
-                
-                const hoursToAdd = Math.floor(elapsedHours);
-                const totalGrowth = baseGrowth * hoursToAdd;
-                
-                if (totalGrowth > 0) {
-                    subscriberCount += totalGrowth;
-                    updateSubscriberDisplay();
-                    lastUpdateTimestamp = now;
-                    saveSubscriberData();
-                }
-            }
-        }
-        
-        function saveSubscriberData() {
-            localStorage.setItem('starconnect_subscribers', JSON.stringify({
-                count: subscriberCount,
-                timestamp: lastUpdateTimestamp
-            }));
-        }
-        
-        function loadSubscriberData() {
-            const saved = localStorage.getItem('starconnect_subscribers');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    subscriberCount = data.count;
-                    lastUpdateTimestamp = data.timestamp;
-                    updateSubscriberDisplay();
-                } catch(e) {
-                    console.error('Erreur chargement abonnés', e);
-                }
-            } else {
-                subscriberCount = 1234;
-                lastUpdateTimestamp = Date.now();
-                updateSubscriberDisplay();
-            }
-        }
-        
-        function startSubscriberGrowthCheck() {
-            setInterval(() => {
-                calculateAutomaticGrowth();
-            }, 60 * 60 * 1000);
         }
         
         function loadAllData() {
@@ -2642,7 +2223,6 @@
                 document.getElementById('manaValue').innerText = manaScore;
                 updateStarRating(manaScore);
                 loadSubscriberData();
-                calculateAutomaticGrowth();
             } catch(e) { console.error(e); }
         }
         
@@ -2666,7 +2246,7 @@
             `).join('');
         }
         
-        function deleteConsentProof(artistId) {
+        window.deleteConsentProof = function(artistId) {
             if (confirm(`Supprimer la preuve de consentement pour ${ARTISTS_DB[artistId]?.name} ?`)) {
                 const artist = ARTISTS_DB[artistId];
                 artist.consentProof = null;
@@ -2679,7 +2259,7 @@
                 renderConsentProofs();
                 addNotification('Preuve supprimée');
             }
-        }
+        };
         
         function renderPendingApprovals() {
             const c = document.getElementById('pendingApprovalsList');
@@ -2702,7 +2282,7 @@
             `).join('');
         }
         
-        function approveConsent(artistId) {
+        window.approveConsent = function(artistId) {
             const artist = ARTISTS_DB[artistId];
             if (artist && artist.consentImageData) {
                 artist.customAvatar = artist.consentImageData;
@@ -2714,9 +2294,9 @@
                 renderConsentProofs();
                 addNotification(`✅ Consentement approuvé pour ${artist.name}`);
             }
-        }
+        };
         
-        function rejectConsent(artistId) {
+        window.rejectConsent = function(artistId) {
             const artist = ARTISTS_DB[artistId];
             artist.consentStatus = 'none';
             artist.consentImageData = null;
@@ -2732,7 +2312,7 @@
             renderPendingApprovals();
             renderConsentProofs();
             addNotification(`❌ Consentement rejeté pour ${artist.name}`);
-        }
+        };
         
         function selectConsentRole(role) {
             pendingConsentRole = role;
@@ -2797,7 +2377,7 @@
             `).join(''); 
         }
         
-        function approvePartnerRequest(id) {
+        window.approvePartnerRequest = function(id) {
             const request = PARTNER_REQUESTS.find(r => r.id === id);
             if (request) {
                 request.status = 'approved';
@@ -2805,14 +2385,14 @@
                 renderPartnerRequests();
                 addNotification(`✅ Partenariat approuvé pour ${request.name}`);
             }
-        }
+        };
         
-        function deletePartnerRequest(id) { 
+        window.deletePartnerRequest = function(id) { 
             PARTNER_REQUESTS = PARTNER_REQUESTS.filter(r => r.id !== id); 
             saveAllData(); 
             renderPartnerRequests(); 
             addNotification('Demande supprimée'); 
-        }
+        };
         
         function renderArtistSelect() { const s = document.getElementById('artistSelect'); if (!s) return; s.innerHTML = ''; for (const [id, a] of Object.entries(ARTISTS_DB)) { if (a.active !== false) { const o = document.createElement('option'); o.value = id; o.textContent = `${a.avatar || '🎤'} ${a.name}`; if (id === currentArtistId) o.selected = true; s.appendChild(o); } } }
         
@@ -3009,6 +2589,273 @@
             addNotification('✅ Classements mis à jour !');
         }
         
+        //=============================================
+        // ÉVÉNEMENTS ET INITIALISATION
+        //=============================================
+        function openStoryModal() { document.getElementById('storyModal').classList.add('show'); }
+        function closeStoryModal() { document.getElementById('storyModal').classList.remove('show'); }
+        function openSubscribeModal() { document.getElementById('subscribeModal').classList.add('show'); }
+        function closeSubscribeModal() { document.getElementById('subscribeModal').classList.remove('show'); }
+        
+        function addNotification(message, type = 'info') {
+            notifications.unshift({
+                id: Date.now(),
+                message: message,
+                time: Date.now(),
+                read: false,
+                type: type
+            });
+            if (notifications.length > 50) notifications.pop();
+            saveAllData();
+            renderNotifications();
+            showToast(message);
+        }
+        
+        function showToast(message) {
+            let n = document.createElement('div');
+            n.className = 'notification';
+            n.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 3000);
+        }
+        
+        function renderNotifications() {
+            const badge = document.getElementById('notifBadge');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            if (badge) badge.innerText = unreadCount;
+            
+            const dropdown = document.getElementById('notificationDropdown');
+            if (!dropdown) return;
+            
+            if (notifications.length === 0) {
+                dropdown.innerHTML = '<div class="notification-item">Aucune notification</div>';
+                return;
+            }
+            
+            dropdown.innerHTML = notifications.map(n => `
+                <div class="notification-item ${n.read ? '' : 'unread'}" onclick="markNotificationRead(${n.id})">
+                    ${n.message}
+                    <br><small>${getRelativeTime(n.time)}</small>
+                </div>
+            `).join('');
+        }
+        
+        window.markNotificationRead = function(id) {
+            const notif = notifications.find(n => n.id === id);
+            if (notif) notif.read = true;
+            saveAllData();
+            renderNotifications();
+        };
+        
+        let currentTrack = null;
+        let audioPlayer = null;
+        
+        function playTrack(title, url) {
+            const player = document.getElementById('miniPlayer');
+            const playerTitle = document.getElementById('playerTitle');
+            const playBtn = document.getElementById('playerPlayBtn');
+            
+            if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer = null;
+            }
+            
+            if (url && url !== '#') {
+                playerTitle.innerText = title;
+                player.style.display = 'flex';
+                playBtn.className = 'fas fa-play';
+                currentTrack = { title, url };
+                addNotification(`🎵 Lecture en cours : ${title}`);
+            } else {
+                addNotification(`⚠️ Titre non disponible : ${title}`);
+            }
+        }
+        
+        document.getElementById('playerPlayBtn')?.addEventListener('click', () => {
+            const playBtn = document.getElementById('playerPlayBtn');
+            if (playBtn.classList.contains('fa-play')) {
+                playBtn.className = 'fas fa-pause';
+            } else {
+                playBtn.className = 'fas fa-play';
+            }
+        });
+        
+        document.getElementById('playerCloseBtn')?.addEventListener('click', () => {
+            document.getElementById('miniPlayer').style.display = 'none';
+            if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer = null;
+            }
+        });
+        
+        function checkCookieConsent() {
+            const consent = localStorage.getItem('cookie_consent');
+            if (!consent) {
+                document.getElementById('cookieBanner').classList.add('show');
+            }
+        }
+        
+        document.getElementById('acceptCookies')?.addEventListener('click', () => {
+            localStorage.setItem('cookie_consent', 'accepted');
+            document.getElementById('cookieBanner').classList.remove('show');
+            addNotification('🍪 Merci d\'avoir accepté nos cookies');
+        });
+        
+        document.getElementById('notificationBell')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('show');
+        });
+        
+        document.addEventListener('click', () => {
+            document.getElementById('notificationDropdown')?.classList.remove('show');
+        });
+        
+        async function fetchRSSNews() {
+            try {
+                const rssFeeds = [
+                    'https://www.orange.mg/feed/',
+                    'https://www.moov.mg/rss',
+                    'https://lexpress.mg/feed/',
+                    'https://www.midi-madagasikara.mg/feed/'
+                ];
+                
+                let allArticles = [];
+                
+                for (const feedUrl of rssFeeds) {
+                    try {
+                        const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+                        const response = await fetch(proxyUrl);
+                        const data = await response.json();
+                        
+                        if (data.status === 'ok' && data.items) {
+                            const articles = data.items.slice(0, 5).map(item => ({
+                                id: Date.now() + Math.random(),
+                                title: item.title,
+                                date: new Date(item.pubDate).getTime(),
+                                desc: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) : item.title,
+                                link: item.link,
+                                source: feedUrl.includes('orange') ? 'Orange Madagascar' : 
+                                        feedUrl.includes('moov') ? 'Moov Madagascar' :
+                                        feedUrl.includes('lexpress') ? 'L\'Express de Madagascar' : 'Midi Madagasikara'
+                            }));
+                            allArticles.push(...articles);
+                        }
+                    } catch(e) {
+                        console.warn(`Erreur sur flux ${feedUrl}:`, e);
+                    }
+                }
+                
+                if (allArticles.length === 0) {
+                    allArticles = [
+                        { id: Date.now(), title: "Basta Lion en concert à Antananarivo le 20 Mars", date: Date.now(), desc: "L'artiste malgache Basta Lion se produira au Palais des Sports.", link: "#", source: "Actualités" },
+                        { id: Date.now() + 1, title: "Nouvel album de Wawa Sali en préparation", date: Date.now() - 86400000, desc: "Wawa Sali annonce un nouvel album pour 2026.", link: "#", source: "Actualités" },
+                        { id: Date.now() + 2, title: "Madagascar Music Awards : les nominations", date: Date.now() - 172800000, desc: "Découvrez les artistes nommés pour les MMA 2026.", link: "#", source: "Actualités" }
+                    ];
+                }
+                
+                allArticles.sort((a,b) => b.date - a.date);
+                newsItems = [...allArticles, ...newsItems.filter(n => !n.source || n.source === 'Manuel')];
+                if (newsItems.length > 40) newsItems = newsItems.slice(0, 40);
+                
+                saveAllData();
+                renderNews();
+                return true;
+            } catch (error) {
+                console.error('Erreur chargement RSS:', error);
+                return false;
+            }
+        }
+        
+        function renderNews() {
+            const container = document.getElementById('newsList');
+            if (!container) return;
+            if (!newsItems || newsItems.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;">📭 Aucune actualité pour le moment<br><small>Les actualités se chargeront automatiquement via RSS</small></div>';
+                return;
+            }
+            container.innerHTML = newsItems.map(item => `
+                <div class="news-item">
+                    <div style="flex:1;">
+                        <strong>📰 ${escapeHtml(item.title)}</strong>
+                        <br>
+                        <small style="color:#888;">
+                            ⏱️ ${getRelativeTime(item.date)} 
+                            ${item.source ? `<span class="news-source">📡 ${escapeHtml(item.source)}</span>` : ''}
+                        </small>
+                        <p style="margin-top:8px;">${escapeHtml(item.desc && item.desc.length > 200 ? item.desc.substring(0,200)+'...' : item.desc)}</p>
+                        ${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="news-link"><i class="fas fa-external-link-alt"></i> Lire l'article complet →</a>` : ''}
+                    </div>
+                    <div class="news-badge">📰</div>
+                </div>
+            `).join('');
+        }
+        
+        // Simulation MANA
+        function simulateManaUpdate() {
+            if (maintenanceMode) return;
+            const increment = Math.floor(Math.random() * 8) + 1;
+            const newScore = manaScore + increment;
+            const currentArtist = getCurrentArtist();
+            if (currentArtist) {
+                currentArtist.manaScore = newScore;
+            }
+            updateManaDisplay(newScore, true);
+            renderRanking();
+        }
+        
+        function startAutoRankingUpdate() {
+            if (autoRankingInterval) clearInterval(autoRankingInterval);
+            autoRankingInterval = setInterval(() => {
+                for (const id in ARTISTS_DB) {
+                    const artist = ARTISTS_DB[id];
+                    if (artist && artist.active !== false) {
+                        const increment = Math.floor(Math.random() * 15) + 1;
+                        const boost = artist.certification === 'gold-premium' ? 1.5 : 
+                                    artist.certification === 'blue' ? 1.3 : 
+                                    artist.certification === 'gold' ? 1.2 : 1;
+                        const finalIncrement = Math.floor(increment * boost);
+                        artist.manaScore += finalIncrement;
+                        
+                        if (artist.youtubeStats) {
+                            const currentViews = parseFloat(artist.youtubeStats.replace('M', '').replace('K', '')) || 0;
+                            const newViews = currentViews + (Math.random() * 0.05);
+                            artist.youtubeStats = newViews.toFixed(1) + 'M';
+                        }
+                    }
+                }
+                saveAllData();
+                const currentArtist = getCurrentArtist();
+                if (currentArtist) {
+                    const newArtistScore = currentArtist.manaScore;
+                    if (newArtistScore !== manaScore) {
+                        updateManaDisplay(newArtistScore, false);
+                    }
+                }
+                renderRanking();
+            }, 30000);
+        }
+        
+        function startSubscriberGrowthCheck() {
+            setInterval(() => {
+                const now = Date.now();
+                const elapsedHours = (now - lastUpdateTimestamp) / (1000 * 60 * 60);
+                if (elapsedHours >= 1) {
+                    let baseGrowth = 1 + Math.floor(Math.random() * 4);
+                    if (subscriberCount > 5000) baseGrowth += 2;
+                    if (subscriberCount > 10000) baseGrowth += 3;
+                    const hoursToAdd = Math.floor(elapsedHours);
+                    const totalGrowth = baseGrowth * hoursToAdd;
+                    if (totalGrowth > 0) {
+                        subscriberCount += totalGrowth;
+                        updateSubscriberDisplay();
+                        lastUpdateTimestamp = now;
+                        saveSubscriberData();
+                    }
+                }
+            }, 60 * 60 * 1000);
+        }
+        
         function initSmoothScroll() {
             const navLinks = document.querySelectorAll('.nav a');
             navLinks.forEach(link => {
@@ -3034,6 +2881,10 @@
             if (rankingBtn) {
                 rankingBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    if (!RANKING_FEATURE_ENABLED) {
+                        addNotification('⚙️ Fonctionnalité classement désactivée (optionnelle)');
+                        return;
+                    }
                     const targetElement = document.getElementById('classements');
                     if (targetElement) {
                         const allPanels = document.querySelectorAll('.panel');
@@ -3041,6 +2892,8 @@
                         allPanels.forEach(p => p.classList.remove('active-panel'));
                         allNavBtns.forEach(b => b.classList.remove('active'));
                         targetElement.classList.add('active-panel');
+                        const rankingNavBtn = document.querySelector('.nav-btn[data-panel="ranking"]');
+                        if (rankingNavBtn) rankingNavBtn.classList.add('active');
                         targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         addNotification('🏆 Accès au classement des artistes');
                     }
@@ -3269,26 +3122,182 @@
             } 
         });
         
-        setInterval(() => {
-            const now = Date.now();
-            let changed = false;
-            for (const [id, artist] of Object.entries(ARTISTS_DB)) {
-                if (artist.consentStatus === 'pending' && artist.consentRequestDate && (now - artist.consentRequestDate) > 48 * 60 * 60 * 1000) {
-                    artist.consentStatus = 'none';
-                    artist.consentImageData = null;
-                    artist.consentRequestDate = null;
-                    changed = true;
-                }
-            }
-            if (changed) {
-                saveAllData();
-                if (currentArtistId) renderArtistProfile();
-                renderPendingApprovals();
-                addNotification('⏰ Certaines demandes de consentement ont expiré (48h dépassé)');
-            }
-        }, 60 * 60 * 1000);
+        // Abonnement classique - popup
+        document.getElementById('subscribeBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSubscribeModal();
+        });
         
-        let manaInterval = setInterval(() => { if (!maintenanceMode) { simulateManaUpdate(); } }, 15000);
+        // Formulaire d'abonnement - envoi normal vers Formspree
+        document.getElementById('subscribeForm')?.addEventListener('submit', function(e) {
+            addManualSubscriber();
+            closeSubscribeModal();
+            // Le formulaire s'envoie normalement vers Formspree
+        });
+        
+        // Mailto pour consentement
+        document.getElementById('confirmConsentMailto')?.addEventListener('click', () => {
+            const signatureName = document.getElementById('signatureName')?.value;
+            const consentDate = document.getElementById('consentDate')?.value;
+            const consentRole = document.querySelector('input[name="consentRole"]:checked')?.value;
+            const certified = document.getElementById('consentCheckbox')?.checked;
+            
+            if (!certified) {
+                alert('Vous devez confirmer l\'autorisation de l\'artiste');
+                return;
+            }
+            
+            if (!signatureName) {
+                alert('Veuillez entrer votre signature électronique');
+                return;
+            }
+            
+            const artist = getCurrentArtist();
+            
+            let body = `🟡 NOUVELLE DEMANDE DE CONSENTEMENT - ${artist.name} 🟡\n\n`;
+            body += `Artiste : ${artist.name}\n`;
+            body += `Rôle : ${consentRole === 'artist' ? 'Artiste lui-même' : 'Manager / Agent'}\n`;
+            body += `Signature : ${signatureName}\n`;
+            body += `Date : ${consentDate}\n\n`;
+            
+            if (consentRole === 'manager') {
+                body += `Manager : ${document.getElementById('managerName')?.value || 'Non spécifié'}\n`;
+                body += `Relation : ${document.getElementById('managerRelation')?.value || 'Non spécifiée'}\n`;
+            }
+            
+            body += `\nMerci de joindre la photo du nouvel avatar et une preuve de consentement signée.`;
+            
+            const mailtoLink = `mailto:starconnect.consent@gmail.com?subject=🟡 CONSENTEMENT - ${artist.name}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            artist.consentStatus = 'pending';
+            artist.consentRequestDate = Date.now();
+            artist.consentRole = consentRole;
+            artist.consentSignature = signatureName;
+            artist.consentDate = consentDate;
+            if (consentRole === 'manager') {
+                artist.consentManagerName = document.getElementById('managerName')?.value;
+                artist.consentRelation = document.getElementById('managerRelation')?.value;
+            }
+            saveAllData();
+            
+            document.getElementById('consentModal').classList.remove('show');
+            addNotification('✅ Demande envoyée par email !');
+        });
+        
+        // Mailto pour partenariat
+        document.getElementById('submitPartnerMailto')?.addEventListener('click', () => {
+            const name = document.getElementById('partnerName')?.value;
+            const email = document.getElementById('partnerEmail')?.value;
+            const phone = document.getElementById('partnerPhone')?.value;
+            const paypal = document.getElementById('partnerPaypal')?.value;
+            const productType = document.getElementById('partnerProductType')?.value;
+            const message = document.getElementById('partnerMessage')?.value;
+            
+            if (!name || !email) {
+                alert('Veuillez remplir au moins le nom et l\'email');
+                return;
+            }
+            
+            let body = `📋 NOUVELLE DEMANDE DE PARTENARIAT 📋\n\n`;
+            body += `Nom : ${name}\n`;
+            body += `Email : ${email}\n`;
+            body += `Téléphone : ${phone || 'Non fourni'}\n`;
+            body += `PayPal : ${paypal || 'Non fourni'}\n`;
+            body += `Type de produit : ${productType}\n`;
+            body += `Message : ${message || 'Aucun message'}\n`;
+            
+            const mailtoLink = `mailto:starconnect.contact@gmail.com?subject=📋 PARTENARIAT - ${name}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            PARTNER_REQUESTS.unshift({ id: Date.now(), name, email, phone, paypal, productType, message, status: 'pending', date: Date.now() });
+            saveAllData();
+            renderPartnerRequests();
+            
+            document.getElementById('partnerName').value = '';
+            document.getElementById('partnerEmail').value = '';
+            document.getElementById('partnerPhone').value = '';
+            document.getElementById('partnerPaypal').value = '';
+            document.getElementById('partnerMessage').value = '';
+            
+            addNotification('✅ Demande envoyée par email !');
+        });
+        
+        // Mailto pour événement
+        document.getElementById('submitEventMailto')?.addEventListener('click', () => {
+            const name = document.getElementById('eventName')?.value;
+            const place = document.getElementById('eventPlace')?.value;
+            const date = document.getElementById('eventDate')?.value;
+            
+            if (!name || !place || !date) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            let body = `🎫 PROPOSITION D'ÉVÉNEMENT - ${name} 🎫\n\n`;
+            body += `Nom : ${name}\n`;
+            body += `Lieu : ${place}\n`;
+            body += `Date : ${date}\n`;
+            
+            const mailtoLink = `mailto:starconnect.contact@gmail.com?subject=🎫 ÉVÉNEMENT - ${name}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            eventsList.push({ id: Date.now(), name: `🎤 ${name}`, place: `📍 ${place}`, date });
+            renderEvents();
+            saveAllData();
+            
+            document.getElementById('eventName').value = '';
+            document.getElementById('eventPlace').value = '';
+            document.getElementById('eventDate').value = '';
+            document.getElementById('eventFormContainer').style.display = 'none';
+            
+            addNotification('✅ Événement proposé par email !');
+        });
+        
+        // Mailto pour interview
+        document.getElementById('submitInterviewMailto')?.addEventListener('click', () => {
+            const artistName = document.getElementById('interviewArtistName')?.value;
+            const contactName = document.getElementById('interviewContactName')?.value;
+            const contactEmail = document.getElementById('interviewContactEmail')?.value;
+            const contactPhone = document.getElementById('interviewContactPhone')?.value;
+            const message = document.getElementById('interviewMessage')?.value;
+            
+            if (!artistName || !contactEmail) {
+                alert('Veuillez remplir au moins le nom de l\'artiste et votre email');
+                return;
+            }
+            
+            let body = `🎙️ DEMANDE D'INTERVIEW - ${artistName} 🎙️\n\n`;
+            body += `Artiste proposé : ${artistName}\n`;
+            body += `Contact : ${contactName || 'Non fourni'}\n`;
+            body += `Email : ${contactEmail}\n`;
+            body += `Téléphone : ${contactPhone || 'Non fourni'}\n`;
+            body += `Message : ${message || 'Aucun message'}\n`;
+            
+            const mailtoLink = `mailto:starconnect.contact@gmail.com?subject=🎙️ INTERVIEW - ${artistName}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            document.getElementById('interviewArtistName').value = '';
+            document.getElementById('interviewContactName').value = '';
+            document.getElementById('interviewContactEmail').value = '';
+            document.getElementById('interviewContactPhone').value = '';
+            document.getElementById('interviewMessage').value = '';
+            
+            addNotification('✅ Demande d\'interview envoyée par email !');
+        });
+        
+        // Gestion optionnelle du classement (masquage si désactivé)
+        if (!RANKING_FEATURE_ENABLED) {
+            const rankingBtn = document.getElementById('rankingProBtn');
+            const rankingNav = document.querySelector('.nav-btn[data-panel="ranking"]');
+            if (rankingBtn) rankingBtn.classList.add('hidden-rank');
+            if (rankingNav) rankingNav.style.display = 'none';
+        }
+        
+        // Lancement
+        setInterval(() => {
+            if (!maintenanceMode) simulateManaUpdate();
+        }, 15000);
         
         startAutoRankingUpdate();
         startSubscriberGrowthCheck();
@@ -3302,10 +3311,8 @@
         let newsInterval = setInterval(() => { if (!maintenanceMode) { fetchRSSNews(); } }, 2 * 60 * 60 * 1000);
         
         window.addEventListener('beforeunload', () => { 
-            clearInterval(manaInterval); 
-            clearInterval(newsInterval);
             if (autoRankingInterval) clearInterval(autoRankingInterval);
         });
     </script>
 </body>
-</html>
+                   </html>
