@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>STARCONNECT · Basta Lion | Plateforme des Étoiles Malgaches</title>
-    <meta name="description" content="STARCONNECT - Plateforme indépendante dédiée aux artistes malgaches. Basta Lion, musique, communauté, événements et actualités en temps réel.">
+    <title>STARCONNECT · Classement des artistes malgaches</title>
+    <meta name="description" content="STARCONNECT - Plateforme indépendante dédiée aux artistes malgaches. Classement officieux basé sur streams, réseaux, récompenses & impact.">
     <meta name="author" content="STARCONNECT">
     <meta name="copyright" content="STARCONNECT">
     <meta name="theme-color" content="#e0a500">
-    <meta property="og:title" content="STARCONNECT - Plateforme des Étoiles Malgaches">
-    <meta property="og:description" content="Découvrez Basta Lion et les artistes malgaches">
+    <meta property="og:title" content="STARCONNECT - Classement des artistes malgaches">
+    <meta property="og:description" content="Découvrez le classement des artistes malgaches">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/7218955a-0b52-6432-a3aa-e4cb1327ec79.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,8 +18,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <style>
-        /* ===== VOTRE STYLE EXISTANT (GARDÉ IDENTIQUE) ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: #050505;
@@ -56,8 +59,10 @@
         body.light-mode .product-card { background: #fff; border-color: #e0e0e0; }
         body.light-mode .partner-card { background: #fff; border-color: #e0e0e0; }
         body.light-mode .custom-item { background: #fff; border-color: #e0e0e0; }
+        body.light-mode .ranking-table th { background: #f0f0f0; color: #1a1a1a; }
+        body.light-mode .ranking-table td { border-bottom-color: #e0e0e0; }
 
-        .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
         .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-bottom: 24px; margin-bottom: 32px; border-bottom: 1px solid #1e1e1e; }
         .logo { display: flex; align-items: center; gap: 15px; }
         .logo h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, #ffffff, #e0a500); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -126,7 +131,6 @@
             font-weight: 600;
         }
         
-        /* BOUTON CLASSEMENT VERT FLUO NÉON */
         .ranking-pro-btn {
             background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
             border: none;
@@ -147,9 +151,7 @@
             box-shadow: 0 0 10px rgba(57,255,20,0.5), 0 4px 15px rgba(0,0,0,0.2);
             animation: neonPulse 2s infinite;
         }
-        .ranking-pro-btn.hidden-rank {
-            display: none;
-        }
+        .ranking-pro-btn.hidden-rank { display: none; }
         @keyframes neonPulse {
             0% { box-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14; }
             50% { box-shadow: 0 0 15px #39ff14, 0 0 25px #39ff14; }
@@ -208,13 +210,8 @@
             color: #050505;
             box-shadow: 0 4px 12px rgba(224,165,0,0.3);
         }
-        .theme-toggle i {
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-        }
-        .theme-toggle:hover i {
-            transform: rotate(15deg);
-        }
+        .theme-toggle i { font-size: 1rem; transition: transform 0.3s ease; }
+        .theme-toggle:hover i { transform: rotate(15deg); }
         
         .mana-value {
             display: inline-block;
@@ -377,10 +374,7 @@
         .nav-btn.active { background: #1a1a1a; color: #e0a500; }
         .nav-btn:hover:not(.active) { background: #111; color: #ccc; }
         
-        .section {
-            scroll-margin-top: 100px;
-        }
-        
+        .section { scroll-margin-top: 100px; }
         .panel { display: none; }
         .panel.active-panel { display: block; }
         .card { background: #0c0c0c; border-radius: 28px; padding: 28px; margin-bottom: 28px; border: 1px solid #1c1c1c; transition: border-color 0.2s; }
@@ -485,6 +479,7 @@
             margin-right: 8px;
         }
         
+        /* Certifications */
         .star-certified-blue {
             width: 32px;
             height: 32px;
@@ -678,6 +673,91 @@
         .stat-box { background: #080808; padding: 18px; border-radius: 20px; text-align: center; border: 1px solid #1c1c1c; }
         .stat-number { font-size: 1.8rem; font-weight: 800; color: #e0a500; }
         .stat-label { font-size: 0.7rem; color: #777; margin-top: 6px; }
+        
+        /* CLASSEMENT STYLES */
+        .ranking-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .ranking-tab {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 8px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .ranking-tab.active {
+            background: #e0a500;
+            color: #050505;
+            border-color: #e0a500;
+        }
+        .ranking-table-wrapper {
+            overflow-x: auto;
+            border-radius: 20px;
+        }
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        .ranking-table th {
+            text-align: left;
+            padding: 14px 12px;
+            background: #1a1a1a;
+            color: #e0a500;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-bottom: 2px solid #2a2a2a;
+        }
+        .ranking-table td {
+            padding: 12px;
+            border-bottom: 1px solid #1c1c1c;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        .ranking-table tr:hover {
+            background: rgba(224,165,0,0.05);
+        }
+        .rank-number {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #e0a500;
+        }
+        .progress-bg {
+            background: #2a2a2a;
+            border-radius: 20px;
+            height: 6px;
+            width: 80px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-fill {
+            background: #e0a500;
+            height: 6px;
+            border-radius: 20px;
+            width: 0%;
+        }
+        .stat-badge {
+            font-weight: 600;
+            font-size: 0.7rem;
+            background: rgba(224,165,0,0.15);
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            cursor: help;
+            margin-left: 8px;
+        }
+        .score-cell {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #e0a500;
+        }
+        
         .search-bar { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
         .search-input { flex: 1; background: #0a0a0a; border: 1px solid #222; border-radius: 60px; padding: 14px 22px; color: white; font-size: 0.9rem; outline: none; font-family: inherit; }
         .search-input:focus { border-color: #e0a500; }
@@ -841,224 +921,39 @@
         .facebook-btn { background: white; color: #1877f2; border: none; padding: 12px 30px; border-radius: 40px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.2s; text-decoration: none; display: inline-block; }
         .facebook-btn:hover { transform: scale(1.02); background: #f0f0f0; }
         
-        .news-link {
-            color: #e0a500;
-            font-size: 0.7rem;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 8px;
-        }
+        .news-link { color: #e0a500; font-size: 0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; }
         .news-link:hover { text-decoration: underline; }
         .news-source { font-size: 0.6rem; color: #888; margin-left: 8px; }
         
         .proof-preview { max-width: 100px; max-height: 100px; margin-top: 10px; border-radius: 8px; }
-        
         .api-error { background: rgba(220,38,38,0.2); border: 1px solid #dc2626; border-radius: 12px; padding: 20px; text-align: center; color: #dc2626; }
         
-        .about-mission {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(224,165,0,0.05);
-            border-radius: 20px;
-            border-left: 4px solid #e0a500;
-        }
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-        .team-member {
-            background: #0a0a0a;
-            border: 1px solid #1c1c1c;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .team-member:hover {
-            transform: translateY(-5px);
-            border-color: #e0a500;
-        }
-        .team-avatar {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px;
-            background: linear-gradient(135deg, #1a1a2e, #0a0a0a);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #e0a500;
-        }
-        .team-avatar i {
-            font-size: 3rem;
-            color: #e0a500;
-        }
-        .team-name {
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        .team-role {
-            color: #e0a500;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .team-desc {
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-        .timeline {
-            margin: 40px 0;
-            padding: 20px;
-            background: #0a0a0a;
-            border-radius: 20px;
-        }
-        .timeline-item {
-            display: flex;
-            gap: 20px;
-            padding: 15px 0;
-            border-bottom: 1px solid #1c1c1c;
-        }
-        .timeline-year {
-            min-width: 80px;
-            font-weight: 800;
-            color: #e0a500;
-            font-size: 1.2rem;
-        }
-        .timeline-content {
-            flex: 1;
-        }
-        .timeline-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        .timeline-desc {
-            color: #888;
-            font-size: 0.85rem;
-        }
-        .cta-about {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            border: 1px solid #e0a500;
-        }
-        .cta-about h3 {
-            color: #e0a500;
-            margin-bottom: 15px;
-        }
+        .about-mission { font-size: 1.1rem; line-height: 1.7; margin-bottom: 30px; padding: 20px; background: rgba(224,165,0,0.05); border-radius: 20px; border-left: 4px solid #e0a500; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; margin: 30px 0; }
+        .team-member { background: #0a0a0a; border: 1px solid #1c1c1c; border-radius: 20px; padding: 20px; text-align: center; transition: transform 0.2s; }
+        .team-member:hover { transform: translateY(-5px); border-color: #e0a500; }
+        .team-avatar { width: 100px; height: 100px; margin: 0 auto 15px; background: linear-gradient(135deg, #1a1a2e, #0a0a0a); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #e0a500; }
+        .team-avatar i { font-size: 3rem; color: #e0a500; }
+        .team-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 5px; }
+        .team-role { color: #e0a500; font-size: 0.8rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .team-desc { font-size: 0.8rem; color: #aaa; }
+        .timeline { margin: 40px 0; padding: 20px; background: #0a0a0a; border-radius: 20px; }
+        .timeline-item { display: flex; gap: 20px; padding: 15px 0; border-bottom: 1px solid #1c1c1c; }
+        .timeline-year { min-width: 80px; font-weight: 800; color: #e0a500; font-size: 1.2rem; }
+        .timeline-content { flex: 1; }
+        .timeline-title { font-weight: 600; margin-bottom: 5px; }
+        .timeline-desc { color: #888; font-size: 0.85rem; }
+        .cta-about { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border-radius: 20px; padding: 30px; text-align: center; border: 1px solid #e0a500; }
+        .cta-about h3 { color: #e0a500; margin-bottom: 15px; }
         
-        .donation-box {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 2px solid #e0a500;
-            border-radius: 28px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .donation-box h3 {
-            color: #e0a500;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-        .donation-amounts {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 25px 0;
-        }
-        .donation-btn {
-            background: #1a1a1a;
-            border: 1px solid #e0a500;
-            color: #e0a500;
-            padding: 12px 25px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .donation-btn:hover {
-            background: #e0a500;
-            color: #050505;
-        }
-        .donation-link {
-            display: inline-block;
-            background: #e0a500;
-            color: #050505;
-            padding: 15px 40px;
-            border-radius: 40px;
-            font-weight: 700;
-            text-decoration: none;
-            margin-top: 20px;
-            transition: 0.2s;
-        }
-        .donation-link:hover {
-            transform: scale(1.05);
-            background: #ffc107;
-        }
-
-        .ranking-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .ranking-tab {
-            background: transparent;
-            border: 1px solid #333;
-            color: #888;
-            padding: 8px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .ranking-tab.active {
-            background: #e0a500;
-            color: #050505;
-            border-color: #e0a500;
-        }
-        .ranking-table-wrapper {
-            overflow-x: auto;
-            margin: 0 -10px;
-            padding: 0 10px;
-        }
-        .ranking-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-        .ranking-table th {
-            text-align: left;
-            padding: 12px 8px;
-            background: #1a1a1a;
-            color: #e0a500;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .ranking-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #1c1c1c;
-            font-size: 0.9rem;
-        }
-        .ranking-table tr:hover {
-            background: rgba(224,165,0,0.05);
-        }
-        .rank-number {
-            font-weight: 700;
-            color: #e0a500;
-        }
+        .donation-box { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border: 2px solid #e0a500; border-radius: 28px; padding: 30px; text-align: center; margin-bottom: 30px; }
+        .donation-box h3 { color: #e0a500; font-size: 1.8rem; margin-bottom: 15px; }
+        .donation-amounts { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin: 25px 0; }
+        .donation-btn { background: #1a1a1a; border: 1px solid #e0a500; color: #e0a500; padding: 12px 25px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .donation-btn:hover { background: #e0a500; color: #050505; }
+        .donation-link { display: inline-block; background: #e0a500; color: #050505; padding: 15px 40px; border-radius: 40px; font-weight: 700; text-decoration: none; margin-top: 20px; transition: 0.2s; }
+        .donation-link:hover { transform: scale(1.05); background: #ffc107; }
         
-        /* MODAL SUBSCRIBE CLASSIQUE */
         .subscribe-modal {
             display: none;
             position: fixed;
@@ -1071,9 +966,7 @@
             justify-content: center;
             align-items: center;
         }
-        .subscribe-modal.show {
-            display: flex;
-        }
+        .subscribe-modal.show { display: flex; }
         .subscribe-modal-content {
             background: #1a1a1a;
             border: 2px solid #e0a500;
@@ -1083,9 +976,7 @@
             width: 90%;
             text-align: center;
         }
-        body.light-mode .subscribe-modal-content {
-            background: #ffffff;
-        }
+        body.light-mode .subscribe-modal-content { background: #ffffff; }
         .subscribe-modal-content input {
             width: 100%;
             padding: 14px;
@@ -1096,11 +987,7 @@
             color: white;
             font-size: 1rem;
         }
-        body.light-mode .subscribe-modal-content input {
-            background: #f5f5f5;
-            color: #333;
-            border-color: #ddd;
-        }
+        body.light-mode .subscribe-modal-content input { background: #f5f5f5; color: #333; border-color: #ddd; }
         .subscribe-modal-content button {
             background: #e0a500;
             color: #050505;
@@ -1111,26 +998,15 @@
             cursor: pointer;
             width: 100%;
         }
-        .subscribe-modal-content button:hover {
-            background: #ffc107;
-            transform: scale(1.02);
-        }
-        .close-modal {
-            float: right;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #e0a500;
-            margin-top: -15px;
-        }
+        .subscribe-modal-content button:hover { background: #ffc107; transform: scale(1.02); }
+        .close-modal { float: right; font-size: 1.8rem; cursor: pointer; color: #e0a500; margin-top: -15px; }
         
         @keyframes subscribePop {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); background: #ffcc00; }
             100% { transform: scale(1); }
         }
-        .subscribe-animation {
-            animation: subscribePop 0.3s ease-in-out;
-        }
+        .subscribe-animation { animation: subscribePop 0.3s ease-in-out; }
         
         @media (max-width: 700px) {
             .container { padding: 20px 16px; }
@@ -1150,17 +1026,17 @@
             .subscribers-section { padding: 3px 10px 3px 15px; }
             .subscribe-btn { padding: 5px 15px; font-size: 0.75rem; }
             .subscriber-count { font-size: 1rem; }
+            .ranking-tabs { justify-content: center; }
         }
     </style>
 </head>
 <body>
-    <!-- POPUP ABONNEMENT CLASSIQUE -->
     <div id="subscribeModal" class="subscribe-modal">
         <div class="subscribe-modal-content">
             <span class="close-modal" onclick="closeSubscribeModal()">&times;</span>
             <i class="fas fa-bell" style="font-size: 2rem; color: #e0a500;"></i>
             <h3 style="margin: 10px 0;">✉️ Abonnez-vous</h3>
-            <p>Recevez les actualités exclusives des artistes malagaches</p>
+            <p>Recevez les actualités exclusives des artistes malgaches</p>
             <form id="subscribeForm" method="POST" action="https://formspree.io/f/xdaljabb">
                 <input type="email" name="email" placeholder="Votre adresse email" required>
                 <input type="hidden" name="_subject" value="Nouvel abonné STARCONNECT">
@@ -1170,7 +1046,6 @@
         </div>
     </div>
 
-    <!-- MODAL HISTOIRE -->
     <div id="storyModal" class="story-modal">
         <div class="story-modal-content">
             <span class="story-close" onclick="closeStoryModal()">&times;</span>
@@ -1179,42 +1054,25 @@
                 <p><span class="story-badge">👤 IDENTITÉ</span> <strong>De son vrai nom Veloarson Maurizio Loïc (ou Loïc Maurizio)</strong>, l'artiste malgache est né le <strong>27 décembre 1991 à Mahajanga</strong>.</p>
                 <p><span class="story-badge">🎵 STYLE MUSICAL</span> Auteur-compositeur-interprète autodidacte, il puise son inspiration dans le <strong>reggae, le dancehall et l'afrobeat</strong>, mêlant messages conscients et énergie festive.</p>
             </div>
-            
             <h3><i class="fas fa-futbol"></i> ⚽ Du Football à la Musique : Ses Débuts à Madagascar</h3>
             <p>Avant la musique, le football était sa passion, avec l'ambition de faire carrière dans ce sport. Cependant, tout a basculé à la suite de deux événements clés :</p>
             <p><strong>• Le déménagement déclencheur :</strong> Son installation à Nosy Be a été un tournant décisif. Loin de ses repères, il y rencontre <strong>Rijade</strong>, qui l'initie au chant et à la scène dancehall.</p>
             <p><strong>• Des débuts sur le tard :</strong> Il a débuté sa carrière aux alentours de 2006 (ou 2015 selon certaines sources), mais c'est en <strong>2013</strong> qu'il sort son premier titre, <strong>"Za Hialà"</strong>.</p>
-            
             <h3><i class="fas fa-globe-africa"></i> 🎵 Un Parcours Vers l'International</h3>
             <p>Une fois lancé, Basta Lion n'a cessé de gravir les échelons :</p>
             <p><strong>• Conquête du public malgache :</strong> Pour se faire connaître, il collabore avec des figures locales comme <strong>Wawa et Rycia</strong>.</p>
             <p><strong>• Le tournant "Colombian" :</strong> Ce titre, fruit d'une collaboration fortuite avec Kybba et Tribal Kush, l'a propulsé sur le devant de la scène, remportant notamment le prix du <strong>Titre de l'année 2024</strong> aux RDJ Mozika Awards.</p>
-            <p><strong>• La consécration internationale :</strong><br>
-            - Le single <strong>"Wyfl Riddim"</strong>, créé avec le sound system suisse Little Lion Sound, a été classé <strong>numéro un à Kingston, en Jamaïque</strong>, berceau du reggae.<br>
-            - Cette reconnaissance lui a valu le prix du <strong>Meilleur artiste Reggae/Dancehall aux African Entertainment Awards USA (AEAUSA) 2025</strong>, une victoire éclatante face à des géants comme Vybz Kartel et Shenseea.</p>
-            
-            <h3><i class="fas fa-chart-line"></i> ℹ️ Ce qu'il faut savoir sur son management et ses labels</h3>
-            <p><strong>• Premier manager :</strong> Aucune source officielle ou interview fiable ne permet d'identifier avec certitude son tout premier manager.</p>
-            <p><strong>• PNS Production :</strong> Cette structure est mentionnée comme le label (éditeur) ayant sorti plusieurs de ses premiers titres, et non comme un manager.</p>
-            <p><strong>• Autres labels :</strong> Il a également collaboré avec d'autres labels comme <strong>Basshall Records</strong> pour le titre "Colombian", <strong>Madajam</strong> pour "L'homme noir", <strong>NB Production</strong> pour "Werawera", et plus récemment <strong>Upfull Music</strong> pour le titre "PON DI BED".</p>
-            
+            <p><strong>• La consécration internationale :</strong><br>- Le single <strong>"Wyfl Riddim"</strong>, créé avec le sound system suisse Little Lion Sound, a été classé <strong>numéro un à Kingston, en Jamaïque</strong>, berceau du reggae.<br>- Cette reconnaissance lui a valu le prix du <strong>Meilleur artiste Reggae/Dancehall aux African Entertainment Awards USA (AEAUSA) 2025</strong>, une victoire éclatante face à des géants comme Vybz Kartel et Shenseea.</p>
             <div class="story-section" style="margin-top: 20px;">
                 <p><i class="fas fa-map-marker-alt" style="color:#e0a500;"></i> <strong>Aujourd'hui installé en France</strong>, Basta Lion continue de concrétiser son ambition internationale avec de nouveaux projets en préparation.</p>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE CONSENTEMENT -->
     <div id="consentModal" class="modal">
         <div class="modal-content">
             <h3><i class="fas fa-shield-alt"></i> Demande de consentement - Droit à l'image</h3>
             <p>Conformément à l'article 9 du Code civil et au RGPD, toute modification de la photo de profil nécessite le consentement explicite de l'artiste ou de son représentant légal.</p>
-            <p style="font-size:0.8rem; background:#0a0a0a; padding:10px; border-radius:12px;">
-                📧 <strong>Comment ça fonctionne ?</strong><br>
-                En cliquant sur "Envoyer", votre email par défaut s'ouvrira avec un message pré-rempli.<br>
-                Ajoutez la photo (en pièce jointe) et envoyez à : <strong>starconnect.consent@gmail.com</strong>
-            </p>
-            
             <div class="consent-role-selector">
                 <p style="text-align:left; margin-bottom:10px;"><strong>📌 Qui êtes-vous ?</strong></p>
                 <label id="role-artist-label" onclick="selectConsentRole('artist')">
@@ -1226,32 +1084,23 @@
                     <span style="display:block; font-size:0.7rem; color:#888;">J'ai reçu une autorisation de l'artiste</span>
                 </label>
             </div>
-            
             <div id="managerFields" style="display:none;" class="consent-signature-field">
                 <input type="text" id="managerName" placeholder="Votre nom complet (manager/agent)">
                 <textarea id="managerRelation" rows="2" placeholder="Précisez votre relation avec l'artiste (manager, agent, parent, etc.)"></textarea>
                 <input type="text" id="artistRepresented" placeholder="Nom de l'artiste représenté">
             </div>
-            
             <div class="consent-signature-field">
                 <input type="text" id="signatureName" placeholder="Signature électronique (nom et prénom)">
                 <input type="date" id="consentDate" value="2026-04-27">
             </div>
-            
             <div class="consent-checkbox">
                 <input type="checkbox" id="consentCheckbox">
                 <label for="consentCheckbox">📄 Je certifie sur l'honneur avoir l'autorisation de l'artiste pour utiliser cette image</label>
             </div>
-            
             <div class="consent-checkbox">
                 <input type="checkbox" id="consentCommercialCheckbox">
                 <label for="consentCommercialCheckbox">🏪 J'autorise l'utilisation commerciale de cette image sur la boutique et les réseaux sociaux</label>
             </div>
-            
-            <p style="font-size:0.7rem; color:#888; margin-top:15px;">
-                <i class="fas fa-gavel"></i> Ce consentement est valable 1 an et pourra être révoqué à tout moment sur simple demande.
-            </p>
-            
             <div class="modal-buttons">
                 <button id="confirmConsentMailto" class="btn-confirm">✉️ Envoyer par email (mailto:)</button>
                 <button id="cancelConsent" class="btn-cancel">✗ Annuler</button>
@@ -1259,13 +1108,11 @@
         </div>
     </div>
 
-    <!-- BANDEAU COOKIES -->
     <div id="cookieBanner" class="cookie-banner">
         <span>🍪 Ce site utilise le stockage local (localStorage) pour son fonctionnement. En continuant, vous acceptez notre politique de confidentialité.</span>
         <button id="acceptCookies" class="cookie-btn">Accepter</button>
     </div>
 
-    <!-- MINI LECTEUR AUDIO -->
     <div id="miniPlayer" class="mini-player">
         <i id="playerPlayBtn" class="fas fa-play"></i>
         <span id="playerTitle">Aucun titre en lecture</span>
@@ -1287,20 +1134,18 @@
                 </div>
             </div>
             <div class="header-controls">
-                <div class="status-badge"><i class="fas fa-circle"></i> Équipe active </div>
+                <div class="status-badge"><i class="fas fa-circle"></i> Équipe active ✅️</div>
                 <div class="notification-bell" id="notificationBell">
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="notifBadge">0</span>
                 </div>
                 <div class="artist-selector"><select id="artistSelect"></select></div>
                 <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> Mode sombre/clair</button>
-                <!-- Bouton classement vert fluo néon (optionnel) -->
                 <button id="rankingProBtn" class="ranking-pro-btn">
                     <i class="fas fa-chart-simple"></i> CLASSEMENTS
                     <span class="btn-badge">LIVE</span>
                     <i class="fas fa-trophy"></i>
                 </button>
-                
                 <div class="subscribers-section">
                     <button id="subscribeBtn" class="subscribe-btn">
                         <i class="fas fa-bell"></i> S'ABONNER
@@ -1310,7 +1155,6 @@
                         <span class="subscriber-label">abonnés</span>
                     </div>
                 </div>
-                
                 <div class="cert-header"><i class="fas fa-shield-alt"></i> CERTIFIED</div>
             </div>
         </div>
@@ -1398,15 +1242,11 @@
                 <div class="card-title"><i class="fas fa-palette"></i> 🎨 CRÉATIONS STARCONNECT</div>
                 <p style="margin-bottom: 20px;">Découvrez nos créations personnalisées. T-shirts, hoodies, accessoires faits main.</p>
                 <div id="customGallery" class="custom-gallery"></div>
-                
-                <!-- INTÉGRATION DIRECTE FACEBOOK (VIDEO + PAGE) -->
                 <div class="facebook-card" style="margin-top: 30px;">
                     <h3><i class="fab fa-facebook"></i> Suivez nos créations sur Facebook</h3>
                     <p style="color: rgba(255,255,255,0.9); margin-bottom: 15px;">Découvrez nos modèles, commandez directement sur notre page</p>
                     <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                        <!-- Lecteur vidéo Facebook intégré -->
                         <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F801118096127529%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden; border-radius: 12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                        <!-- Lien vers la page Facebook -->
                         <a href="https://www.facebook.com/share/1B1LfVHNVU/" target="_blank" class="facebook-btn" style="align-self: center;"><i class="fab fa-facebook"></i> Nous suivre sur Facebook</a>
                     </div>
                 </div>
@@ -1417,7 +1257,6 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-handshake"></i> 🤝 DEVENIR PARTENAIRE</div>
                 <p>Vous êtes artiste ou label ? Vous souhaitez vendre vos produits en France via STARCONNECT ?</p>
-                
                 <div id="partnerFormContainer" class="partner-form">
                     <h3 style="color: #e0a500;">📝 Formulaire de demande</h3>
                     <input type="text" id="partnerName" placeholder="Nom de l'artiste / Label">
@@ -1432,7 +1271,6 @@
                     <textarea id="partnerMessage" rows="3" placeholder="Décrivez vos produits, quantités, prix souhaité..."></textarea>
                     <button id="submitPartnerMailto" class="btn">✉️ Envoyer par email (mailto:)</button>
                 </div>
-                
                 <div style="margin-top: 30px;">
                     <h3 style="color: #e0a500;">📋 Comment ça marche ?</h3>
                     <div class="legal-card">
@@ -1515,7 +1353,7 @@
                     <div id="rankingContent"></div>
                 </div>
                 <button id="refreshRankingBtn" class="btn" style="margin-top: 20px;"><i class="fas fa-sync-alt"></i> Actualiser les statistiques</button>
-                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (vues YouTube, popularité, interactions). Mise à jour automatique toutes les 30 secondes.</p>
+                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (streams, réseaux, récompenses, impact). Mise à jour automatique toutes les 30 secondes.</p>
             </div>
         </div>
 
@@ -1529,23 +1367,14 @@
         <div id="legal" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-gavel"></i> ⚖️ MENTIONS LÉGALES OFFICIELLES</div>
-                
                 <div class="legal-card">
                     <h3><i class="fas fa-building"></i> Éditeur du site</h3>
-                    <p><strong>STARCONNECT</strong> est une plateforme indépendante dédiée aux artistes malgaches.<br>
-                    📧 Contact : <a href="mailto:contact@starconnect.mg" style="color:#e0a500;">contact@starconnect.mg</a><br>
-                    🏢 Siège social : Marseille, France<br>
-                    📞 Tél : +33 6 12 34 56 78<br>
-                    🏛️ SIRET : 123 456 789 00012 - RCS Marseille</p>
+                    <p><strong>STARCONNECT</strong> est une plateforme indépendante dédiée aux artistes malgaches.<br>📧 Contact : <a href="mailto:contact@starconnect.mg" style="color:#e0a500;">contact@starconnect.mg</a><br>🏢 Siège social : Marseille, France<br>📞 Tél : +33 6 12 34 56 78<br>🏛️ SIRET : 123 456 789 00012 - RCS Marseille</p>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-copyright"></i> Droits d'auteur & Propriété intellectuelle</h3>
-                    <p>© 2026 STARCONNECT. Tous droits réservés.<br>
-                    Site indépendant de soutien aux artistes malgaches.<br>
-                    <span class="warning">⚠️ Toute reproduction des contenus (textes, images, vidéos) est interdite sans autorisation préalable.</span></p>
+                    <p>© 2026 STARCONNECT. Tous droits réservés.<br>Site indépendant de soutien aux artistes malgaches.<br><span class="warning">⚠️ Toute reproduction des contenus (textes, images, vidéos) est interdite sans autorisation préalable.</span></p>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-camera"></i> DROIT À L'IMAGE & CONSENTEMENT</h3>
                     <p>Conformément à l'article 9 du Code civil et au RGPD :</p>
@@ -1558,7 +1387,6 @@
                     </ul>
                     <p class="warning" style="margin-top:10px;">📌 <strong>Conseil pratique</strong> : Un simple message WhatsApp, email ou PDF signé à la main qui dit "Je, soussigné [nom de l'artiste], donne mon accord à STARCONNECT pour utiliser mon image" a une valeur légale.</p>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-shield-alt"></i> Protection des données (RGPD)</h3>
                     <p>Conformément au RGPD (Règlement Général sur la Protection des Données) :</p>
@@ -1570,7 +1398,6 @@
                         <li>Droit d'accès, de rectification et d'opposition (CNIL)</li>
                     </ul>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-file-contract"></i> Conditions Générales d'Utilisation (CGU)</h3>
                     <p>En utilisant STARCONNECT, vous acceptez de :</p>
@@ -1583,23 +1410,14 @@
                     </ul>
                     <p style="margin-top: 10px;">Toute violation peut entraîner un bannissement et des poursuites légales.</p>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-handshake"></i> Conditions partenariat</h3>
-                    <p>Commission STARCONNECT : <strong>15%</strong> sur chaque vente (frais de stockage, expédition, marketing).<br>
-                    Reversement à l'artiste : <strong>85%</strong> du montant hors frais de port.<br>
-                    Paiement mensuel par virement international ou PayPal.<br>
-                    Contrat signé électroniquement ou physiquement.</p>
+                    <p>Commission STARCONNECT : <strong>15%</strong> sur chaque vente (frais de stockage, expédition, marketing).<br>Reversement à l'artiste : <strong>85%</strong> du montant hors frais de port.<br>Paiement mensuel par virement international ou PayPal.<br>Contrat signé électroniquement ou physiquement.</p>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-palette"></i> Créations personnalisées</h3>
-                    <p>Les créations STARCONNECT sont des productions originales réalisées à Marseille.<br>
-                    Designs exclusifs, impression et broderie de qualité.<br>
-                    Livraison France uniquement.<br>
-                    Délai de livraison : 5-10 jours ouvrés.</p>
+                    <p>Les créations STARCONNECT sont des productions originales réalisées à Marseille.<br>Designs exclusifs, impression et broderie de qualité.<br>Livraison France uniquement.<br>Délai de livraison : 5-10 jours ouvrés.</p>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-heart"></i> Engagement & Consentement</h3>
                     <p>Ce site est une plateforme <strong>indépendante et bienveillante</strong> dédiée à la promotion des artistes malgaches.
@@ -1607,13 +1425,9 @@
                     les éléments concernés seront supprimés sous 48h.<br>
                     <strong>Toute modification d'avatar est soumise à validation administrative. Un badge 'Consentement validé' atteste de l'accord de l'artiste.</strong></p>
                 </div>
-
                 <div class="legal-card">
                     <h3><i class="fas fa-database"></i> Hébergement</h3>
-                    <p>Ce site est hébergé par :<br>
-                    <strong>GitHub Pages</strong> / <strong>Netlify</strong> (selon déploiement)<br>
-                    Données stockées localement dans le navigateur de l'utilisateur.<br>
-                    <span class="warning">⚠️ Aucune sauvegarde cloud pour les données utilisateur.</span></p>
+                    <p>Ce site est hébergé par :<br><strong>GitHub Pages</strong> / <strong>Netlify</strong> (selon déploiement)<br>Données stockées localement dans le navigateur de l'utilisateur.<br><span class="warning">⚠️ Aucune sauvegarde cloud pour les données utilisateur.</span></p>
                 </div>
             </div>
         </div>
@@ -1621,13 +1435,11 @@
         <div id="apropos" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-info-circle"></i> ℹ️ À PROPOS DE STARCONNECT</div>
-                
                 <div class="about-mission">
                     <i class="fas fa-quote-left" style="color: #e0a500; margin-right: 8px;"></i>
                     STARCONNECT est une plateforme <strong>indépendante et passionnée</strong> dédiée à la promotion et au soutien des artistes malgaches. 
                     Notre mission : connecter les talents de Madagascar avec le monde entier, en offrant une vitrine moderne, éthique et transparente.
                 </div>
-                
                 <h3 style="color: #e0a500; margin: 30px 0 20px;"><i class="fas fa-users"></i> Notre équipe</h3>
                 <div class="team-grid">
                     <div class="team-member">
@@ -1655,7 +1467,6 @@
                         <div class="team-desc">En contact permanent avec les artistes et labels pour développer des collaborations équitables.</div>
                     </div>
                 </div>
-                
                 <h3 style="color: #e0a500; margin: 40px 0 20px;"><i class="fas fa-history"></i> Notre histoire</h3>
                 <div class="timeline">
                     <div class="timeline-item">
@@ -1680,7 +1491,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="cta-about">
                     <h3><i class="fas fa-rocket"></i> Vous voulez nous rejoindre ?</h3>
                     <p style="margin-bottom: 20px;">Artistes, créateurs, ou simplement passionnés, STARCONNECT est ouvert à toutes les bonnes volontés.</p>
@@ -1692,7 +1502,6 @@
         <div id="soutenir" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-heart"></i> 💰 SOUTENIR STARCONNECT</div>
-                
                 <div class="donation-box">
                     <h3><i class="fas fa-hand-holding-heart"></i> Aidez-nous à faire briller les étoiles malgaches</h3>
                     <p>STARCONNECT est une plateforme indépendante. Vos dons nous permettent de :</p>
@@ -1702,20 +1511,17 @@
                         <li>🌍 Promouvoir la musique malgache à l'international</li>
                         <li>🛠️ Maintenir et améliorer le site</li>
                     </ul>
-                    
                     <div class="donation-amounts">
                         <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">5 €</button>
                         <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">10 €</button>
                         <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">20 €</button>
                         <button class="donation-btn" onclick="window.open('https://paypal.me/starconnect','_blank')">50 €</button>
                     </div>
-                    
                     <a href="https://paypal.me/starconnect" target="_blank" class="donation-link">
                         <i class="fab fa-paypal"></i> Faire un don via PayPal
                     </a>
                     <p style="margin-top: 20px; font-size: 0.8rem;">Ou contactez-nous pour un partenariat : <a href="mailto:contact@starconnect.mg" style="color:#e0a500;">contact@starconnect.mg</a></p>
                 </div>
-                
                 <div class="legal-card">
                     <h3><i class="fas fa-seedling"></i> Vous voulez aider autrement ?</h3>
                     <p>Partagez notre site, suivez-nous sur les réseaux, ou proposez vos idées ! Chaque geste compte.</p>
@@ -1729,30 +1535,26 @@
             <input type="password" id="adminPassword" placeholder="Mot de passe admin">
             <div id="adminContent" style="display: none;">
                 <p style="font-size: 0.7rem; color: #888; margin-bottom: 15px;">Gestion complète du site</p>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">📰 Actualités (RSS + Manuel)</h5>
                     <input type="text" id="adminNewsTitle" placeholder="Titre"><textarea id="adminNewsDesc" rows="2" placeholder="Description"></textarea>
                     <button id="adminAddNews">➕ Ajouter manuel</button>
                     <button id="adminRefreshNews" style="background:#0891b2; margin-top:5px;">🔄 Forcer refresh RSS</button>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">📅 Événements</h5>
                     <input type="text" id="adminEventName" placeholder="Nom"><input type="text" id="adminEventPlace" placeholder="Lieu"><input type="date" id="adminEventDate">
                     <button id="adminAddEvent">➕ Ajouter</button>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">🛍️ Produits boutique</h5>
                     <input type="text" id="adminProductName" placeholder="Nom du produit">
                     <input type="text" id="adminProductPrice" placeholder="Prix (€)">
-                    <input type="text" id="adminProductArtist" placeholder="Artiste (basta-lion, wawa-sali, etc)">
+                    <input type="text" id="adminProductArtist" placeholder="Artiste">
                     <input type="text" id="adminProductLink" placeholder="Lien de commande (URL valide)">
                     <button id="adminAddProduct">➕ Ajouter produit</button>
                     <div id="productsList" class="artists-management"></div>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">🎨 Créations personnalisées</h5>
                     <input type="text" id="customName" placeholder="Nom du produit">
@@ -1762,7 +1564,6 @@
                     <button id="adminAddCustom">➕ Ajouter création</button>
                     <div id="customList" class="artists-management"></div>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">🎤 Artistes</h5>
                     <input type="text" id="newArtistId" placeholder="ID unique"><input type="text" id="newArtistName" placeholder="Nom">
@@ -1771,22 +1572,18 @@
                     <input type="date" id="newArtistConcertDate"><button id="adminAddArtist">➕ Ajouter</button>
                     <div id="artistsList" class="artists-management"></div>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">📋 Demandes partenaires</h5>
                     <div id="partnerRequestsList"></div>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">✅ Demandes de consentement</h5>
                     <div id="pendingApprovalsList"></div>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">📄 Preuves de consentement</h5>
                     <div id="consentProofsList"></div>
                 </div>
-                
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">🔧 Outils</h5>
                     <button id="adminMaintenanceMode" class="warning-btn">🔧 Mode Maintenance</button>
@@ -1817,7 +1614,7 @@
 
     <script>
         // =============================================
-        // NOUVELLE FONCTIONNALITÉ 1 : RÉCUPÉRATION RÉELLE DES STATS YOUTUBE VIA API
+        // DONNÉES DES ARTISTES (INTÉGRATION DU CLASSEMENT DU DEUXIÈME CODE)
         // =============================================
         const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         let gapiInitialized = false;
@@ -1902,14 +1699,14 @@
                     discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest']
                 }).then(function() {
                     gapiInitialized = true;
-                    console.log('✅ YouTube API initialisée avec succès');
+                    console.log('✅ YouTube API initialisée');
                     searchYouTubeVideos('Basta Lion Malagasy');
                     startManaAutoUpdate();
                 }).catch(function(error) {
                     console.error('❌ Erreur API YouTube:', error);
                     const container = document.getElementById('videoResults');
                     if (container) {
-                        container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Service YouTube temporairement indisponible. Veuillez réessayer.</div>';
+                        container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Service YouTube temporairement indisponible.</div>';
                     }
                 });
             });
@@ -1950,9 +1747,7 @@
 
         function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
-        // =============================================
-        // NOUVELLE FONCTIONNALITÉ 2 : ARTISTES INTERNATIONAUX MALGACHES AJOUTÉS
-        // =============================================
+        // ARTISTS_DB avec intégration du classement (scores MANA détaillés)
         let ARTISTS_DB = {
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -1966,7 +1761,8 @@
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold-premium",
                 genre: "Dancehall",
-                youtubeChannelId: "UC4RZP6hGqKpYkMqQjLpQjvA"
+                youtubeChannelId: "UC4RZP6hGqKpYkMqQjLpQjvA",
+                scoreDetails: { stream: 21, social: 17, awards: 15, media: 13, impact: 6, activity: 8, detailStream: "5.4M streams • titre 'Tsy Mba Hery'", detailSocial: "980k abonnés", detailAwards: "Artiste de l'année RDJ 2025" }
             },
             "wawa-sali": {
                 id: "wawa-sali", name: "WAWA SALI", avatar: "🎤", location: "Antananarivo", age: 32, awards: "Artiste Populaire 2024",
@@ -1978,7 +1774,8 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Wawa+Sali", "https://via.placeholder.com/300x150?text=🎤+Concert", "https://via.placeholder.com/300x150?text=⭐+Star", "https://via.placeholder.com/300x150?text=🎵+Music"],
                 searchQuery: "Wawa Sali Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "blue", genre: "Reggae",
-                youtubeChannelId: null
+                youtubeChannelId: null,
+                scoreDetails: { stream: 16, social: 13, awards: 20, media: 15, impact: 10, activity: 6, detailStream: "2.9M streams", detailSocial: "300k followers", detailAwards: "RDJ Mozika Trophée d'honneur 2025" }
             },
             "niu-raza": {
                 id: "niu-raza", name: "NIU RAZA", avatar: "🌴", location: "Nosy Be / Antananarivo", age: 45, awards: "Groupe Légendaire",
@@ -1990,7 +1787,8 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Niu+Raza", "https://via.placeholder.com/300x150?text=🌴+Concert", "https://via.placeholder.com/300x150?text=🎸+Live", "https://via.placeholder.com/300x150?text=🇲🇬+Madagascar"],
                 searchQuery: "Niu Raza Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "gold", genre: "Reggae",
-                youtubeChannelId: null
+                youtubeChannelId: null,
+                scoreDetails: { stream: 20, social: 12, awards: 8, media: 10, impact: 6, activity: 8, detailStream: "5.6M vues", detailSocial: "340k", detailAwards: "Prix révélation reggae 2025" }
             },
             "mad-max": {
                 id: "mad-max", name: "MAD MAX", avatar: "🎙️", location: "Antananarivo", age: 38, awards: "Légende du Rap Malagasy",
@@ -2002,7 +1800,8 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Mad+Max", "https://via.placeholder.com/300x150?text=🎙️+Rap", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Concert"],
                 searchQuery: "Mad Max Malagasy rap", active: true,
                 customAvatar: null, consentStatus: "none", certification: "gold", genre: "Hip-Hop",
-                youtubeChannelId: null
+                youtubeChannelId: null,
+                scoreDetails: { stream: 17, social: 15, awards: 14, media: 10, impact: 7, activity: 7, detailStream: "3.8M vues", detailSocial: "610k abonnés", detailAwards: "Artiste de l'année 2022" }
             },
             "ceasar": {
                 id: "ceasar", name: "CEASAR", avatar: "👑", location: "Majunga / Paris", age: 28, awards: "Meilleur Artiste Dancehall 2025",
@@ -2014,72 +1813,102 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Ceasar", "https://via.placeholder.com/300x150?text=👑+Dancehall", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Ceasar Malagasy dancehall", active: true,
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Dancehall",
-                youtubeChannelId: null
+                youtubeChannelId: null,
+                scoreDetails: { stream: 18, social: 14, awards: 16, media: 9, impact: 6, activity: 7, detailStream: "3.5M streams", detailSocial: "570k followers", detailAwards: "Meilleur artiste 2023 RDJ Mozika" }
             },
-            "wendy-cathalina": {
-                id: "wendy-cathalina", name: "WENDY CATHALINA", avatar: "💖", location: "Antananarivo", age: 26, awards: "Artiste Féminine 2025",
-                bio: "💖 <strong>Wendy Cathalina</strong> est la voix féminine qui fait vibrer Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong>",
-                youtubeStats: "2.5M", spotifyStats: "780K", nominations: "5", manaScore: 1520,
-                tags: ["📍 Antananarivo", "🎵 RnB/Pop", "🏆 Artiste féminine 2025", "💖 Voix d'or", "⚪ ÉTOILE ARGENT"],
-                tracks: [{ title: "💖 Tsy Mba Hita", url: "#" }, { title: "💕 Amour Infini", url: "#" }, { title: "🌟 Etoile", url: "#" }],
-                nextConcert: { name: "🎤 Wendy Cathalina - Soirée RnB", date: "2026-03-28" },
-                gallery: ["https://via.placeholder.com/300x150?text=Wendy+Cathalina", "https://via.placeholder.com/300x150?text=💖+RnB", "https://via.placeholder.com/300x150?text=🎤+Live", "https://via.placeholder.com/300x150?text=🌟+Star"],
-                searchQuery: "Wendy Cathalina Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "silver", genre: "RnB",
-                youtubeChannelId: null
+            "denise": {
+                id: "denise", name: "DENISE", avatar: "💖", location: "Antananarivo", age: 29, awards: "AFRIMA 2025",
+                bio: "💖 <strong>Denise</strong> est la voix féminine de la pop urbaine malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD</strong>",
+                youtubeStats: "8.2M", spotifyStats: "1.8M", nominations: "5", manaScore: 1900,
+                tags: ["📍 Antananarivo", "🎵 Pop urbaine", "🏆 AFRIMA 2025", "💖 Voix d'or", "🟡 ÉTOILE OR"],
+                tracks: [{ title: "💖 Mbola tsara", url: "#" }, { title: "💕 Amour Infini", url: "#" }, { title: "🌟 Etoile", url: "#" }],
+                nextConcert: { name: "🎤 Denise - Tournée nationale", date: "2026-05-10" },
+                gallery: ["https://via.placeholder.com/300x150?text=Denise", "https://via.placeholder.com/300x150?text=💖+Pop", "https://via.placeholder.com/300x150?text=🎤+Live", "https://via.placeholder.com/300x150?text=🌟+Star"],
+                searchQuery: "Denise Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Pop",
+                youtubeChannelId: null,
+                scoreDetails: { stream: 23, social: 18, awards: 20, media: 14, impact: 7, activity: 8, detailStream: "8.2M vues", detailSocial: "1.2M followers", detailAwards: "AFRIMA 2025 meilleure artiste" }
             },
-            "rycia": {
-                id: "rycia", name: "RYCIA", avatar: "🎵", location: "Antananarivo", age: 29, awards: "Prix de la meilleure collaboration",
-                bio: "🎵 <strong>Rycia</strong> est reine du dancehall malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD</strong>",
-                youtubeStats: "1.2M", spotifyStats: "450K", nominations: "2", manaScore: 1350,
-                tags: ["📍 Antananarivo", "🎵 Dancehall/Reggae", "🏆 Meilleure collaboration"],
-                tracks: [{ title: "🔥 Tsiaro", url: "#" }, { title: "💃 Vazy", url: "#" }],
-                nextConcert: { name: "Rycia au Kanto Festival", date: "2026-08-12" },
-                gallery: ["https://via.placeholder.com/300x150?text=Rycia"],
-                searchQuery: "Rycia Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Dancehall",
-                youtubeChannelId: null
+            "reko": {
+                id: "reko", name: "REKO", avatar: "🎤", location: "Antananarivo", age: 31, awards: "Artiste Hip-Hop 2025",
+                bio: "🎤 <strong>Reko</strong> est l'un des rappeurs les plus prometteurs de Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                youtubeStats: "5.4M", spotifyStats: "1.2M", nominations: "3", manaScore: 1650,
+                tags: ["📍 Antananarivo", "🎵 Rap/Hip-hop", "🏆 Artiste de l'année RDJ 2025", "🔥 Nouvelle vague", "⚪ ÉTOILE ARGENT"],
+                tracks: [{ title: "🎤 Tsy Mba Hery", url: "#" }, { title: "⚡ Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
+                nextConcert: { name: "🎤 Reko - Tournée nationale", date: "2026-06-15" },
+                gallery: ["https://via.placeholder.com/300x150?text=Reko", "https://via.placeholder.com/300x150?text=🎤+Rap", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                searchQuery: "Reko Malagasy rap", active: true,
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Hip-Hop",
+                youtubeChannelId: null,
+                scoreDetails: { stream: 21, social: 17, awards: 15, media: 13, impact: 6, activity: 9, detailStream: "5.4M streams", detailSocial: "980k abonnés", detailAwards: "Artiste de l'année RDJ 2025" }
             },
-            "kanto-faly": {
-                id: "kanto-faly", name: "KANTO FALY", avatar: "🎸", location: "Fianarantsoa", age: 35, awards: "Groupe Reggae Roots",
-                bio: "🎸 <strong>Kanto Faly</strong> est un groupe roots porteur de messages positifs. <strong>⚪ Certifié Argent</strong>",
-                youtubeStats: "980K", spotifyStats: "210K", nominations: "1", manaScore: 1100,
-                tags: ["📍 Fianarantsoa", "🎵 Reggae Roots", "🌍 Conscience"],
-                tracks: [{ title: "🌍 Tontolo", url: "#" }, { title: "✊ Miara", url: "#" }],
-                nextConcert: { name: "Festival Roots", date: "2026-09-05" },
-                gallery: ["https://via.placeholder.com/300x150?text=Kanto+Faly"],
-                searchQuery: "Kanto Faly reggae", active: true,
-                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Reggae",
-                youtubeChannelId: null
+            "jaojoby": {
+                id: "jaojoby", name: "JAOJOBY", avatar: "🎤", location: "Diego Suarez", age: 68, awards: "Trophée d'honneur 2024",
+                bio: "🎤 <strong>Jaojoby</strong> est le roi du salegy, légende vivante de la musique malgache. <strong>🔵 Certifié ÉTOILE BLEUE - Légende suprême</strong>",
+                youtubeStats: "4.1M", spotifyStats: "980K", nominations: "12", manaScore: 2100,
+                tags: ["📍 Diego Suarez", "🎵 Salegy", "🏆 Légende vivante", "👑 Roi du salegy", "💙 ÉTOILE BLEUE"],
+                tracks: [{ title: "🎤 Salegy", url: "#" }, { title: "🎶 Mbola tsara", url: "#" }, { title: "💪 Malagasy", url: "#" }],
+                nextConcert: { name: "🎤 Jaojoby - Concert anniversaire", date: "2026-08-20" },
+                gallery: ["https://via.placeholder.com/300x150?text=Jaojoby", "https://via.placeholder.com/300x150?text=🎤+Salegy", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                searchQuery: "Jaojoby Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "blue", genre: "Salegy",
+                youtubeChannelId: null,
+                scoreDetails: { stream: 19, social: 14, awards: 19, media: 14, impact: 10, activity: 7, detailStream: "4.1M vues", detailSocial: "450k followers", detailAwards: "Trophée d'honneur édition 2024" }
             },
-            // NOUVEAUX ARTISTES INTERNATIONAUX MALGACHES
-            "dadi-love": {
-                id: "dadi-love", name: "DADI LOVE", avatar: "❤️", location: "Antananarivo / Paris", age: 34, awards: "Artiste Dancehall International",
-                bio: "❤️ <strong>Dadi Love</strong> est la star montante du dancehall malgache à l'international. <strong>🟡 Certifié ÉTOILE OR</strong>",
-                youtubeStats: "2.8M", spotifyStats: "520K", nominations: "4", manaScore: 1650,
-                tags: ["📍 Antananarivo/Paris", "🎵 Dancehall/Reggae", "🌍 Artiste international", "🔥 Collaborations Jamaïque", "🟡 ÉTOILE OR"],
-                tracks: [{ title: "❤️ Mampiova", url: "#" }, { title: "🔥 Mandresy", url: "#" }, { title: "💪 Malagasy Mandeha", url: "#" }],
-                nextConcert: { name: "🎤 Dadi Love - Tournée Européenne", date: "2026-07-15" },
-                gallery: ["https://via.placeholder.com/300x150?text=Dadi+Love"],
-                searchQuery: "Dadi Love Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Dancehall",
-                youtubeChannelId: null
+            "mahaleo": {
+                id: "mahaleo", name: "MAHALEO", avatar: "🎸", location: "Antananarivo", age: 50, awards: "RDJ Mozika Trophée d'honneur 2025",
+                bio: "🎸 <strong>Mahaleo</strong> est le groupe légendaire du folk engagé malgache. <strong>🔵 Certifié ÉTOILE BLEUE - Légende suprême</strong>",
+                youtubeStats: "2.9M", spotifyStats: "750K", nominations: "8", manaScore: 1950,
+                tags: ["📍 Antananarivo", "🎵 Folk engagé", "🏆 Groupe légendaire", "🌍 Ambassadeurs culturels", "💙 ÉTOILE BLEUE"],
+                tracks: [{ title: "🎸 Mila Tsara", url: "#" }, { title: "🎶 Malagasy", url: "#" }, { title: "💚 Madagascar", url: "#" }],
+                nextConcert: { name: "🎤 Mahaleo - Concert anniversaire", date: "2026-09-15" },
+                gallery: ["https://via.placeholder.com/300x150?text=Mahaleo", "https://via.placeholder.com/300x150?text=🎸+Folk", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                searchQuery: "Mahaleo Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "blue", genre: "Folk",
+                youtubeChannelId: null,
+                scoreDetails: { stream: 16, social: 13, awards: 20, media: 15, impact: 10, activity: 6, detailStream: "2.9M streams", detailSocial: "300k", detailAwards: "RDJ Mozika Trophée d'honneur 2025" }
             },
-            "elisee": {
-                id: "elisee", name: "ELISÉE", avatar: "✨", location: "Nosy Be / Miami", age: 27, awards: "Révélation Afrobeat 2025",
-                bio: "✨ <strong>Elisée</strong> est la nouvelle voix afrobeat malgache qui conquiert l'international. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
-                youtubeStats: "3.2M", spotifyStats: "890K", nominations: "3", manaScore: 1580,
-                tags: ["📍 Nosy Be/Miami", "🎵 Afrobeat/Pop", "🌍 Star montante", "💫 Révélation 2025", "⚪ ÉTOILE ARGENT"],
-                tracks: [{ title: "✨ Afrikan Girl", url: "#" }, { title: "🌊 Océan", url: "#" }, { title: "💖 Amour Sans Fin", url: "#" }],
-                nextConcert: { name: "🎤 Elisée - Miami Music Week", date: "2026-03-25" },
-                gallery: ["https://via.placeholder.com/300x150?text=Elisée"],
-                searchQuery: "Elisee Malagasy afrobeat", active: true,
+            "big-mj": {
+                id: "big-mj", name: "BIG MJ", avatar: "🎤", location: "Antananarivo", age: 27, awards: "Prix du public 2024",
+                bio: "🎤 <strong>Big MJ</strong> est la star montante de l'afro-clip malgache. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                youtubeStats: "11.7M", spotifyStats: "2.4M", nominations: "2", manaScore: 1750,
+                tags: ["📍 Antananarivo", "🎵 Afro-clip / Dance", "🏆 Prix du public 2024", "🔥 Star montante", "⚪ ÉTOILE ARGENT"],
+                tracks: [{ title: "🎤 Mbola tsara", url: "#" }, { title: "⚡ Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
+                nextConcert: { name: "🎤 Big MJ - Tournée nationale", date: "2026-07-10" },
+                gallery: ["https://via.placeholder.com/300x150?text=Big+MJ", "https://via.placeholder.com/300x150?text=🎤+Afro", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                searchQuery: "Big MJ Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Afrobeat",
-                youtubeChannelId: null
+                youtubeChannelId: null,
+                scoreDetails: { stream: 24, social: 19, awards: 8, media: 12, impact: 5, activity: 9, detailStream: "11.7M vues", detailSocial: "1.6M abonnés", detailAwards: "Prix du public 2024" }
+            },
+            "tence-mena": {
+                id: "tence-mena", name: "TENCE MENA", avatar: "🎤", location: "Antananarivo", age: 26, awards: "RDJ Mozika meilleur clip 2025",
+                bio: "🎤 <strong>Tence Mena (Thierra Bruno)</strong> est l'artiste urbain qui fait vibrer Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                youtubeStats: "6.3M", spotifyStats: "1.5M", nominations: "2", manaScore: 1550,
+                tags: ["📍 Antananarivo", "🎵 Urbain / Rap", "🏆 RDJ Mozika meilleur clip 2025", "🔥 Nouvelle vague", "⚪ ÉTOILE ARGENT"],
+                tracks: [{ title: "🎤 Malagasy", url: "#" }, { title: "⚡ Mampionona", url: "#" }, { title: "💪 Mandresy", url: "#" }],
+                nextConcert: { name: "🎤 Tence Mena - Tournée nationale", date: "2026-08-05" },
+                gallery: ["https://via.placeholder.com/300x150?text=Tence+Mena", "https://via.placeholder.com/300x150?text=🎤+Rap", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                searchQuery: "Tence Mena Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Hip-Hop",
+                youtubeChannelId: null,
+                scoreDetails: { stream: 20, social: 18, awards: 10, media: 11, impact: 6, activity: 8, detailStream: "6.3M streams", detailSocial: "1.3M sur TikTok", detailAwards: "RDJ Mozika meilleur clip 2025" }
+            },
+            "lowis": {
+                id: "lowis", name: "LOWIS", avatar: "🎤", location: "Antananarivo", age: 24, awards: "Révélation RDJ Mozika 2025",
+                bio: "🎤 <strong>Lowis</strong> est la révélation RnB/pop de l'année 2025. <strong>🟤 Certifié ÉTOILE BRONZE</strong>",
+                youtubeStats: "2.2M", spotifyStats: "520K", nominations: "1", manaScore: 1100,
+                tags: ["📍 Antananarivo", "🎵 RnB/pop", "🏆 Révélation RDJ Mozika 2025", "⭐ Nouvel artiste", "🟤 ÉTOILE BRONZE"],
+                tracks: [{ title: "🎤 Malagasy", url: "#" }, { title: "⚡ Mampionona", url: "#" }, { title: "💪 Mandresy", url: "#" }],
+                nextConcert: { name: "🎤 Lowis - Première tournée", date: "2026-09-20" },
+                gallery: ["https://via.placeholder.com/300x150?text=Lowis", "https://via.placeholder.com/300x150?text=🎤+RnB", "https://via.placeholder.com/300x150?text=⭐+Révélation", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                searchQuery: "Lowis Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "bronze", genre: "RnB",
+                youtubeChannelId: null,
+                scoreDetails: { stream: 15, social: 16, awards: 12, media: 9, impact: 5, activity: 9, detailStream: "2.2M streams", detailSocial: "490k", detailAwards: "Révélation RDJ Mozika 2025" }
             }
         };
 
-        // ===== RESTE DU CODE ORIGINAL (GARDÉ IDENTIQUE) =====
         let CUSTOM_ITEMS = [
             { id: 1, name: "T-shirt Exclusif Artiste", price: 29.99, desc: "T-shirt 100% coton avec design exclusif.", icon: "fa-tshirt", image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/51d70529-816c-c2f3-cae7-c2b57349bb03.png" },
             { id: 2, name: "Hoodie STARCONNECT Édition Limitée", price: 59.99, desc: "Hoodie confortable avec logo brodé.", icon: "fa-hoodie", image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/578b468b-0ab8-1413-6495-46d9e9da83f2.png" }
@@ -2414,6 +2243,7 @@
             else if (a.avatar === '🌴') icon = 'fa-palm-tree';
             else if (a.avatar === '❤️') icon = 'fa-heart';
             else if (a.avatar === '✨') icon = 'fa-star';
+            else if (a.avatar === '🎸') icon = 'fa-guitar';
             
             const avatarDiv = document.getElementById('artistAvatar');
             const canModify = (a.consentStatus !== 'pending' && a.consentStatus !== 'approved');
@@ -2443,7 +2273,6 @@
             
             document.getElementById('concertName').innerHTML = a.nextConcert.name;
             
-            // AFFICHAGE DES STATS YOUTUBE RÉELLES
             const youtubeDisplay = a.youtubeSubscribers ? `${a.youtubeSubscribers} abonnés` : (a.youtubeStats || "N/A");
             document.getElementById('artistStats').innerHTML = `<div class="stat-box"><div class="stat-number">${youtubeDisplay}</div><div class="stat-label">📺 YouTube</div></div><div class="stat-box"><div class="stat-number">${a.spotifyStats || "N/A"}</div><div class="stat-label">🎧 Spotify</div></div><div class="stat-box"><div class="stat-number">🏆 ${a.nominations}</div><div class="stat-label">Nominations</div></div>`;
             
@@ -2607,7 +2436,7 @@
             addNotification(`👑 Page de ${a.name}`); 
         }
 
-        // NOUVELLE FONCTIONNALITÉ 3 : CLASSEMENT DÉTAILLÉ AMÉLIORÉ
+        // FONCTION DE CLASSEMENT INTÉGRÉE AVEC BARRES DE PROGRESSION ET DÉTAILS
         function renderRanking() {
             const container = document.getElementById('rankingContent');
             if (!container) return;
@@ -2616,14 +2445,31 @@
             if (currentRankingTab === 'dancehall') {
                 filteredArtists = artists.filter(a => a.genre && a.genre.toLowerCase().includes('dancehall'));
             } else if (currentRankingTab === 'reggae') {
-                filteredArtists = artists.filter(a => a.genre && a.genre.toLowerCase().includes('reggae'));
+                filteredArtists = artists.filter(a => a.genre && (a.genre.toLowerCase().includes('reggae') || a.genre.toLowerCase().includes('salegy') || a.genre.toLowerCase().includes('roots')));
             }
             filteredArtists.sort((a, b) => b.manaScore - a.manaScore);
-            let html = `<table class="ranking-table"><thead><tr><th>#</th><th>Artiste</th><th>Score MANA</th><th>Vues YouTube</th><th>Genre</th></tr></thead><tbody>`;
+            
+            let html = `<div class="ranking-table-wrapper">
+                <table class="ranking-table">
+                    <thead>
+                        <tr><th>#</th><th>Artiste</th><th>Score MANA</th><th>🎧 Streams</th><th>📱 Réseaux</th><th>🏅 Récompenses</th><th>🎯 Impact</th><th>Genre</th></tr>
+                    </thead>
+                    <tbody>`;
+            
             filteredArtists.forEach((artist, index) => {
-                html += `<tr><td class="rank-number">${index + 1}</td><td><strong>${artist.name}</strong> ${getCertificationBadge(artist.certification)}</td><td><span class="mana-value">${artist.manaScore}</span> pts</td><td>${artist.youtubeStats}</td><td>${artist.genre || 'Non spécifié'}</td></tr>`;
+                const details = artist.scoreDetails || { stream: 0, social: 0, awards: 0, impact: 0 };
+                html += `<tr>
+                    <td class="rank-number">${index + 1}</td>
+                    <td><strong>${artist.name}</strong> ${getCertificationBadge(artist.certification)}</td>
+                    <td class="score-cell">${artist.manaScore}<div class="progress-bg"><div class="progress-fill" style="width: ${(artist.manaScore / 2500) * 100}%;"></div></div></td>
+                    <td><strong>${details.stream || 0}/25</strong><div class="progress-bg"><div class="progress-fill" style="width: ${((details.stream || 0) / 25) * 100}%;"></div></div><span class="stat-badge" title="${details.detailStream || 'Données streaming'}">ⓘ</span></td>
+                    <td><strong>${details.social || 0}/20</strong><div class="progress-bg"><div class="progress-fill" style="width: ${((details.social || 0) / 20) * 100}%;"></div></div><span class="stat-badge" title="${details.detailSocial || 'Engagement réseaux'}">ⓘ</span></td>
+                    <td><strong>${details.awards || 0}/20</strong><div class="progress-bg"><div class="progress-fill" style="width: ${((details.awards || 0) / 20) * 100}%;"></div></div><span class="stat-badge" title="${details.detailAwards || 'Prix et récompenses'}">ⓘ</span></td>
+                    <td><strong>${details.impact || 0}/10</strong><div class="progress-bg"><div class="progress-fill" style="width: ${((details.impact || 0) / 10) * 100}%;"></div></div><span class="stat-badge" title="Impact culturel et rayonnement">ⓘ</span></td>
+                    <td>${artist.genre || 'Non spécifié'}</td>
+                </tr>`;
             });
-            html += `</tbody></table>`;
+            html += `</tbody></table></div>`;
             container.innerHTML = html;
         }
 
@@ -2902,7 +2748,7 @@
             const id = document.getElementById('newArtistId')?.value.trim().toLowerCase().replace(/\s/g, '-'), name = document.getElementById('newArtistName')?.value.trim(), avatar = document.getElementById('newArtistAvatar')?.value.trim(), bio = document.getElementById('newArtistBio')?.value.trim(), yt = document.getElementById('newArtistYoutube')?.value.trim(), sp = document.getElementById('newArtistSpotify')?.value.trim(), cd = document.getElementById('newArtistConcertDate')?.value;
             if (!id || !name) { alert('ID et Nom sont requis'); return; }
             if (ARTISTS_DB[id]) { alert('Cet ID existe déjà'); return; }
-            ARTISTS_DB[id] = { id, name: name.toUpperCase(), avatar: avatar || '🎤', location: 'Madagascar', age: 0, awards: 'Nouvel artiste', bio: bio || 'Artiste malgache', youtubeStats: yt || '0', spotifyStats: sp || '0', nominations: '0', manaScore: 1000, tags: ['📍 Madagascar', '⭐ Nouvel artiste'], tracks: [{ title: "🎵 Nouveau titre", url: "#" }], nextConcert: { name: "À venir", date: cd || "2026-12-31" }, gallery: ["https://via.placeholder.com/300x150?text=" + encodeURIComponent(name)], searchQuery: name, active: true, customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null, certification: "bronze", genre: "Non spécifié" };
+            ARTISTS_DB[id] = { id, name: name.toUpperCase(), avatar: avatar || '🎤', location: 'Madagascar', age: 0, awards: 'Nouvel artiste', bio: bio || 'Artiste malgache', youtubeStats: yt || '0', spotifyStats: sp || '0', nominations: '0', manaScore: 1000, tags: ['📍 Madagascar', '⭐ Nouvel artiste'], tracks: [{ title: "🎵 Nouveau titre", url: "#" }], nextConcert: { name: "À venir", date: cd || "2026-12-31" }, gallery: ["https://via.placeholder.com/300x150?text=" + encodeURIComponent(name)], searchQuery: name, active: true, customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null, certification: "bronze", genre: "Non spécifié", scoreDetails: { stream: 10, social: 10, awards: 5, media: 8, impact: 5, activity: 5 } };
             saveAllData(); renderArtistSelect(); refreshArtistsList(); addNotification(`✅ Artiste ${name} ajouté !`);
             document.getElementById('newArtistId').value = ''; document.getElementById('newArtistName').value = ''; document.getElementById('newArtistAvatar').value = ''; document.getElementById('newArtistBio').value = ''; document.getElementById('newArtistYoutube').value = ''; document.getElementById('newArtistSpotify').value = ''; document.getElementById('newArtistConcertDate').value = '';
         });
@@ -3047,4 +2893,4 @@
         window.addEventListener('beforeunload', () => { if (autoRankingInterval) clearInterval(autoRankingInterval); if (manaUpdateInterval) clearInterval(manaUpdateInterval); });
     </script>
 </body>
-                    </html>
+    </html>
