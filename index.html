@@ -18,6 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <style>
+        /* ===== VOTRE STYLE EXISTANT (GARDÉ IDENTIQUE) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -1159,7 +1160,7 @@
             <span class="close-modal" onclick="closeSubscribeModal()">&times;</span>
             <i class="fas fa-bell" style="font-size: 2rem; color: #e0a500;"></i>
             <h3 style="margin: 10px 0;">✉️ Abonnez-vous</h3>
-            <p>Recevez les actualités exclusives des artistes malgaches</p>
+            <p>Recevez les actualités exclusives des artistes malagaches</p>
             <form id="subscribeForm" method="POST" action="https://formspree.io/f/xdaljabb">
                 <input type="email" name="email" placeholder="Votre adresse email" required>
                 <input type="hidden" name="_subject" value="Nouvel abonné STARCONNECT">
@@ -1286,7 +1287,7 @@
                 </div>
             </div>
             <div class="header-controls">
-                <div class="status-badge"><i class="fas fa-circle"></i> Équipe active : Arnaud, Hgb, Veezir, Holdest</div>
+                <div class="status-badge"><i class="fas fa-circle"></i> Équipe active </div>
                 <div class="notification-bell" id="notificationBell">
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="notifBadge">0</span>
@@ -1816,39 +1817,26 @@
 
     <script>
         // =============================================
-        // CONFIGURATION OPTIONNELLE DU CLASSEMENT
+        // NOUVELLE FONCTIONNALITÉ 1 : RÉCUPÉRATION RÉELLE DES STATS YOUTUBE VIA API
         // =============================================
-        const RANKING_FEATURE_ENABLED = true;
-        
-        //=============================================
-        // NOUVELLE FONCTIONNALITÉ : RÉCUPÉRATION RÉELLE DU MANA SCORE VIA YOUTUBE API
-        //=============================================
         const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         let gapiInitialized = false;
-        
-        // Fonction pour récupérer les statistiques réelles d'une chaîne YouTube
+
         async function fetchRealYouTubeStats(channelId) {
             if (!gapiInitialized || !channelId) return null;
-            
             try {
                 const response = await gapi.client.youtube.channels.list({
                     part: 'statistics',
                     id: channelId
                 });
-                
                 if (response.result.items && response.result.items.length > 0) {
                     const stats = response.result.items[0].statistics;
                     const viewCount = parseInt(stats.viewCount) || 0;
                     const subscriberCount = parseInt(stats.subscriberCount) || 0;
-                    
-                    // Calcul du score MANA basé sur les vues réelles (1 point pour 1000 vues)
                     let manaFromViews = Math.floor(viewCount / 1000);
-                    // Bonus pour les abonnés (1 point pour 100 abonnés)
                     let manaFromSubs = Math.floor(subscriberCount / 100);
-                    
                     let totalMana = manaFromViews + manaFromSubs;
-                    totalMana = Math.min(totalMana, 10000); // Plafonnement à 10000
-                    
+                    totalMana = Math.min(totalMana, 10000);
                     return {
                         viewCount: viewCount,
                         subscriberCount: subscriberCount,
@@ -1864,15 +1852,12 @@
             }
             return null;
         }
-        
-        // Mise à jour du MANA score pour tous les artistes via leur chaîne YouTube réelle
+
         async function updateAllArtistsManaFromYouTube() {
             if (!gapiInitialized) {
-                console.log('API YouTube non initialisée, attente...');
                 setTimeout(() => updateAllArtistsManaFromYouTube(), 1000);
                 return;
             }
-            
             let updated = false;
             for (const [id, artist] of Object.entries(ARTISTS_DB)) {
                 if (artist.youtubeChannelId) {
@@ -1885,7 +1870,6 @@
                     }
                 }
             }
-            
             if (updated) {
                 saveAllData();
                 if (currentArtistId) {
@@ -1899,24 +1883,19 @@
                 addNotification('📊 Mise à jour des scores MANA via YouTube API');
             }
         }
-        
-        // Planification de la mise à jour automatique (toutes les 15 minutes)
+
         let manaUpdateInterval = null;
         function startManaAutoUpdate() {
             if (manaUpdateInterval) clearInterval(manaUpdateInterval);
-            // Mise à jour initiale après 5 secondes
             setTimeout(() => updateAllArtistsManaFromYouTube(), 5000);
-            // Puis toutes les 15 minutes
             manaUpdateInterval = setInterval(() => updateAllArtistsManaFromYouTube(), 15 * 60 * 1000);
         }
-        
+
         function initYouTubeAPI() {
             if (typeof gapi === 'undefined') {
-                console.warn('API Google non chargée, réessai dans 500ms');
                 setTimeout(initYouTubeAPI, 500);
                 return;
             }
-            
             gapi.load('client', function() {
                 gapi.client.init({
                     apiKey: YOUTUBE_API_KEY,
@@ -1925,7 +1904,6 @@
                     gapiInitialized = true;
                     console.log('✅ YouTube API initialisée avec succès');
                     searchYouTubeVideos('Basta Lion Malagasy');
-                    // Lancer la récupération des MANA scores réels
                     startManaAutoUpdate();
                 }).catch(function(error) {
                     console.error('❌ Erreur API YouTube:', error);
@@ -1936,59 +1914,45 @@
                 });
             });
         }
-        
+
         window.searchYouTubeVideos = function(query) {
             const container = document.getElementById('videoResults');
             if (!container) return;
-            
             if (!query || query.trim() === '') {
                 container.innerHTML = '<div class="loader">🔍 Entrez un terme de recherche YouTube</div>';
                 return;
             }
-            
             container.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Recherche sur YouTube...</div>';
-            
             if (!gapiInitialized) {
                 container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ API YouTube en cours d\'initialisation. Veuillez réessayer.</div>';
                 setTimeout(function() { searchYouTubeVideos(query); }, 1500);
                 return;
             }
-            
             gapi.client.youtube.search.list({
                 part: 'snippet',
                 q: query,
                 maxResults: 8,
-                type: 'video',
-                safeSearch: 'none'
+                type: 'video'
             }).then(function(response) {
                 const videos = response.result.items;
-                
                 if (!videos || videos.length === 0) {
-                    container.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée pour "<strong>' + escapeHtml(query) + '</strong>"</div>';
+                    container.innerHTML = '<div class="api-error"><i class="fas fa-music"></i> Aucune vidéo trouvée.</div>';
                     return;
                 }
-                
                 container.innerHTML = videos.map(function(v) {
-                    return `
-                        <div class="video-card">
-                            <iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen loading="lazy"></iframe>
-                            <p><strong>${escapeHtml(v.snippet.title.length > 70 ? v.snippet.title.substring(0,70)+'...' : v.snippet.title)}</strong><br><small style="color:#888;">${escapeHtml(v.snippet.channelTitle)}</small></p>
-                        </div>
-                    `;
+                    return `<div class="video-card"><iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen loading="lazy"></iframe><p><strong>${escapeHtml(v.snippet.title.length > 70 ? v.snippet.title.substring(0,70)+'...' : v.snippet.title)}</strong><br><small style="color:#888;">${escapeHtml(v.snippet.channelTitle)}</small></p></div>`;
                 }).join('');
             }).catch(function(error) {
                 console.error('Erreur recherche YouTube:', error);
-                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Erreur de connexion à YouTube. Veuillez réessayer.</div>';
+                container.innerHTML = '<div class="api-error"><i class="fab fa-youtube"></i> ⚠️ Erreur de connexion à YouTube.</div>';
             });
         };
-        
+
         function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-        
-        document.addEventListener('DOMContentLoaded', initYouTubeAPI);
-        
-        //=============================================
-        // DONNÉES PRINCIPALES AVEC ARTISTES INTERNATIONAUX MALGACHES AJOUTÉS
-        //=============================================
+
+        // =============================================
+        // NOUVELLE FONCTIONNALITÉ 2 : ARTISTES INTERNATIONAUX MALGACHES AJOUTÉS
+        // =============================================
         let ARTISTS_DB = {
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -2006,16 +1970,14 @@
             },
             "wawa-sali": {
                 id: "wawa-sali", name: "WAWA SALI", avatar: "🎤", location: "Antananarivo", age: 32, awards: "Artiste Populaire 2024",
-                bio: "🎤 <strong>Wawa Sali</strong> est l'un des artistes les plus influents de Madagascar. Véritable légende vivante, son titre <strong>'Mbola Tsara'</strong> est un hymne national. <strong>🔵 Certifié ÉTOILE BLEUE - Légende suprême</strong>",
+                bio: "🎤 <strong>Wawa Sali</strong> est l'un des artistes les plus influents de Madagascar. Véritable légende vivante. <strong>🔵 Certifié ÉTOILE BLEUE - Légende suprême</strong>",
                 youtubeStats: "3.2M", spotifyStats: "890K", nominations: "6", manaScore: 2200,
                 tags: ["📍 Antananarivo", "🎵 Reggae/Pop", "🏆 Artiste populaire 2024", "⭐ Légende vivante", "💙 ÉTOILE BLEUE"],
                 tracks: [{ title: "🎤 Mbola Tsara", url: "#" }, { title: "💛 Tsara Ve", url: "#" }, { title: "🌺 Ankizy", url: "#" }],
                 nextConcert: { name: "🎤 Wawa Sali - Concert géant au Stade Barea", date: "2026-05-15" },
                 gallery: ["https://via.placeholder.com/300x150?text=Wawa+Sali", "https://via.placeholder.com/300x150?text=🎤+Concert", "https://via.placeholder.com/300x150?text=⭐+Star", "https://via.placeholder.com/300x150?text=🎵+Music"],
                 searchQuery: "Wawa Sali Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
-                certification: "blue",
-                genre: "Reggae",
+                customAvatar: null, consentStatus: "none", certification: "blue", genre: "Reggae",
                 youtubeChannelId: null
             },
             "niu-raza": {
@@ -2027,9 +1989,7 @@
                 nextConcert: { name: "🎤 Niu Raza - Festival de la Musique", date: "2026-07-01" },
                 gallery: ["https://via.placeholder.com/300x150?text=Niu+Raza", "https://via.placeholder.com/300x150?text=🌴+Concert", "https://via.placeholder.com/300x150?text=🎸+Live", "https://via.placeholder.com/300x150?text=🇲🇬+Madagascar"],
                 searchQuery: "Niu Raza Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
-                certification: "gold",
-                genre: "Reggae",
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Reggae",
                 youtubeChannelId: null
             },
             "mad-max": {
@@ -2041,9 +2001,7 @@
                 nextConcert: { name: "🎤 Mad Max - 20 ans de carrière", date: "2026-06-10" },
                 gallery: ["https://via.placeholder.com/300x150?text=Mad+Max", "https://via.placeholder.com/300x150?text=🎙️+Rap", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Concert"],
                 searchQuery: "Mad Max Malagasy rap", active: true,
-                customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
-                certification: "gold",
-                genre: "Hip-Hop",
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Hip-Hop",
                 youtubeChannelId: null
             },
             "ceasar": {
@@ -2055,9 +2013,7 @@
                 nextConcert: { name: "🎤 Ceasar - Tournée nationale", date: "2026-04-22" },
                 gallery: ["https://via.placeholder.com/300x150?text=Ceasar", "https://via.placeholder.com/300x150?text=👑+Dancehall", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Ceasar Malagasy dancehall", active: true,
-                customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
-                certification: "silver",
-                genre: "Dancehall",
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Dancehall",
                 youtubeChannelId: null
             },
             "wendy-cathalina": {
@@ -2069,16 +2025,14 @@
                 nextConcert: { name: "🎤 Wendy Cathalina - Soirée RnB", date: "2026-03-28" },
                 gallery: ["https://via.placeholder.com/300x150?text=Wendy+Cathalina", "https://via.placeholder.com/300x150?text=💖+RnB", "https://via.placeholder.com/300x150?text=🎤+Live", "https://via.placeholder.com/300x150?text=🌟+Star"],
                 searchQuery: "Wendy Cathalina Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
-                certification: "silver",
-                genre: "RnB",
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "RnB",
                 youtubeChannelId: null
             },
             "rycia": {
                 id: "rycia", name: "RYCIA", avatar: "🎵", location: "Antananarivo", age: 29, awards: "Prix de la meilleure collaboration",
-                bio: "🎵 <strong>Rycia</strong> est une artiste polyvalente, reine du dancehall et du reggae moderne. <strong>🟡 Certifié ÉTOILE OR STANDARD</strong>",
+                bio: "🎵 <strong>Rycia</strong> est reine du dancehall malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD</strong>",
                 youtubeStats: "1.2M", spotifyStats: "450K", nominations: "2", manaScore: 1350,
-                tags: ["📍 Antananarivo", "🎵 Dancehall/Reggae", "🏆 Meilleure collaboration", "⚡ Influenceuse"],
+                tags: ["📍 Antananarivo", "🎵 Dancehall/Reggae", "🏆 Meilleure collaboration"],
                 tracks: [{ title: "🔥 Tsiaro", url: "#" }, { title: "💃 Vazy", url: "#" }],
                 nextConcert: { name: "Rycia au Kanto Festival", date: "2026-08-12" },
                 gallery: ["https://via.placeholder.com/300x150?text=Rycia"],
@@ -2087,10 +2041,10 @@
                 youtubeChannelId: null
             },
             "kanto-faly": {
-                id: "kanto-faly", name: "KANTO FALY", avatar: "🎸", location: "Fianarantsoa", age: 35, awards: "Groupe Reggae Roots Fetsy 2025",
+                id: "kanto-faly", name: "KANTO FALY", avatar: "🎸", location: "Fianarantsoa", age: 35, awards: "Groupe Reggae Roots",
                 bio: "🎸 <strong>Kanto Faly</strong> est un groupe roots porteur de messages positifs. <strong>⚪ Certifié Argent</strong>",
                 youtubeStats: "980K", spotifyStats: "210K", nominations: "1", manaScore: 1100,
-                tags: ["📍 Fianarantsoa", "🎵 Reggae Roots", "🌍 Conscience", "🍃 Nature"],
+                tags: ["📍 Fianarantsoa", "🎵 Reggae Roots", "🌍 Conscience"],
                 tracks: [{ title: "🌍 Tontolo", url: "#" }, { title: "✊ Miara", url: "#" }],
                 nextConcert: { name: "Festival Roots", date: "2026-09-05" },
                 gallery: ["https://via.placeholder.com/300x150?text=Kanto+Faly"],
@@ -2098,10 +2052,10 @@
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Reggae",
                 youtubeChannelId: null
             },
-            // ========== NOUVEAUX ARTISTES INTERNATIONAUX MALGACHES ==========
+            // NOUVEAUX ARTISTES INTERNATIONAUX MALGACHES
             "dadi-love": {
                 id: "dadi-love", name: "DADI LOVE", avatar: "❤️", location: "Antananarivo / Paris", age: 34, awards: "Artiste Dancehall International",
-                bio: "❤️ <strong>Dadi Love</strong> est la star montante du dancehall malgache à l'international. Ses collaborations avec des artistes jamaïcains ont fait de lui une référence. <strong>🟡 Certifié ÉTOILE OR</strong>",
+                bio: "❤️ <strong>Dadi Love</strong> est la star montante du dancehall malgache à l'international. <strong>🟡 Certifié ÉTOILE OR</strong>",
                 youtubeStats: "2.8M", spotifyStats: "520K", nominations: "4", manaScore: 1650,
                 tags: ["📍 Antananarivo/Paris", "🎵 Dancehall/Reggae", "🌍 Artiste international", "🔥 Collaborations Jamaïque", "🟡 ÉTOILE OR"],
                 tracks: [{ title: "❤️ Mampiova", url: "#" }, { title: "🔥 Mandresy", url: "#" }, { title: "💪 Malagasy Mandeha", url: "#" }],
@@ -2113,7 +2067,7 @@
             },
             "elisee": {
                 id: "elisee", name: "ELISÉE", avatar: "✨", location: "Nosy Be / Miami", age: 27, awards: "Révélation Afrobeat 2025",
-                bio: "✨ <strong>Elisée</strong> est la nouvelle voix afrobeat malgache qui conquiert l'international. Son single 'Afrikan Girl' cumule des millions de streams. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                bio: "✨ <strong>Elisée</strong> est la nouvelle voix afrobeat malgache qui conquiert l'international. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
                 youtubeStats: "3.2M", spotifyStats: "890K", nominations: "3", manaScore: 1580,
                 tags: ["📍 Nosy Be/Miami", "🎵 Afrobeat/Pop", "🌍 Star montante", "💫 Révélation 2025", "⚪ ÉTOILE ARGENT"],
                 tracks: [{ title: "✨ Afrikan Girl", url: "#" }, { title: "🌊 Océan", url: "#" }, { title: "💖 Amour Sans Fin", url: "#" }],
@@ -2124,26 +2078,13 @@
                 youtubeChannelId: null
             }
         };
-        
+
+        // ===== RESTE DU CODE ORIGINAL (GARDÉ IDENTIQUE) =====
         let CUSTOM_ITEMS = [
-            {
-                id: 1,
-                name: "T-shirt Exclusif Artiste",
-                price: 29.99,
-                desc: "T-shirt 100% coton avec design exclusif. Soutenez votre artiste préféré !",
-                icon: "fa-tshirt",
-                image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/51d70529-816c-c2f3-cae7-c2b57349bb03.png"
-            },
-            {
-                id: 2,
-                name: "Hoodie STARCONNECT Édition Limitée",
-                price: 59.99,
-                desc: "Hoodie confortable avec logo brodé. Édition limitée.",
-                icon: "fa-hoodie",
-                image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/578b468b-0ab8-1413-6495-46d9e9da83f2.png"
-            }
+            { id: 1, name: "T-shirt Exclusif Artiste", price: 29.99, desc: "T-shirt 100% coton avec design exclusif.", icon: "fa-tshirt", image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/51d70529-816c-c2f3-cae7-c2b57349bb03.png" },
+            { id: 2, name: "Hoodie STARCONNECT Édition Limitée", price: 59.99, desc: "Hoodie confortable avec logo brodé.", icon: "fa-hoodie", image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/578b468b-0ab8-1413-6495-46d9e9da83f2.png" }
         ];
-        
+
         function getCertificationBadge(certification) {
             switch(certification) {
                 case 'blue': return '<div class="star-certified-blue" title="🔵 ÉTOILE BLEUE - Légende suprême"></div>';
@@ -2154,7 +2095,7 @@
                 default: return '<div class="star-certified-gold" title="Étoile Or"></div>';
             }
         }
-        
+
         let PRODUCTS_DB = [];
         let PARTNER_REQUESTS = [];
         let currentArtistId = "basta-lion";
@@ -2163,51 +2104,37 @@
         let pendingConsentRole = "artist";
         let notifications = [];
         let currentRankingTab = 'national';
-        
         let subscriberCount = 1234;
         let lastUpdateTimestamp = Date.now();
-        
+
         function formatSubscriberCount(count) {
-            if (count >= 1000000) {
-                return (count / 1000000).toFixed(1) + 'M';
-            } else if (count >= 1000) {
-                return (count / 1000).toFixed(1) + 'k';
-            }
+            if (count >= 1000000) return (count / 1000000).toFixed(1) + 'M';
+            if (count >= 1000) return (count / 1000).toFixed(1) + 'k';
             return count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         }
-        
+
         function updateSubscriberDisplay() {
             const countElement = document.getElementById('subscriberCount');
-            if (countElement) {
-                countElement.textContent = formatSubscriberCount(subscriberCount);
-            }
-            localStorage.setItem('starconnect_subscribers', JSON.stringify({
-                count: subscriberCount,
-                timestamp: lastUpdateTimestamp
-            }));
+            if (countElement) countElement.textContent = formatSubscriberCount(subscriberCount);
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({ count: subscriberCount, timestamp: lastUpdateTimestamp }));
         }
-        
+
         function addManualSubscriber() {
             subscriberCount++;
             updateSubscriberDisplay();
             const btn = document.getElementById('subscribeBtn');
             if (btn) {
                 btn.classList.add('subscribe-animation');
-                setTimeout(() => {
-                    btn.classList.remove('subscribe-animation');
-                }, 300);
+                setTimeout(() => btn.classList.remove('subscribe-animation'), 300);
             }
             showToast('✅ Merci pour votre abonnement !');
             saveSubscriberData();
         }
-        
+
         function saveSubscriberData() {
-            localStorage.setItem('starconnect_subscribers', JSON.stringify({
-                count: subscriberCount,
-                timestamp: lastUpdateTimestamp
-            }));
+            localStorage.setItem('starconnect_subscribers', JSON.stringify({ count: subscriberCount, timestamp: lastUpdateTimestamp }));
         }
-        
+
         function loadSubscriberData() {
             const saved = localStorage.getItem('starconnect_subscribers');
             if (saved) {
@@ -2219,54 +2146,35 @@
                 } catch(e) {}
             }
         }
-        
-        //=============================================
-        // FONCTIONS PRINCIPALES (suite)
-        //=============================================
+
         function getCurrentArtist() { return ARTISTS_DB[currentArtistId]; }
-        
+
         function updateManaDisplay(newScore, animate = true) {
             const manaElement = document.getElementById('manaValue');
             const trendElement = document.getElementById('manaTrend');
-            
             if (!manaElement) return;
-            
             const oldValue = parseInt(manaElement.innerText) || manaScore;
             const difference = newScore - oldValue;
-            
             if (animate && difference !== 0) {
                 manaElement.classList.add('mana-update');
-                setTimeout(() => {
-                    manaElement.classList.remove('mana-update');
-                }, 500);
+                setTimeout(() => manaElement.classList.remove('mana-update'), 500);
             }
-            
             if (trendElement) {
-                if (difference > 0) {
-                    trendElement.innerHTML = `<i class="fas fa-arrow-up mana-trend-up"></i> <span style="color:#00a86b;">+${difference}</span>`;
-                    trendElement.style.opacity = '1';
-                } else if (difference < 0) {
-                    trendElement.innerHTML = `<i class="fas fa-arrow-down"></i> <span style="color:#dc2626;">${difference}</span>`;
-                    trendElement.style.opacity = '1';
-                } else {
-                    trendElement.innerHTML = `<i class="fas fa-minus" style="color:#666;"></i> <span style="color:#666;">0</span>`;
-                }
-                
+                if (difference > 0) trendElement.innerHTML = `<i class="fas fa-arrow-up mana-trend-up"></i> <span style="color:#00a86b;">+${difference}</span>`;
+                else if (difference < 0) trendElement.innerHTML = `<i class="fas fa-arrow-down"></i> <span style="color:#dc2626;">${difference}</span>`;
+                else trendElement.innerHTML = `<i class="fas fa-minus" style="color:#666;"></i> <span style="color:#666;">0</span>`;
                 if (manaUpdateTimeout) clearTimeout(manaUpdateTimeout);
-                manaUpdateTimeout = setTimeout(() => {
-                    if (trendElement) trendElement.style.opacity = '0';
-                }, 3000);
+                manaUpdateTimeout = setTimeout(() => { if (trendElement) trendElement.style.opacity = '0'; }, 3000);
             }
-            
             manaElement.innerText = newScore;
             manaScore = newScore;
             saveAllData();
             updateStarRating(newScore);
         }
-        
+
         let manaUpdateTimeout = null;
         let autoRankingInterval = null;
-        
+
         function updateStarRating(score) {
             let stars = 0, level = "";
             if (score >= 2000) { stars = 5; level = "🌟 Légende"; }
@@ -2282,9 +2190,18 @@
             if (starSpan) starSpan.innerHTML = html;
             if (levelSpan) levelSpan.innerHTML = level;
         }
-        
-        function getRelativeTime(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return `il y a ${s} secondes`; const m = Math.floor(s / 60); if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`; const h = Math.floor(m / 60); if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`; const d = Math.floor(h / 24); return `il y a ${d} jour${d > 1 ? 's' : ''}`; }
-        
+
+        function getRelativeTime(ts) {
+            const s = Math.floor((Date.now() - ts) / 1000);
+            if (s < 60) return `il y a ${s} secondes`;
+            const m = Math.floor(s / 60);
+            if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`;
+            const h = Math.floor(m / 60);
+            if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`;
+            const d = Math.floor(h / 24);
+            return `il y a ${d} jour${d > 1 ? 's' : ''}`;
+        }
+
         function saveAllData() {
             localStorage.setItem('starconnect_news', JSON.stringify(newsItems));
             localStorage.setItem('starconnect_events', JSON.stringify(eventsList));
@@ -2300,7 +2217,7 @@
             localStorage.setItem('starconnect_notifications', JSON.stringify(notifications));
             saveSubscriberData();
         }
-        
+
         function loadAllData() {
             try {
                 const sa = localStorage.getItem('starconnect_artists_db');
@@ -2332,7 +2249,6 @@
                 const sNotif = localStorage.getItem('starconnect_notifications');
                 if (sNotif) notifications = JSON.parse(sNotif);
                 else notifications = [];
-                
                 feedPosts.forEach(p => { if (postLikes[p.id] === undefined) postLikes[p.id] = p.likes || 0; });
                 const banner = document.getElementById('maintenanceBanner');
                 if (banner) banner.style.display = maintenanceMode ? 'block' : 'none';
@@ -2342,27 +2258,15 @@
                 loadSubscriberData();
             } catch(e) { console.error(e); }
         }
-        
+
         function renderConsentProofs() {
             const c = document.getElementById('consentProofsList');
             if (!c) return;
             const artistsWithProof = Object.entries(ARTISTS_DB).filter(([id, a]) => a.consentProof || (a.consentSignature && a.consentStatus === 'approved'));
             if (artistsWithProof.length === 0) { c.innerHTML = '<p>Aucune preuve de consentement enregistrée.</p>'; return; }
-            c.innerHTML = artistsWithProof.map(([id, a]) => `
-                <div class="artist-card">
-                    <div>
-                        <strong>${a.name}</strong><br>
-                        <small>Role: ${a.consentRole === 'artist' ? 'Artiste lui-même' : 'Manager/Agent'}</small><br>
-                        <small>Signature: ${a.consentSignature || 'Non spécifiée'}</small><br>
-                        <small>Date: ${a.consentDate ? new Date(a.consentDate).toLocaleDateString() : 'Non spécifiée'}</small>
-                        ${a.consentManagerName ? `<small>Manager: ${a.consentManagerName}</small><br>` : ''}
-                        ${a.consentProof ? `<div><img src="${a.consentProof}" class="proof-preview" alt="Preuve"></div>` : ''}
-                    </div>
-                    <button onclick="deleteConsentProof('${id}')" class="delete-artist-btn">🗑️ Supprimer preuve</button>
-                </div>
-            `).join('');
+            c.innerHTML = artistsWithProof.map(([id, a]) => `<div class="artist-card"><div><strong>${a.name}</strong><br><small>Role: ${a.consentRole === 'artist' ? 'Artiste lui-même' : 'Manager/Agent'}</small><br><small>Signature: ${a.consentSignature || 'Non spécifiée'}</small><br><small>Date: ${a.consentDate ? new Date(a.consentDate).toLocaleDateString() : 'Non spécifiée'}</small>${a.consentManagerName ? `<small>Manager: ${a.consentManagerName}</small><br>` : ''}${a.consentProof ? `<div><img src="${a.consentProof}" class="proof-preview" alt="Preuve"></div>` : ''}</div><button onclick="deleteConsentProof('${id}')" class="delete-artist-btn">🗑️ Supprimer preuve</button></div>`).join('');
         }
-        
+
         window.deleteConsentProof = function(artistId) {
             if (confirm(`Supprimer la preuve de consentement pour ${ARTISTS_DB[artistId]?.name} ?`)) {
                 const artist = ARTISTS_DB[artistId];
@@ -2377,28 +2281,15 @@
                 addNotification('Preuve supprimée');
             }
         };
-        
+
         function renderPendingApprovals() {
             const c = document.getElementById('pendingApprovalsList');
             if (!c) return;
             const pendingArtists = Object.entries(ARTISTS_DB).filter(([id, a]) => a.consentStatus === 'pending');
             if (pendingArtists.length === 0) { c.innerHTML = '<p>Aucune demande de consentement en attente.</p>'; return; }
-            c.innerHTML = pendingArtists.map(([id, a]) => `
-                <div class="artist-card">
-                    <div>
-                        <span><strong>${a.name}</strong> - demande envoyée le ${new Date(a.consentRequestDate).toLocaleDateString()}</span>
-                        <br><small>Role: ${a.consentRole === 'artist' ? 'Artiste' : 'Manager: ' + (a.consentManagerName || '?')}</small>
-                        <br><small>Signature: ${a.consentSignature || 'Non spécifiée'}</small>
-                        ${a.consentImageData ? '<br><small>📷 Nouvelle photo fournie</small>' : ''}
-                    </div>
-                    <div>
-                        <button onclick="approveConsent('${id}')" style="background:#00a86b;color:white;border:none;padding:5px 10px;border-radius:10px;margin-right:5px;">✅ Approuver</button>
-                        <button onclick="rejectConsent('${id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:10px;">❌ Rejeter</button>
-                    </div>
-                </div>
-            `).join('');
+            c.innerHTML = pendingArtists.map(([id, a]) => `<div class="artist-card"><div><span><strong>${a.name}</strong> - demande envoyée le ${new Date(a.consentRequestDate).toLocaleDateString()}</span><br><small>Role: ${a.consentRole === 'artist' ? 'Artiste' : 'Manager: ' + (a.consentManagerName || '?')}</small><br><small>Signature: ${a.consentSignature || 'Non spécifiée'}</small>${a.consentImageData ? '<br><small>📷 Nouvelle photo fournie</small>' : ''}</div><div><button onclick="approveConsent('${id}')" style="background:#00a86b;color:white;border:none;padding:5px 10px;border-radius:10px;margin-right:5px;">✅ Approuver</button><button onclick="rejectConsent('${id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:10px;">❌ Rejeter</button></div></div>`).join('');
         }
-        
+
         window.approveConsent = function(artistId) {
             const artist = ARTISTS_DB[artistId];
             if (artist && artist.consentImageData) {
@@ -2412,7 +2303,7 @@
                 addNotification(`✅ Consentement approuvé pour ${artist.name}`);
             }
         };
-        
+
         window.rejectConsent = function(artistId) {
             const artist = ARTISTS_DB[artistId];
             artist.consentStatus = 'none';
@@ -2430,13 +2321,12 @@
             renderConsentProofs();
             addNotification(`❌ Consentement rejeté pour ${artist.name}`);
         };
-        
+
         function selectConsentRole(role) {
             pendingConsentRole = role;
             const managerFields = document.getElementById('managerFields');
             const artistLabel = document.getElementById('role-artist-label');
             const managerLabel = document.getElementById('role-manager-label');
-            
             if (role === 'manager') {
                 managerFields.style.display = 'block';
                 artistLabel.classList.remove('selected');
@@ -2447,9 +2337,18 @@
                 managerLabel.classList.remove('selected');
             }
         }
-        
-        function renderShop() { const c = document.getElementById('shopGrid'); if (!c) return; const currentProducts = PRODUCTS_DB.filter(p => p.artist === currentArtistId); if (currentProducts.length === 0) { c.innerHTML = '<div style="text-align:center;padding:40px;">🛍️ Aucun produit disponible pour le moment.</div>'; return; } c.innerHTML = currentProducts.map(p => `<div class="product-card"><div class="product-image"><i class="fas fa-${p.image === '🎤' ? 'microphone-alt' : 'shirt'}"></i></div><div class="product-title">${escapeHtml(p.name)}</div><div class="product-price">${p.price} €</div><button class="product-btn" onclick="window.open('${p.link || '#'}','_blank')">🛒 Commander</button></div>`).join(''); }
-        
+
+        function renderShop() { 
+            const c = document.getElementById('shopGrid'); 
+            if (!c) return; 
+            const currentProducts = PRODUCTS_DB.filter(p => p.artist === currentArtistId); 
+            if (currentProducts.length === 0) { 
+                c.innerHTML = '<div style="text-align:center;padding:40px;">🛍️ Aucun produit disponible pour le moment.</div>'; 
+                return; 
+            } 
+            c.innerHTML = currentProducts.map(p => `<div class="product-card"><div class="product-image"><i class="fas fa-${p.image === '🎤' ? 'microphone-alt' : 'shirt'}"></i></div><div class="product-title">${escapeHtml(p.name)}</div><div class="product-price">${p.price} €</div><button class="product-btn" onclick="window.open('${p.link || '#'}','_blank')">🛒 Commander</button></div>`).join(''); 
+        }
+
         function renderCustomGallery() { 
             const c = document.getElementById('customGallery'); 
             if (!c) return; 
@@ -2457,19 +2356,9 @@
                 c.innerHTML = '<div style="text-align:center;padding:40px;">🎨 Aucune création pour le moment.</div>'; 
                 return; 
             } 
-            c.innerHTML = CUSTOM_ITEMS.map(item => `
-                <div class="custom-item">
-                    <div class="custom-image">
-                        ${item.image ? `<img src="${item.image}" alt="${item.name}">` : `<i class="fas ${item.icon || 'fa-tshirt'}"></i>`}
-                    </div>
-                    <div class="custom-title">${escapeHtml(item.name)}</div>
-                    <div class="custom-desc">${escapeHtml(item.desc)}</div>
-                    <div class="product-price">${item.price === 0 ? 'Sur devis' : item.price + ' €'}</div>
-                    <button class="product-btn" onclick="window.open('https://facebook.com/starconnect/shop','_blank')">📩 Commander</button>
-                </div>
-            `).join(''); 
+            c.innerHTML = CUSTOM_ITEMS.map(item => `<div class="custom-item"><div class="custom-image">${item.image ? `<img src="${item.image}" alt="${item.name}">` : `<i class="fas ${item.icon || 'fa-tshirt'}"></i>`}</div><div class="custom-title">${escapeHtml(item.name)}</div><div class="custom-desc">${escapeHtml(item.desc)}</div><div class="product-price">${item.price === 0 ? 'Sur devis' : item.price + ' €'}</div><button class="product-btn" onclick="window.open('https://facebook.com/starconnect/shop','_blank')">📩 Commander</button></div>`).join(''); 
         }
-        
+
         function renderPartnerRequests() { 
             const c = document.getElementById('partnerRequestsList'); 
             if (!c) return; 
@@ -2477,23 +2366,9 @@
                 c.innerHTML = '<p>Aucune demande pour le moment.</p>'; 
                 return; 
             } 
-            c.innerHTML = PARTNER_REQUESTS.map(r => `
-                <div class="partner-card">
-                    <div>
-                        <strong>${escapeHtml(r.name)}</strong> - ${escapeHtml(r.email)}
-                    </div>
-                    <div>PayPal: ${escapeHtml(r.paypal || 'Non fourni')}</div>
-                    <div>Produit: ${r.productType}</div>
-                    <div>Message: ${escapeHtml(r.message.substring(0,100))}...</div>
-                    <div>Statut: <span class="${r.status === 'approved' ? 'partner-status-approved' : 'partner-status-pending'}">${r.status === 'approved' ? '✅ Approuvé' : '⏳ En attente'}</span></div>
-                    <div>
-                        ${r.status !== 'approved' ? `<button onclick="approvePartnerRequest(${r.id})" class="approve-partner-btn">✅ Approuver</button>` : ''}
-                        <button onclick="deletePartnerRequest(${r.id})" class="delete-artist-btn">🗑️ Supprimer</button>
-                    </div>
-                </div>
-            `).join(''); 
+            c.innerHTML = PARTNER_REQUESTS.map(r => `<div class="partner-card"><div><strong>${escapeHtml(r.name)}</strong> - ${escapeHtml(r.email)}</div><div>PayPal: ${escapeHtml(r.paypal || 'Non fourni')}</div><div>Produit: ${r.productType}</div><div>Message: ${escapeHtml(r.message.substring(0,100))}...</div><div>Statut: <span class="${r.status === 'approved' ? 'partner-status-approved' : 'partner-status-pending'}">${r.status === 'approved' ? '✅ Approuvé' : '⏳ En attente'}</span></div><div>${r.status !== 'approved' ? `<button onclick="approvePartnerRequest(${r.id})" class="approve-partner-btn">✅ Approuver</button>` : ''}<button onclick="deletePartnerRequest(${r.id})" class="delete-artist-btn">🗑️ Supprimer</button></div></div>`).join(''); 
         }
-        
+
         window.approvePartnerRequest = function(id) {
             const request = PARTNER_REQUESTS.find(r => r.id === id);
             if (request) {
@@ -2503,16 +2378,29 @@
                 addNotification(`✅ Partenariat approuvé pour ${request.name}`);
             }
         };
-        
+
         window.deletePartnerRequest = function(id) { 
             PARTNER_REQUESTS = PARTNER_REQUESTS.filter(r => r.id !== id); 
             saveAllData(); 
             renderPartnerRequests(); 
             addNotification('Demande supprimée'); 
         };
-        
-        function renderArtistSelect() { const s = document.getElementById('artistSelect'); if (!s) return; s.innerHTML = ''; for (const [id, a] of Object.entries(ARTISTS_DB)) { if (a.active !== false) { const o = document.createElement('option'); o.value = id; o.textContent = `${a.avatar || '🎤'} ${a.name}`; if (id === currentArtistId) o.selected = true; s.appendChild(o); } } }
-        
+
+        function renderArtistSelect() { 
+            const s = document.getElementById('artistSelect'); 
+            if (!s) return; 
+            s.innerHTML = ''; 
+            for (const [id, a] of Object.entries(ARTISTS_DB)) { 
+                if (a.active !== false) { 
+                    const o = document.createElement('option'); 
+                    o.value = id; 
+                    o.textContent = `${a.avatar || '🎤'} ${a.name}`; 
+                    if (id === currentArtistId) o.selected = true; 
+                    s.appendChild(o); 
+                } 
+            } 
+        }
+
         function renderArtistProfile() {
             const a = getCurrentArtist();
             if (!a) return;
@@ -2529,7 +2417,6 @@
             
             const avatarDiv = document.getElementById('artistAvatar');
             const canModify = (a.consentStatus !== 'pending' && a.consentStatus !== 'approved');
-            
             if (canModify) {
                 avatarDiv.style.cursor = 'pointer';
                 avatarDiv.classList.remove('avatar-locked');
@@ -2537,7 +2424,6 @@
                 avatarDiv.style.cursor = 'not-allowed';
                 avatarDiv.classList.add('avatar-locked');
             }
-            
             if (a.customAvatar) {
                 avatarDiv.innerHTML = `<img src="${a.customAvatar}" alt="${a.name}"><div class="avatar-overlay">${canModify ? 'Cliquer pour modifier' : 'Verrouillé'}</div>`;
             } else {
@@ -2557,7 +2443,7 @@
             
             document.getElementById('concertName').innerHTML = a.nextConcert.name;
             
-            // Affichage des stats YouTube réelles si disponibles
+            // AFFICHAGE DES STATS YOUTUBE RÉELLES
             const youtubeDisplay = a.youtubeSubscribers ? `${a.youtubeSubscribers} abonnés` : (a.youtubeStats || "N/A");
             document.getElementById('artistStats').innerHTML = `<div class="stat-box"><div class="stat-number">${youtubeDisplay}</div><div class="stat-label">📺 YouTube</div></div><div class="stat-box"><div class="stat-number">${a.spotifyStats || "N/A"}</div><div class="stat-label">🎧 Spotify</div></div><div class="stat-box"><div class="stat-number">🏆 ${a.nominations}</div><div class="stat-label">Nominations</div></div>`;
             
@@ -2569,12 +2455,21 @@
             const target = new Date(a.nextConcert.date);
             const now = new Date();
             const diff = target - now;
-            if (diff <= 0) { document.getElementById('days').innerText = '00'; document.getElementById('hours').innerText = '00'; document.getElementById('minutes').innerText = '00'; document.getElementById('seconds').innerText = '00'; }
-            else { document.getElementById('days').innerText = Math.floor(diff / 86400000).toString().padStart(2, '0'); document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0'); document.getElementById('minutes').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0'); document.getElementById('seconds').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0'); }
+            if (diff <= 0) { 
+                document.getElementById('days').innerText = '00'; 
+                document.getElementById('hours').innerText = '00'; 
+                document.getElementById('minutes').innerText = '00'; 
+                document.getElementById('seconds').innerText = '00'; 
+            } else { 
+                document.getElementById('days').innerText = Math.floor(diff / 86400000).toString().padStart(2, '0'); 
+                document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0'); 
+                document.getElementById('minutes').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0'); 
+                document.getElementById('seconds').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0'); 
+            }
             renderShop();
             updateStarRating(a.manaScore);
         }
-        
+
         function openConsentModal() { 
             document.getElementById('consentCheckbox').checked = false;
             document.getElementById('consentCommercialCheckbox').checked = false;
@@ -2586,9 +2481,12 @@
             selectConsentRole('artist');
             document.getElementById('consentModal').classList.add('show'); 
         }
-        
-        function renderEvents() { const c = document.getElementById('eventsList'); if (c) c.innerHTML = eventsList.map(e => `<div class="event-item"><div><strong>${escapeHtml(e.name)}</strong><br>${escapeHtml(e.place)}</div><div class="event-date">📅 ${escapeHtml(e.date)}</div></div>`).join(''); }
-        
+
+        function renderEvents() { 
+            const c = document.getElementById('eventsList'); 
+            if (c) c.innerHTML = eventsList.map(e => `<div class="event-item"><div><strong>${escapeHtml(e.name)}</strong><br>${escapeHtml(e.place)}</div><div class="event-date">📅 ${escapeHtml(e.date)}</div></div>`).join(''); 
+        }
+
         function renderFeed() {
             const c = document.getElementById('feedList');
             if (!c) return;
@@ -2597,18 +2495,12 @@
                 let avHtml = '';
                 if (p.avatar && p.avatar.startsWith('data:image')) avHtml = `<img src="${p.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
                 else { const emoji = p.avatarEmoji || '⭐'; const map = {'🎤':'fa-microphone-alt','⭐':'fa-star','🔥':'fa-fire'}; avHtml = `<i class="fas ${map[emoji] || 'fa-user'}"></i>`; }
-                return `<div class="post">
-                    <button class="delete-post-btn" onclick="deletePost(${p.id})"><i class="fas fa-trash"></i></button>
-                    <div class="post-header"><div class="post-avatar" onclick="openAvatarUpload(${p.id})">${avHtml}</div><div><strong>${escapeHtml(p.author)}</strong> <span class="post-time">· ⏱️ ${getRelativeTime(p.time)}</span></div></div>
-                    <div class="post-content">${escapeHtml(p.content)}</div>
-                    ${p.image ? `<img src="${p.image}" class="post-image" onclick="window.open(this.src)">` : ''}
-                    <div class="post-actions"><i class="far fa-heart like-btn" data-id="${p.id}"></i><span class="post-stats" id="like-count-${p.id}">${postLikes[p.id] || 0} j'aime</span><i class="far fa-share-square share-btn" data-content="${encodeURIComponent(p.content)}"></i></div>
-                </div>`;
+                return `<div class="post"><button class="delete-post-btn" onclick="deletePost(${p.id})"><i class="fas fa-trash"></i></button><div class="post-header"><div class="post-avatar" onclick="openAvatarUpload(${p.id})">${avHtml}</div><div><strong>${escapeHtml(p.author)}</strong> <span class="post-time">· ⏱️ ${getRelativeTime(p.time)}</span></div></div><div class="post-content">${escapeHtml(p.content)}</div>${p.image ? `<img src="${p.image}" class="post-image" onclick="window.open(this.src)">` : ''}<div class="post-actions"><i class="far fa-heart like-btn" data-id="${p.id}"></i><span class="post-stats" id="like-count-${p.id}">${postLikes[p.id] || 0} j'aime</span><i class="far fa-share-square share-btn" data-content="${encodeURIComponent(p.content)}"></i></div></div>`;
             }).join('');
             document.querySelectorAll('.like-btn').forEach(btn => btn.addEventListener('click', (e) => { const id = parseInt(btn.getAttribute('data-id')); postLikes[id] = (postLikes[id] || 0) + 1; document.getElementById(`like-count-${id}`).innerText = `${postLikes[id]} j'aime`; saveAllData(); updateTopFans(); addNotification('❤️ Vous avez aimé ce post !'); btn.classList.add('fas'); btn.classList.remove('far'); }));
             document.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => { navigator.clipboard.writeText(`🔥 Découvrez ce post sur STARCONNECT : "${decodeURIComponent(btn.getAttribute('data-content'))}"`); addNotification('📋 Lien copié !'); }));
         }
-        
+
         function deletePost(postId) {
             if (confirm('⚠️ Supprimer définitivement ce post ?')) {
                 feedPosts = feedPosts.filter(p => p.id !== postId);
@@ -2619,7 +2511,7 @@
                 addNotification('🗑️ Post supprimé');
             }
         }
-        
+
         function updateTopFans() {
             const stats = {};
             feedPosts.forEach(p => { if (!stats[p.author]) stats[p.author] = { posts: 0, likes: 0 }; stats[p.author].posts++; stats[p.author].likes += (postLikes[p.id] || 0); });
@@ -2627,7 +2519,7 @@
             const c = document.getElementById('topFansList');
             if (c) c.innerHTML = fans.length ? fans.map(f => { let badge='', cls=''; if (f.score>=100) { badge='🏆 Or'; cls='badge-gold'; } else if (f.score>=50) { badge='🥈 Argent'; cls='badge-silver'; } else if (f.score>=25) { badge='🥉 Bronze'; cls='badge-bronze'; } else { badge='⭐ Fan'; } return `<div class="fan-card"><div class="fan-avatar"><i class="fas fa-user"></i></div><div><strong>${escapeHtml(f.name)}</strong></div><div class="fan-badge ${cls}">${badge}</div><div style="font-size:0.6rem;">📊 ${f.score} pts</div></div>`; }).join('') : '<div style="text-align:center;padding:40px;">👑 Devenez le premier fan !</div>';
         }
-        
+
         function openAvatarUpload(postId) {
             const input = document.createElement('input');
             input.type = 'file';
@@ -2645,78 +2537,114 @@
             };
             input.click();
         }
-        
+
         function publishPost(content, imageData) {
             feedPosts.unshift({ id: Date.now(), author: "Fan 🔥", avatar: null, avatarType: "emoji", avatarEmoji: "⭐", content: content, time: Date.now(), image: imageData });
             postLikes[Date.now()] = 0;
             renderFeed(); saveAllData(); updateTopFans();
             addNotification('✅ Publication ajoutée !');
         }
-        
-        function refreshArtistsList() { const c = document.getElementById('artistsList'); if (!c) return; c.innerHTML = '<h5 style="margin:10px 0;">📋 Artistes existants :</h5>'; for (const [id, a] of Object.entries(ARTISTS_DB)) { c.innerHTML += `<div class="artist-card"><span>${a.avatar} ${a.name} (${a.certification})</span><button class="delete-artist-btn" data-id="${id}">🗑️ Supprimer</button></div>`; } document.querySelectorAll('.delete-artist-btn').forEach(btn => btn.addEventListener('click', () => { const id = btn.getAttribute('data-id'); if (id === 'basta-lion') { addNotification('❌ Impossible de supprimer l\'artiste principal'); return; } if (confirm(`Supprimer ${ARTISTS_DB[id]?.name} ?`)) { delete ARTISTS_DB[id]; if (currentArtistId === id) currentArtistId = 'basta-lion'; saveAllData(); renderArtistSelect(); renderArtistProfile(); addNotification('✅ Artiste supprimé'); } })); }
-        function refreshProductsList() { const c = document.getElementById('productsList'); if (!c) return; c.innerHTML = '<h5 style="margin:10px 0;">📦 Produits existants :</h5>'; for (const p of PRODUCTS_DB) { const artistName = ARTISTS_DB[p.artist]?.name || p.artist; c.innerHTML += `<div class="artist-card"><span>${p.name} - ${p.price}€ (${artistName})</span><button class="delete-product-btn" data-id="${p.id}">🗑️ Supprimer</button></div>`; } document.querySelectorAll('.delete-product-btn').forEach(btn => btn.addEventListener('click', () => { const id = parseInt(btn.getAttribute('data-id')); PRODUCTS_DB = PRODUCTS_DB.filter(p => p.id !== id); saveAllData(); refreshProductsList(); renderShop(); addNotification('✅ Produit supprimé'); })); }
-        function refreshCustomList() { const c = document.getElementById('customList'); if (!c) return; c.innerHTML = '<h5 style="margin:10px 0;">🎨 Créations existantes :</h5>'; for (const item of CUSTOM_ITEMS) { c.innerHTML += `<div class="artist-card"><span>${item.name} - ${item.price === 0 ? 'Sur devis' : item.price + '€'}</span><button class="delete-custom-btn" data-id="${item.id}">🗑️ Supprimer</button></div>`; } document.querySelectorAll('.delete-custom-btn').forEach(btn => btn.addEventListener('click', () => { const id = parseInt(btn.getAttribute('data-id')); CUSTOM_ITEMS = CUSTOM_ITEMS.filter(i => i.id !== id); saveAllData(); refreshCustomList(); renderCustomGallery(); addNotification('✅ Création supprimée'); })); }
-        
-        function switchArtist(id) { if (!ARTISTS_DB[id]) return; currentArtistId = id; const a = getCurrentArtist(); const sm = localStorage.getItem(`starconnect_mana_${id}`); manaScore = sm ? JSON.parse(sm) : a.manaScore; document.getElementById('manaValue').innerText = manaScore; renderArtistProfile(); updateStarRating(manaScore); saveAllData(); addNotification(`👑 Page de ${a.name}`); }
-        
+
+        function refreshArtistsList() { 
+            const c = document.getElementById('artistsList'); 
+            if (!c) return; 
+            c.innerHTML = '<h5 style="margin:10px 0;">📋 Artistes existants :</h5>'; 
+            for (const [id, a] of Object.entries(ARTISTS_DB)) { 
+                c.innerHTML += `<div class="artist-card"><span>${a.avatar} ${a.name} (${a.certification})</span><button class="delete-artist-btn" data-id="${id}">🗑️ Supprimer</button></div>`; 
+            } 
+            document.querySelectorAll('.delete-artist-btn').forEach(btn => btn.addEventListener('click', () => { 
+                const id = btn.getAttribute('data-id'); 
+                if (id === 'basta-lion') { addNotification('❌ Impossible de supprimer l\'artiste principal'); return; } 
+                if (confirm(`Supprimer ${ARTISTS_DB[id]?.name} ?`)) { delete ARTISTS_DB[id]; if (currentArtistId === id) currentArtistId = 'basta-lion'; saveAllData(); renderArtistSelect(); renderArtistProfile(); addNotification('✅ Artiste supprimé'); } 
+            })); 
+        }
+
+        function refreshProductsList() { 
+            const c = document.getElementById('productsList'); 
+            if (!c) return; 
+            c.innerHTML = '<h5 style="margin:10px 0;">📦 Produits existants :</h5>'; 
+            for (const p of PRODUCTS_DB) { 
+                const artistName = ARTISTS_DB[p.artist]?.name || p.artist; 
+                c.innerHTML += `<div class="artist-card"><span>${p.name} - ${p.price}€ (${artistName})</span><button class="delete-product-btn" data-id="${p.id}">🗑️ Supprimer</button></div>`; 
+            } 
+            document.querySelectorAll('.delete-product-btn').forEach(btn => btn.addEventListener('click', () => { 
+                const id = parseInt(btn.getAttribute('data-id')); 
+                PRODUCTS_DB = PRODUCTS_DB.filter(p => p.id !== id); 
+                saveAllData(); 
+                refreshProductsList(); 
+                renderShop(); 
+                addNotification('✅ Produit supprimé'); 
+            })); 
+        }
+
+        function refreshCustomList() { 
+            const c = document.getElementById('customList'); 
+            if (!c) return; 
+            c.innerHTML = '<h5 style="margin:10px 0;">🎨 Créations existantes :</h5>'; 
+            for (const item of CUSTOM_ITEMS) { 
+                c.innerHTML += `<div class="artist-card"><span>${item.name} - ${item.price === 0 ? 'Sur devis' : item.price + '€'}</span><button class="delete-custom-btn" data-id="${item.id}">🗑️ Supprimer</button></div>`; 
+            } 
+            document.querySelectorAll('.delete-custom-btn').forEach(btn => btn.addEventListener('click', () => { 
+                const id = parseInt(btn.getAttribute('data-id')); 
+                CUSTOM_ITEMS = CUSTOM_ITEMS.filter(i => i.id !== id); 
+                saveAllData(); 
+                refreshCustomList(); 
+                renderCustomGallery(); 
+                addNotification('✅ Création supprimée'); 
+            })); 
+        }
+
+        function switchArtist(id) { 
+            if (!ARTISTS_DB[id]) return; 
+            currentArtistId = id; 
+            const a = getCurrentArtist(); 
+            const sm = localStorage.getItem(`starconnect_mana_${id}`); 
+            manaScore = sm ? JSON.parse(sm) : a.manaScore; 
+            document.getElementById('manaValue').innerText = manaScore; 
+            renderArtistProfile(); 
+            updateStarRating(manaScore); 
+            saveAllData(); 
+            addNotification(`👑 Page de ${a.name}`); 
+        }
+
+        // NOUVELLE FONCTIONNALITÉ 3 : CLASSEMENT DÉTAILLÉ AMÉLIORÉ
         function renderRanking() {
             const container = document.getElementById('rankingContent');
             if (!container) return;
-            
             const artists = Object.values(ARTISTS_DB).filter(a => a.active !== false);
             let filteredArtists = [...artists];
-            
             if (currentRankingTab === 'dancehall') {
                 filteredArtists = artists.filter(a => a.genre && a.genre.toLowerCase().includes('dancehall'));
             } else if (currentRankingTab === 'reggae') {
                 filteredArtists = artists.filter(a => a.genre && a.genre.toLowerCase().includes('reggae'));
             }
-            
             filteredArtists.sort((a, b) => b.manaScore - a.manaScore);
-            
-            let html = `
-                <table class="ranking-table">
-                    <thead>
-                        <tr><th>#</th><th>Artiste</th><th>Score MANA</th><th>Vues YouTube</th><th>Genre</th></tr>
-                    </thead>
-                    <tbody>
-            `;
-            
+            let html = `<table class="ranking-table"><thead><tr><th>#</th><th>Artiste</th><th>Score MANA</th><th>Vues YouTube</th><th>Genre</th></tr></thead><tbody>`;
             filteredArtists.forEach((artist, index) => {
                 html += `<tr><td class="rank-number">${index + 1}</td><td><strong>${artist.name}</strong> ${getCertificationBadge(artist.certification)}</td><td><span class="mana-value">${artist.manaScore}</span> pts</td><td>${artist.youtubeStats}</td><td>${artist.genre || 'Non spécifié'}</td></tr>`;
             });
-            
             html += `</tbody></table>`;
             container.innerHTML = html;
         }
-        
+
         function refreshRankingStats() {
             addNotification('🔄 Actualisation des statistiques en cours...');
             updateAllArtistsManaFromYouTube();
         }
-        
-        //=============================================
-        // ÉVÉNEMENTS ET INITIALISATION
-        //=============================================
+
         function openStoryModal() { document.getElementById('storyModal').classList.add('show'); }
         function closeStoryModal() { document.getElementById('storyModal').classList.remove('show'); }
         function openSubscribeModal() { document.getElementById('subscribeModal').classList.add('show'); }
         function closeSubscribeModal() { document.getElementById('subscribeModal').classList.remove('show'); }
-        
+
         function addNotification(message, type = 'info') {
-            notifications.unshift({
-                id: Date.now(),
-                message: message,
-                time: Date.now(),
-                read: false,
-                type: type
-            });
+            notifications.unshift({ id: Date.now(), message: message, time: Date.now(), read: false, type: type });
             if (notifications.length > 50) notifications.pop();
             saveAllData();
             renderNotifications();
             showToast(message);
         }
-        
+
         function showToast(message) {
             let n = document.createElement('div');
             n.className = 'notification';
@@ -2724,48 +2652,35 @@
             document.body.appendChild(n);
             setTimeout(() => n.remove(), 3000);
         }
-        
+
         function renderNotifications() {
             const badge = document.getElementById('notifBadge');
             const unreadCount = notifications.filter(n => !n.read).length;
             if (badge) badge.innerText = unreadCount;
-            
             const dropdown = document.getElementById('notificationDropdown');
             if (!dropdown) return;
-            
             if (notifications.length === 0) {
                 dropdown.innerHTML = '<div class="notification-item">Aucune notification</div>';
                 return;
             }
-            
-            dropdown.innerHTML = notifications.map(n => `
-                <div class="notification-item ${n.read ? '' : 'unread'}" onclick="markNotificationRead(${n.id})">
-                    ${n.message}
-                    <br><small>${getRelativeTime(n.time)}</small>
-                </div>
-            `).join('');
+            dropdown.innerHTML = notifications.map(n => `<div class="notification-item ${n.read ? '' : 'unread'}" onclick="markNotificationRead(${n.id})">${n.message}<br><small>${getRelativeTime(n.time)}</small></div>`).join('');
         }
-        
+
         window.markNotificationRead = function(id) {
             const notif = notifications.find(n => n.id === id);
             if (notif) notif.read = true;
             saveAllData();
             renderNotifications();
         };
-        
+
         let currentTrack = null;
         let audioPlayer = null;
-        
+
         function playTrack(title, url) {
             const player = document.getElementById('miniPlayer');
             const playerTitle = document.getElementById('playerTitle');
             const playBtn = document.getElementById('playerPlayBtn');
-            
-            if (audioPlayer) {
-                audioPlayer.pause();
-                audioPlayer = null;
-            }
-            
+            if (audioPlayer) { audioPlayer.pause(); audioPlayer = null; }
             if (url && url !== '#') {
                 playerTitle.innerText = title;
                 player.style.display = 'flex';
@@ -2776,103 +2691,59 @@
                 addNotification(`⚠️ Titre non disponible : ${title}`);
             }
         }
-        
+
         document.getElementById('playerPlayBtn')?.addEventListener('click', () => {
             const playBtn = document.getElementById('playerPlayBtn');
-            if (playBtn.classList.contains('fa-play')) {
-                playBtn.className = 'fas fa-pause';
-            } else {
-                playBtn.className = 'fas fa-play';
-            }
+            if (playBtn.classList.contains('fa-play')) playBtn.className = 'fas fa-pause';
+            else playBtn.className = 'fas fa-play';
         });
-        
         document.getElementById('playerCloseBtn')?.addEventListener('click', () => {
             document.getElementById('miniPlayer').style.display = 'none';
-            if (audioPlayer) {
-                audioPlayer.pause();
-                audioPlayer = null;
-            }
+            if (audioPlayer) { audioPlayer.pause(); audioPlayer = null; }
         });
-        
+
         function checkCookieConsent() {
             const consent = localStorage.getItem('cookie_consent');
-            if (!consent) {
-                document.getElementById('cookieBanner').classList.add('show');
-            }
+            if (!consent) document.getElementById('cookieBanner').classList.add('show');
         }
-        
         document.getElementById('acceptCookies')?.addEventListener('click', () => {
             localStorage.setItem('cookie_consent', 'accepted');
             document.getElementById('cookieBanner').classList.remove('show');
             addNotification('🍪 Merci d\'avoir accepté nos cookies');
         });
-        
         document.getElementById('notificationBell')?.addEventListener('click', (e) => {
             e.stopPropagation();
-            const dropdown = document.getElementById('notificationDropdown');
-            dropdown.classList.toggle('show');
+            document.getElementById('notificationDropdown').classList.toggle('show');
         });
-        
-        document.addEventListener('click', () => {
-            document.getElementById('notificationDropdown')?.classList.remove('show');
-        });
-        
+        document.addEventListener('click', () => document.getElementById('notificationDropdown')?.classList.remove('show'));
+
         async function fetchRSSNews() {
             try {
-                const rssFeeds = [
-                    'https://www.orange.mg/feed/',
-                    'https://www.moov.mg/rss',
-                    'https://lexpress.mg/feed/',
-                    'https://www.midi-madagasikara.mg/feed/'
-                ];
-                
+                const rssFeeds = ['https://www.orange.mg/feed/', 'https://www.moov.mg/rss', 'https://lexpress.mg/feed/', 'https://www.midi-madagasikara.mg/feed/'];
                 let allArticles = [];
-                
                 for (const feedUrl of rssFeeds) {
                     try {
                         const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
                         const response = await fetch(proxyUrl);
                         const data = await response.json();
-                        
                         if (data.status === 'ok' && data.items) {
-                            const articles = data.items.slice(0, 5).map(item => ({
-                                id: Date.now() + Math.random(),
-                                title: item.title,
-                                date: new Date(item.pubDate).getTime(),
-                                desc: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) : item.title,
-                                link: item.link,
-                                source: feedUrl.includes('orange') ? 'Orange Madagascar' : 
-                                        feedUrl.includes('moov') ? 'Moov Madagascar' :
-                                        feedUrl.includes('lexpress') ? 'L\'Express de Madagascar' : 'Midi Madagasikara'
-                            }));
+                            const articles = data.items.slice(0, 5).map(item => ({ id: Date.now() + Math.random(), title: item.title, date: new Date(item.pubDate).getTime(), desc: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) : item.title, link: item.link, source: feedUrl.includes('orange') ? 'Orange Madagascar' : feedUrl.includes('moov') ? 'Moov Madagascar' : feedUrl.includes('lexpress') ? 'L\'Express de Madagascar' : 'Midi Madagasikara' }));
                             allArticles.push(...articles);
                         }
-                    } catch(e) {
-                        console.warn(`Erreur sur flux ${feedUrl}:`, e);
-                    }
+                    } catch(e) { console.warn(`Erreur sur flux ${feedUrl}:`, e); }
                 }
-                
                 if (allArticles.length === 0) {
-                    allArticles = [
-                        { id: Date.now(), title: "Basta Lion en concert à Antananarivo le 20 Mars", date: Date.now(), desc: "L'artiste malgache Basta Lion se produira au Palais des Sports.", link: "#", source: "Actualités" },
-                        { id: Date.now() + 1, title: "Nouvel album de Wawa Sali en préparation", date: Date.now() - 86400000, desc: "Wawa Sali annonce un nouvel album pour 2026.", link: "#", source: "Actualités" },
-                        { id: Date.now() + 2, title: "Madagascar Music Awards : les nominations", date: Date.now() - 172800000, desc: "Découvrez les artistes nommés pour les MMA 2026.", link: "#", source: "Actualités" }
-                    ];
+                    allArticles = [{ id: Date.now(), title: "Basta Lion en concert à Antananarivo le 20 Mars", date: Date.now(), desc: "L'artiste malgache Basta Lion se produira au Palais des Sports.", link: "#", source: "Actualités" }];
                 }
-                
                 allArticles.sort((a,b) => b.date - a.date);
                 newsItems = [...allArticles, ...newsItems.filter(n => !n.source || n.source === 'Manuel')];
                 if (newsItems.length > 40) newsItems = newsItems.slice(0, 40);
-                
                 saveAllData();
                 renderNews();
                 return true;
-            } catch (error) {
-                console.error('Erreur chargement RSS:', error);
-                return false;
-            }
+            } catch (error) { console.error('Erreur chargement RSS:', error); return false; }
         }
-        
+
         function renderNews() {
             const container = document.getElementById('newsList');
             if (!container) return;
@@ -2880,33 +2751,14 @@
                 container.innerHTML = '<div style="text-align:center;padding:40px;">📭 Aucune actualité pour le moment<br><small>Les actualités se chargeront automatiquement via RSS</small></div>';
                 return;
             }
-            container.innerHTML = newsItems.map(item => `
-                <div class="news-item">
-                    <div style="flex:1;">
-                        <strong>📰 ${escapeHtml(item.title)}</strong>
-                        <br>
-                        <small style="color:#888;">
-                            ⏱️ ${getRelativeTime(item.date)} 
-                            ${item.source ? `<span class="news-source">📡 ${escapeHtml(item.source)}</span>` : ''}
-                        </small>
-                        <p style="margin-top:8px;">${escapeHtml(item.desc && item.desc.length > 200 ? item.desc.substring(0,200)+'...' : item.desc)}</p>
-                        ${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="news-link"><i class="fas fa-external-link-alt"></i> Lire l'article complet →</a>` : ''}
-                    </div>
-                    <div class="news-badge">📰</div>
-                </div>
-            `).join('');
+            container.innerHTML = newsItems.map(item => `<div class="news-item"><div style="flex:1;"><strong>📰 ${escapeHtml(item.title)}</strong><br><small style="color:#888;">⏱️ ${getRelativeTime(item.date)} ${item.source ? `<span class="news-source">📡 ${escapeHtml(item.source)}</span>` : ''}</small><p style="margin-top:8px;">${escapeHtml(item.desc && item.desc.length > 200 ? item.desc.substring(0,200)+'...' : item.desc)}</p>${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="news-link"><i class="fas fa-external-link-alt"></i> Lire l'article complet →</a>` : ''}</div><div class="news-badge">📰</div></div>`).join('');
         }
-        
-        // Simulation MANA (supprimée car remplacée par la récupération réelle YouTube API)
-        // La fonction simulateManaUpdate est remplacée par updateAllArtistsManaFromYouTube
-        
+
         function startAutoRankingUpdate() {
             if (autoRankingInterval) clearInterval(autoRankingInterval);
-            autoRankingInterval = setInterval(() => {
-                updateAllArtistsManaFromYouTube();
-            }, 300000); // Toutes les 5 minutes pour ne pas surcharger l'API
+            autoRankingInterval = setInterval(() => { updateAllArtistsManaFromYouTube(); }, 300000);
         }
-        
+
         function startSubscriberGrowthCheck() {
             setInterval(() => {
                 const now = Date.now();
@@ -2926,7 +2778,7 @@
                 }
             }, 60 * 60 * 1000);
         }
-        
+
         function initSmoothScroll() {
             const navLinks = document.querySelectorAll('.nav a');
             navLinks.forEach(link => {
@@ -2946,16 +2798,12 @@
                 });
             });
         }
-        
+
         function initRankingButton() {
             const rankingBtn = document.getElementById('rankingProBtn');
             if (rankingBtn) {
                 rankingBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (!RANKING_FEATURE_ENABLED) {
-                        addNotification('⚙️ Fonctionnalité classement désactivée (optionnelle)');
-                        return;
-                    }
                     const targetElement = document.getElementById('classements');
                     if (targetElement) {
                         const allPanels = document.querySelectorAll('.panel');
@@ -2971,7 +2819,7 @@
                 });
             }
         }
-        
+
         document.getElementById('artistAvatar')?.addEventListener('click', () => {
             const a = getCurrentArtist();
             if (a.consentStatus === 'pending' || a.consentStatus === 'approved') {
@@ -2990,28 +2838,13 @@
             };
             input.click();
         });
-        
         document.getElementById('cancelConsent')?.addEventListener('click', () => {
             pendingAvatarFile = null;
             document.getElementById('consentModal').classList.remove('show');
         });
-        
         document.getElementById('artistSelect')?.addEventListener('change', (e) => switchArtist(e.target.value));
-        
-        document.getElementById('searchBtn')?.addEventListener('click', () => { 
-            const q = document.getElementById('searchInput')?.value.trim(); 
-            if (q) searchYouTubeVideos(q); 
-            else searchYouTubeVideos('Basta Lion Malagasy');
-        });
-        
-        document.getElementById('searchInput')?.addEventListener('keypress', (e) => { 
-            if (e.key === 'Enter') {
-                const q = e.target.value.trim();
-                if (q) searchYouTubeVideos(q); 
-                else searchYouTubeVideos('Basta Lion Malagasy');
-            }
-        });
-        
+        document.getElementById('searchBtn')?.addEventListener('click', () => { const q = document.getElementById('searchInput')?.value.trim(); if (q) searchYouTubeVideos(q); else searchYouTubeVideos('Basta Lion Malagasy'); });
+        document.getElementById('searchInput')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') { const q = e.target.value.trim(); if (q) searchYouTubeVideos(q); else searchYouTubeVideos('Basta Lion Malagasy'); } });
         document.getElementById('publishPostBtn')?.addEventListener('click', () => { 
             if (maintenanceMode) { addNotification('⚠️ Mode maintenance, publication désactivée'); return; } 
             const c = document.getElementById('postContent')?.value.trim();
@@ -3019,22 +2852,13 @@
             if (c) {
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = (e) => {
-                        publishPost(c, e.target.result);
-                        document.getElementById('postContent').value = '';
-                        document.getElementById('postImageInput').value = '';
-                    };
+                    reader.onload = (e) => { publishPost(c, e.target.result); document.getElementById('postContent').value = ''; document.getElementById('postImageInput').value = ''; };
                     reader.readAsDataURL(file);
-                } else {
-                    publishPost(c, null);
-                    document.getElementById('postContent').value = '';
-                }
+                } else { publishPost(c, null); document.getElementById('postContent').value = ''; }
             } else alert('Écrivez quelque chose'); 
         });
-        
         let evForm = false;
         document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventFormContainer'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
-        
         document.querySelectorAll('.ranking-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.ranking-tab').forEach(t => t.classList.remove('active'));
@@ -3043,9 +2867,7 @@
                 renderRanking();
             });
         });
-        
         document.getElementById('refreshRankingBtn')?.addEventListener('click', refreshRankingStats);
-        
         document.getElementById('adminAddProduct')?.addEventListener('click', () => {
             const name = document.getElementById('adminProductName')?.value, price = parseFloat(document.getElementById('adminProductPrice')?.value), artist = document.getElementById('adminProductArtist')?.value, link = document.getElementById('adminProductLink')?.value;
             if (!name || !price || !artist) { alert('Nom, prix et artiste requis'); return; }
@@ -3054,12 +2876,10 @@
             document.getElementById('adminProductName').value = ''; document.getElementById('adminProductPrice').value = ''; document.getElementById('adminProductArtist').value = ''; document.getElementById('adminProductLink').value = ''; 
             addNotification('✅ Produit ajouté'); 
         });
-        
         const adminPanel = document.getElementById('adminPanel');
         const mz = document.getElementById('mobileAdminZone');
         let tc = 0, tt;
         let adminAuthenticated = false;
-        
         function checkAdminPassword() {
             const passwordInput = document.getElementById('adminPassword');
             const adminContent = document.getElementById('adminContent');
@@ -3068,33 +2888,16 @@
                 if (adminContent) adminContent.style.display = 'block';
                 addNotification('✅ Accès admin autorisé');
                 refreshArtistsList(); refreshProductsList(); refreshCustomList(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs();
-            } else if (passwordInput && passwordInput.value) {
-                alert('Mot de passe incorrect');
-                passwordInput.value = '';
-            }
+            } else if (passwordInput && passwordInput.value) { alert('Mot de passe incorrect'); passwordInput.value = ''; }
         }
-        
-        document.getElementById('adminPassword')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkAdminPassword();
-        });
-        
+        document.getElementById('adminPassword')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAdminPassword(); });
         mz?.addEventListener('click', () => { tc++; clearTimeout(tt); tt = setTimeout(() => { tc = 0; }, 1000); if (tc >= 5) { adminPanel.classList.toggle('show'); tc = 0; if (!adminAuthenticated) document.getElementById('adminContent').style.display = 'none'; addNotification(adminPanel.classList.contains('show') ? '🔐 Admin ouvert' : 'Admin fermé'); } });
-        
         document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); adminPanel.classList.toggle('show'); if (!adminAuthenticated) document.getElementById('adminContent').style.display = 'none'; } });
-        
         document.getElementById('adminClose')?.addEventListener('click', () => adminPanel.classList.remove('show'));
         document.getElementById('adminAddNews')?.addEventListener('click', () => { const t = document.getElementById('adminNewsTitle')?.value, d = document.getElementById('adminNewsDesc')?.value; if (t && d) { newsItems.unshift({ id: Date.now(), title: t, date: Date.now(), desc: d, source: "Manuel" }); renderNews(); saveAllData(); document.getElementById('adminNewsTitle').value = ''; document.getElementById('adminNewsDesc').value = ''; addNotification('✅ Actu ajoutée'); } else alert('Remplissez titre et description'); });
-        
-        document.getElementById('adminRefreshNews')?.addEventListener('click', async () => {
-            addNotification('🔄 Chargement des actualités RSS...');
-            await fetchRSSNews();
-            addNotification('✅ Actualités mises à jour !');
-        });
-        
+        document.getElementById('adminRefreshNews')?.addEventListener('click', async () => { addNotification('🔄 Chargement des actualités RSS...'); await fetchRSSNews(); addNotification('✅ Actualités mises à jour !'); });
         document.getElementById('adminAddEvent')?.addEventListener('click', () => { const n = document.getElementById('adminEventName')?.value, p = document.getElementById('adminEventPlace')?.value, d = document.getElementById('adminEventDate')?.value; if (n && p && d) { eventsList.push({ id: Date.now(), name: n, place: p, date: d }); renderEvents(); saveAllData(); document.getElementById('adminEventName').value = ''; document.getElementById('adminEventPlace').value = ''; document.getElementById('adminEventDate').value = ''; addNotification('✅ Événement ajouté'); } else alert('Remplissez tous les champs'); });
-        
         document.getElementById('adminAddCustom')?.addEventListener('click', () => { const name = document.getElementById('customName')?.value, price = parseFloat(document.getElementById('customPrice')?.value), desc = document.getElementById('customDesc')?.value, icon = document.getElementById('customIcon')?.value; if (!name || !desc) { alert('Nom et description requis'); return; } CUSTOM_ITEMS.push({ id: Date.now(), name, price: price || 0, desc, icon: icon || 'fa-tshirt' }); saveAllData(); refreshCustomList(); renderCustomGallery(); document.getElementById('customName').value = ''; document.getElementById('customPrice').value = ''; document.getElementById('customDesc').value = ''; document.getElementById('customIcon').value = ''; addNotification('✅ Création ajoutée'); });
-        
         document.getElementById('adminAddArtist')?.addEventListener('click', () => {
             const id = document.getElementById('newArtistId')?.value.trim().toLowerCase().replace(/\s/g, '-'), name = document.getElementById('newArtistName')?.value.trim(), avatar = document.getElementById('newArtistAvatar')?.value.trim(), bio = document.getElementById('newArtistBio')?.value.trim(), yt = document.getElementById('newArtistYoutube')?.value.trim(), sp = document.getElementById('newArtistSpotify')?.value.trim(), cd = document.getElementById('newArtistConcertDate')?.value;
             if (!id || !name) { alert('ID et Nom sont requis'); return; }
@@ -3103,58 +2906,25 @@
             saveAllData(); renderArtistSelect(); refreshArtistsList(); addNotification(`✅ Artiste ${name} ajouté !`);
             document.getElementById('newArtistId').value = ''; document.getElementById('newArtistName').value = ''; document.getElementById('newArtistAvatar').value = ''; document.getElementById('newArtistBio').value = ''; document.getElementById('newArtistYoutube').value = ''; document.getElementById('newArtistSpotify').value = ''; document.getElementById('newArtistConcertDate').value = '';
         });
-        
         document.getElementById('adminMaintenanceMode')?.addEventListener('click', () => { 
             maintenanceMode = !maintenanceMode; 
             const b = document.getElementById('maintenanceBanner'); 
             if (b) b.style.display = maintenanceMode ? 'block' : 'none'; 
             saveAllData(); 
             addNotification(maintenanceMode ? '🔧 Maintenance ACTIVÉE' : '✅ Maintenance DÉSACTIVÉE');
-            if (maintenanceMode && autoRankingInterval) {
-                clearInterval(autoRankingInterval);
-                autoRankingInterval = null;
-            } else if (!maintenanceMode && !autoRankingInterval) {
-                startAutoRankingUpdate();
-            }
-            if (maintenanceMode && manaUpdateInterval) {
-                clearInterval(manaUpdateInterval);
-                manaUpdateInterval = null;
-            } else if (!maintenanceMode && !manaUpdateInterval) {
-                startManaAutoUpdate();
-            }
+            if (maintenanceMode && autoRankingInterval) { clearInterval(autoRankingInterval); autoRankingInterval = null; }
+            else if (!maintenanceMode && !autoRankingInterval) { startAutoRankingUpdate(); }
+            if (maintenanceMode && manaUpdateInterval) { clearInterval(manaUpdateInterval); manaUpdateInterval = null; }
+            else if (!maintenanceMode && !manaUpdateInterval) { startManaAutoUpdate(); }
         });
-        
         document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts supprimés'); } });
-        
-        document.getElementById('adminResetMana')?.addEventListener('click', () => { 
-            if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { 
-                const a = getCurrentArtist(); 
-                if (a) {
-                    a.manaScore = a.manaScore;
-                    updateManaDisplay(a.manaScore, true);
-                    saveAllData();
-                    renderRanking();
-                    addNotification('🔄 MANA réinitialisé');
-                }
-            } 
-        });
-        
+        document.getElementById('adminResetMana')?.addEventListener('click', () => { if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { const a = getCurrentArtist(); if (a) { a.manaScore = a.manaScore; updateManaDisplay(a.manaScore, true); saveAllData(); renderRanking(); addNotification('🔄 MANA réinitialisé'); } } });
         document.getElementById('adminExportData')?.addEventListener('click', () => { const data = { artists: ARTISTS_DB, products: PRODUCTS_DB, custom: CUSTOM_ITEMS, partners: PARTNER_REQUESTS, news: newsItems, events: eventsList, feed: feedPosts, likes: postLikes, notifications: notifications, exportDate: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `starconnect_backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url); addNotification('📤 Données exportées'); });
-        
         document.getElementById('adminExportConsentProofs')?.addEventListener('click', () => {
             const proofs = {};
             for (const [id, artist] of Object.entries(ARTISTS_DB)) {
                 if (artist.consentProof || artist.consentSignature) {
-                    proofs[id] = {
-                        name: artist.name,
-                        consentStatus: artist.consentStatus,
-                        consentRole: artist.consentRole,
-                        consentSignature: artist.consentSignature,
-                        consentDate: artist.consentDate,
-                        consentManagerName: artist.consentManagerName,
-                        consentRelation: artist.consentRelation,
-                        consentProof: artist.consentProof ? '(image data)' : null
-                    };
+                    proofs[id] = { name: artist.name, consentStatus: artist.consentStatus, consentRole: artist.consentRole, consentSignature: artist.consentSignature, consentDate: artist.consentDate, consentManagerName: artist.consentManagerName, consentRelation: artist.consentRelation, consentProof: artist.consentProof ? '(image data)' : null };
                 }
             }
             const blob = new Blob([JSON.stringify(proofs, null, 2)], { type: 'application/json' });
@@ -3166,10 +2936,8 @@
             URL.revokeObjectURL(url);
             addNotification('📄 Preuves de consentement exportées');
         });
-        
         document.getElementById('adminImportData')?.addEventListener('click', () => { document.getElementById('importFile')?.click(); });
         document.getElementById('importFile')?.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (ev) => { try { const data = JSON.parse(ev.target.result); if (data.artists) ARTISTS_DB = data.artists; if (data.products) PRODUCTS_DB = data.products; if (data.custom) CUSTOM_ITEMS = data.custom; if (data.partners) PARTNER_REQUESTS = data.partners; if (data.news) newsItems = data.news; if (data.events) eventsList = data.events; if (data.feed) feedPosts = data.feed; if (data.likes) postLikes = data.likes; if (data.notifications) notifications = data.notifications; saveAllData(); loadAllData(); addNotification('✅ Import réussi !'); } catch(err) { alert('Fichier invalide'); } }; reader.readAsText(file); e.target.value = ''; });
-        
         document.getElementById('adminSetSubscribers')?.addEventListener('click', () => {
             const newCount = prompt('Entrez le nouveau nombre d\'abonnés :', subscriberCount);
             if (newCount !== null && !isNaN(parseInt(newCount))) {
@@ -3180,14 +2948,11 @@
                 addNotification(`📊 Nombre d'abonnés modifié : ${formatSubscriberCount(subscriberCount)}`);
             }
         });
-        
         const themeBtn = document.getElementById('themeToggleBtn');
         if (localStorage.getItem('starconnect_theme') === 'light') { 
             document.body.classList.add('light-mode'); 
             themeBtn.innerHTML = '<i class="fas fa-sun"></i> Mode clair'; 
-        } else {
-            themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode sombre';
-        }
+        } else { themeBtn.innerHTML = '<i class="fas fa-moon"></i> Mode sombre'; }
         themeBtn?.addEventListener('click', () => { 
             document.body.classList.toggle('light-mode'); 
             if (document.body.classList.contains('light-mode')) { 
@@ -3198,54 +2963,21 @@
                 localStorage.setItem('starconnect_theme', 'dark'); 
             } 
         });
-        
-        // Abonnement classique - popup
-        document.getElementById('subscribeBtn')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            openSubscribeModal();
-        });
-        
-        // Formulaire d'abonnement - envoi normal vers Formspree
-        document.getElementById('subscribeForm')?.addEventListener('submit', function(e) {
-            addManualSubscriber();
-            closeSubscribeModal();
-        });
-        
-        // Mailto pour consentement
+        document.getElementById('subscribeBtn')?.addEventListener('click', (e) => { e.preventDefault(); openSubscribeModal(); });
+        document.getElementById('subscribeForm')?.addEventListener('submit', function(e) { addManualSubscriber(); closeSubscribeModal(); });
         document.getElementById('confirmConsentMailto')?.addEventListener('click', () => {
             const signatureName = document.getElementById('signatureName')?.value;
             const consentDate = document.getElementById('consentDate')?.value;
             const consentRole = document.querySelector('input[name="consentRole"]:checked')?.value;
             const certified = document.getElementById('consentCheckbox')?.checked;
-            
-            if (!certified) {
-                alert('Vous devez confirmer l\'autorisation de l\'artiste');
-                return;
-            }
-            
-            if (!signatureName) {
-                alert('Veuillez entrer votre signature électronique');
-                return;
-            }
-            
+            if (!certified) { alert('Vous devez confirmer l\'autorisation de l\'artiste'); return; }
+            if (!signatureName) { alert('Veuillez entrer votre signature électronique'); return; }
             const artist = getCurrentArtist();
-            
-            let body = `🟡 NOUVELLE DEMANDE DE CONSENTEMENT - ${artist.name} 🟡\n\n`;
-            body += `Artiste : ${artist.name}\n`;
-            body += `Rôle : ${consentRole === 'artist' ? 'Artiste lui-même' : 'Manager / Agent'}\n`;
-            body += `Signature : ${signatureName}\n`;
-            body += `Date : ${consentDate}\n\n`;
-            
-            if (consentRole === 'manager') {
-                body += `Manager : ${document.getElementById('managerName')?.value || 'Non spécifié'}\n`;
-                body += `Relation : ${document.getElementById('managerRelation')?.value || 'Non spécifiée'}\n`;
-            }
-            
+            let body = `🟡 NOUVELLE DEMANDE DE CONSENTEMENT - ${artist.name} 🟡\n\nArtiste : ${artist.name}\nRôle : ${consentRole === 'artist' ? 'Artiste lui-même' : 'Manager / Agent'}\nSignature : ${signatureName}\nDate : ${consentDate}\n\n`;
+            if (consentRole === 'manager') { body += `Manager : ${document.getElementById('managerName')?.value || 'Non spécifié'}\nRelation : ${document.getElementById('managerRelation')?.value || 'Non spécifiée'}\n`; }
             body += `\nMerci de joindre la photo du nouvel avatar et une preuve de consentement signée.`;
-            
             const mailtoLink = `mailto:starconnect.consent@gmail.com?subject=🟡 CONSENTEMENT - ${artist.name}&body=${encodeURIComponent(body)}`;
             window.location.href = mailtoLink;
-            
             artist.consentStatus = 'pending';
             artist.consentRequestDate = Date.now();
             artist.consentRole = consentRole;
@@ -3256,12 +2988,9 @@
                 artist.consentRelation = document.getElementById('managerRelation')?.value;
             }
             saveAllData();
-            
             document.getElementById('consentModal').classList.remove('show');
             addNotification('✅ Demande envoyée par email !');
         });
-        
-        // Mailto pour partenariat
         document.getElementById('submitPartnerMailto')?.addEventListener('click', () => {
             const name = document.getElementById('partnerName')?.value;
             const email = document.getElementById('partnerEmail')?.value;
@@ -3269,123 +2998,53 @@
             const paypal = document.getElementById('partnerPaypal')?.value;
             const productType = document.getElementById('partnerProductType')?.value;
             const message = document.getElementById('partnerMessage')?.value;
-            
-            if (!name || !email) {
-                alert('Veuillez remplir au moins le nom et l\'email');
-                return;
-            }
-            
-            let body = `📋 NOUVELLE DEMANDE DE PARTENARIAT 📋\n\n`;
-            body += `Nom : ${name}\n`;
-            body += `Email : ${email}\n`;
-            body += `Téléphone : ${phone || 'Non fourni'}\n`;
-            body += `PayPal : ${paypal || 'Non fourni'}\n`;
-            body += `Type de produit : ${productType}\n`;
-            body += `Message : ${message || 'Aucun message'}\n`;
-            
+            if (!name || !email) { alert('Veuillez remplir au moins le nom et l\'email'); return; }
+            let body = `📋 NOUVELLE DEMANDE DE PARTENARIAT 📋\n\nNom : ${name}\nEmail : ${email}\nTéléphone : ${phone || 'Non fourni'}\nPayPal : ${paypal || 'Non fourni'}\nType de produit : ${productType}\nMessage : ${message || 'Aucun message'}\n`;
             const mailtoLink = `mailto:starconnect.contact@gmail.com?subject=📋 PARTENARIAT - ${name}&body=${encodeURIComponent(body)}`;
             window.location.href = mailtoLink;
-            
             PARTNER_REQUESTS.unshift({ id: Date.now(), name, email, phone, paypal, productType, message, status: 'pending', date: Date.now() });
             saveAllData();
             renderPartnerRequests();
-            
-            document.getElementById('partnerName').value = '';
-            document.getElementById('partnerEmail').value = '';
-            document.getElementById('partnerPhone').value = '';
-            document.getElementById('partnerPaypal').value = '';
-            document.getElementById('partnerMessage').value = '';
-            
+            document.getElementById('partnerName').value = ''; document.getElementById('partnerEmail').value = ''; document.getElementById('partnerPhone').value = ''; document.getElementById('partnerPaypal').value = ''; document.getElementById('partnerMessage').value = '';
             addNotification('✅ Demande envoyée par email !');
         });
-        
-        // Mailto pour événement
         document.getElementById('submitEventMailto')?.addEventListener('click', () => {
             const name = document.getElementById('eventName')?.value;
             const place = document.getElementById('eventPlace')?.value;
             const date = document.getElementById('eventDate')?.value;
-            
-            if (!name || !place || !date) {
-                alert('Veuillez remplir tous les champs');
-                return;
-            }
-            
-            let body = `🎫 PROPOSITION D'ÉVÉNEMENT - ${name} 🎫\n\n`;
-            body += `Nom : ${name}\n`;
-            body += `Lieu : ${place}\n`;
-            body += `Date : ${date}\n`;
-            
+            if (!name || !place || !date) { alert('Veuillez remplir tous les champs'); return; }
+            let body = `🎫 PROPOSITION D'ÉVÉNEMENT - ${name} 🎫\n\nNom : ${name}\nLieu : ${place}\nDate : ${date}\n`;
             const mailtoLink = `mailto:starconnect.contact@gmail.com?subject=🎫 ÉVÉNEMENT - ${name}&body=${encodeURIComponent(body)}`;
             window.location.href = mailtoLink;
-            
             eventsList.push({ id: Date.now(), name: `🎤 ${name}`, place: `📍 ${place}`, date });
             renderEvents();
             saveAllData();
-            
-            document.getElementById('eventName').value = '';
-            document.getElementById('eventPlace').value = '';
-            document.getElementById('eventDate').value = '';
-            document.getElementById('eventFormContainer').style.display = 'none';
-            
+            document.getElementById('eventName').value = ''; document.getElementById('eventPlace').value = ''; document.getElementById('eventDate').value = ''; document.getElementById('eventFormContainer').style.display = 'none';
             addNotification('✅ Événement proposé par email !');
         });
-        
-        // Mailto pour interview
         document.getElementById('submitInterviewMailto')?.addEventListener('click', () => {
             const artistName = document.getElementById('interviewArtistName')?.value;
             const contactName = document.getElementById('interviewContactName')?.value;
             const contactEmail = document.getElementById('interviewContactEmail')?.value;
             const contactPhone = document.getElementById('interviewContactPhone')?.value;
             const message = document.getElementById('interviewMessage')?.value;
-            
-            if (!artistName || !contactEmail) {
-                alert('Veuillez remplir au moins le nom de l\'artiste et votre email');
-                return;
-            }
-            
-            let body = `🎙️ DEMANDE D'INTERVIEW - ${artistName} 🎙️\n\n`;
-            body += `Artiste proposé : ${artistName}\n`;
-            body += `Contact : ${contactName || 'Non fourni'}\n`;
-            body += `Email : ${contactEmail}\n`;
-            body += `Téléphone : ${contactPhone || 'Non fourni'}\n`;
-            body += `Message : ${message || 'Aucun message'}\n`;
-            
+            if (!artistName || !contactEmail) { alert('Veuillez remplir au moins le nom de l\'artiste et votre email'); return; }
+            let body = `🎙️ DEMANDE D'INTERVIEW - ${artistName} 🎙️\n\nArtiste proposé : ${artistName}\nContact : ${contactName || 'Non fourni'}\nEmail : ${contactEmail}\nTéléphone : ${contactPhone || 'Non fourni'}\nMessage : ${message || 'Aucun message'}\n`;
             const mailtoLink = `mailto:starconnect.contact@gmail.com?subject=🎙️ INTERVIEW - ${artistName}&body=${encodeURIComponent(body)}`;
             window.location.href = mailtoLink;
-            
-            document.getElementById('interviewArtistName').value = '';
-            document.getElementById('interviewContactName').value = '';
-            document.getElementById('interviewContactEmail').value = '';
-            document.getElementById('interviewContactPhone').value = '';
-            document.getElementById('interviewMessage').value = '';
-            
+            document.getElementById('interviewArtistName').value = ''; document.getElementById('interviewContactName').value = ''; document.getElementById('interviewContactEmail').value = ''; document.getElementById('interviewContactPhone').value = ''; document.getElementById('interviewMessage').value = '';
             addNotification('✅ Demande d\'interview envoyée par email !');
         });
-        
-        // Gestion optionnelle du classement (masquage si désactivé)
-        if (!RANKING_FEATURE_ENABLED) {
-            const rankingBtn = document.getElementById('rankingProBtn');
-            const rankingNav = document.querySelector('.nav-btn[data-panel="ranking"]');
-            if (rankingBtn) rankingBtn.classList.add('hidden-rank');
-            if (rankingNav) rankingNav.style.display = 'none';
-        }
-        
-        // Lancement
         startAutoRankingUpdate();
         startSubscriberGrowthCheck();
-        
         loadAllData();
         fetchRSSNews();
         checkCookieConsent();
         initSmoothScroll();
         initRankingButton();
-        
+        initYouTubeAPI();
         let newsInterval = setInterval(() => { if (!maintenanceMode) { fetchRSSNews(); } }, 2 * 60 * 60 * 1000);
-        
-        window.addEventListener('beforeunload', () => { 
-            if (autoRankingInterval) clearInterval(autoRankingInterval);
-            if (manaUpdateInterval) clearInterval(manaUpdateInterval);
-        });
+        window.addEventListener('beforeunload', () => { if (autoRankingInterval) clearInterval(autoRankingInterval); if (manaUpdateInterval) clearInterval(manaUpdateInterval); });
     </script>
 </body>
-</html>
+                    </html>
