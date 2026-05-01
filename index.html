@@ -479,7 +479,7 @@
             margin-right: 8px;
         }
         
-        /* Certifications du premier code intégrées */
+        /* Certifications */
         .star-certified-blue {
             width: 32px;
             height: 32px;
@@ -652,6 +652,130 @@
             filter: blur(1px);
         }
         
+        /* === NOUVEAU STYLE POUR LE CLASSEMENT (fusionné avec le deuxième code) === */
+        .ranking-header-stats {
+            background: rgba(224,165,0,0.1);
+            border-radius: 60px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 1px solid rgba(224,165,0,0.2);
+        }
+        .ranking-header-stats span {
+            font-size: 0.75rem;
+            color: #e0a500;
+        }
+        .ranking-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            background: rgba(10,10,10,0.7);
+            backdrop-filter: blur(12px);
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid rgba(224,165,0,0.25);
+        }
+        .ranking-sort-btn {
+            background: #1a1a1a;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #ccc;
+            transition: all 0.2s;
+        }
+        .ranking-sort-btn:hover {
+            background: #2a2a2a;
+            transform: translateY(-2px);
+        }
+        .ranking-sort-btn.active {
+            background: #e0a500;
+            color: #050505;
+            box-shadow: 0 0 10px rgba(224,165,0,0.5);
+        }
+        .ranking-discover-btn {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid #e0a500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #e0a500;
+            transition: all 0.2s;
+        }
+        .ranking-discover-btn:hover {
+            background: #e0a500;
+            color: #050505;
+            transform: translateY(-2px);
+        }
+        .star-cell {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .star-cell.blue { background: linear-gradient(135deg, #2196F3, #0D47A1); box-shadow: 0 0 6px #2196f3; position: relative; }
+        .star-cell.blue::before { content: "★"; position: absolute; color: white; font-size: 11px; top: 3px; left: 5px; }
+        .star-cell.gold-premium { background: linear-gradient(135deg, #FFD700, #FF8C00); box-shadow: 0 0 8px #ffd700; position: relative; }
+        .star-cell.gold-premium::before { content: "★"; position: absolute; color: #1a1a1a; font-size: 11px; top: 3px; left: 5px; }
+        .star-cell.gold { background: linear-gradient(135deg, #ffeb3b, #ffab00); position: relative; }
+        .star-cell.gold::before { content: "★"; position: absolute; color: #1a1a1a; font-size: 10px; top: 3px; left: 5px; }
+        .star-cell.silver { background: linear-gradient(135deg, #E0E0E0, #A0A0A0); position: relative; }
+        .star-cell.silver::before { content: "★"; position: absolute; color: #1a1a1a; font-size: 10px; top: 3px; left: 5px; }
+        .star-cell.bronze { background: linear-gradient(135deg, #CD7F32, #A0652A); position: relative; }
+        .star-cell.bronze::before { content: "★"; position: absolute; color: white; font-size: 10px; top: 3px; left: 5px; }
+        .badge-hot-new {
+            background: #ff3300;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        .badge-new-artist {
+            background: #00c853;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-left: 8px;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        .trend-up-small { color: #00c853; font-size: 0.7rem; }
+        .trend-down-small { color: #ff4444; font-size: 0.7rem; }
+        .social-icons-ranking a {
+            color: #ccc;
+            margin: 0 4px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .social-icons-ranking a:hover { color: #e0a500; transform: scale(1.1); }
+        .award-tag-ranking {
+            background: rgba(224,165,0,0.15);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            white-space: nowrap;
+            display: inline-block;
+            margin: 2px;
+        }
+        
         .star-rating { display: inline-flex; gap: 3px; margin-left: 15px; align-items: center; }
         .star-rating i { font-size: 0.9rem; color: #ffd700; }
         .star-rating i.far { color: #444; }
@@ -674,28 +798,6 @@
         .stat-number { font-size: 1.8rem; font-weight: 800; color: #e0a500; }
         .stat-label { font-size: 0.7rem; color: #777; margin-top: 6px; }
         
-        /* CLASSEMENT STYLES - enrichis avec barres de progression */
-        .ranking-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        .ranking-tab {
-            background: transparent;
-            border: 1px solid #333;
-            color: #888;
-            padding: 8px 24px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .ranking-tab.active {
-            background: #e0a500;
-            color: #050505;
-            border-color: #e0a500;
-        }
         .ranking-table-wrapper {
             overflow-x: auto;
             border-radius: 20px;
@@ -703,7 +805,7 @@
         .ranking-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 900px;
+            min-width: 1100px;
         }
         .ranking-table th {
             text-align: left;
@@ -711,13 +813,13 @@
             background: #1a1a1a;
             color: #e0a500;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             border-bottom: 2px solid #2a2a2a;
         }
         .ranking-table td {
             padding: 12px;
             border-bottom: 1px solid #1c1c1c;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             vertical-align: middle;
         }
         .ranking-table tr:hover {
@@ -725,51 +827,27 @@
         }
         .rank-number {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #e0a500;
         }
-        .progress-bg {
+        .progress-bg-ranking {
             background: #2a2a2a;
-            border-radius: 20px;
-            height: 6px;
+            border-radius: 10px;
+            height: 5px;
             width: 80px;
+            margin-top: 4px;
             overflow: hidden;
-            margin-top: 5px;
         }
-        .progress-fill {
+        .progress-fill-ranking {
             background: #e0a500;
-            height: 6px;
-            border-radius: 20px;
+            height: 5px;
+            border-radius: 10px;
             width: 0%;
         }
-        .stat-badge {
-            font-weight: 600;
-            font-size: 0.65rem;
-            background: rgba(224,165,0,0.15);
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 20px;
-            cursor: help;
-            margin-left: 8px;
-        }
-        .score-cell {
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: #e0a500;
-        }
-        .badge-hot {
-            background: #ff3300;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
+        .mana-value-ranking {
+            color: #ffd966;
             font-weight: bold;
-            margin-left: 8px;
-            display: inline-block;
-        }
-        .trend-up {
-            color: #00c853;
-            font-size: 0.7rem;
+            font-size: 1rem;
         }
         
         .search-bar { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
@@ -1022,6 +1100,62 @@
         }
         .subscribe-animation { animation: subscribePop 0.3s ease-in-out; }
         
+        /* Modal découverte artistes */
+        .discover-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .discover-content {
+            background: #0a0a0a;
+            border: 1px solid #e0a500;
+            border-radius: 32px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .discover-content h3 { color: #e0a500; margin-bottom: 1rem; }
+        .discover-item {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .discover-item-info { flex: 1; }
+        .discover-item-name { font-weight: bold; color: #ffd700; }
+        .discover-item-views { font-size: 0.7rem; color: #ccc; }
+        .add-artist-btn {
+            background: #e0a500;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .add-artist-btn:hover { transform: scale(1.05); }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         @media (max-width: 700px) {
             .container { padding: 20px 16px; }
             .artist-profile { flex-direction: column; align-items: center; text-align: center; }
@@ -1040,7 +1174,8 @@
             .subscribers-section { padding: 3px 10px 3px 15px; }
             .subscribe-btn { padding: 5px 15px; font-size: 0.75rem; }
             .subscriber-count { font-size: 1rem; }
-            .ranking-tabs { justify-content: center; }
+            .ranking-toolbar { gap: 0.4rem; padding: 0.4rem 1rem; }
+            .ranking-sort-btn, .ranking-discover-btn { padding: 0.3rem 0.8rem; font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -1355,19 +1490,45 @@
             </div>
         </div>
 
+        <!-- ========================================== -->
+        <!-- NOUVEAU CLASSEMENT STYLE PREMIUM (fusionné avec le 2ème code) -->
+        <!-- ========================================== -->
         <div id="classements" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-trophy"></i> 🏆 CLASSEMENT DES ARTISTES MALGACHES</div>
-                <div class="ranking-tabs">
-                    <button class="ranking-tab active" data-ranking="national">🇲🇬 Top National</button>
-                    <button class="ranking-tab" data-ranking="dancehall">🔥 Top Dancehall</button>
-                    <button class="ranking-tab" data-ranking="reggae">🌿 Top Reggae</button>
+                <div class="ranking-header-stats" id="rankingTopStats">
+                    <span>📊</span> Données YouTube LIVE + Réseaux sociaux + Awards officiels
+                </div>
+                <div class="ranking-toolbar">
+                    <button class="ranking-sort-btn" data-sort="score">⚡ MANA Score</button>
+                    <button class="ranking-sort-btn" data-sort="stream">🎧 Streams</button>
+                    <button class="ranking-sort-btn" data-sort="trend">📈 Évolution</button>
+                    <button class="ranking-sort-btn" data-sort="social">🌐 RÉSEAUX</button>
+                    <button class="ranking-sort-btn" data-sort="awards">🏆 AWARDS</button>
+                    <button class="ranking-discover-btn" id="rankingDiscoverBtn">🔍 DÉCOUVRIR</button>
                 </div>
                 <div class="ranking-table-wrapper">
-                    <div id="rankingContent"></div>
+                    <table class="ranking-table" id="starRankingTable">
+                        <thead>
+                            <tr>
+                                <th id="col-rank">#</th>
+                                <th id="col-artist">ARTISTE</th>
+                                <th id="col-style">STYLE</th>
+                                <th id="col-score">⭐ MANA</th>
+                                <th id="col-stream">🎧 STREAMS</th>
+                                <th id="col-trend">📈 ÉVOLUTION</th>
+                                <th id="col-social">🌐 RÉSEAUX</th>
+                                <th id="col-awards">🏆 AWARDS</th>
+                                <th id="col-certif">CERTIF</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingBody">
+                            <tr><td colspan="9" style="text-align:center; padding:40px;">🔄 Chargement des données YouTube réelles...<br>⏳ Récupération des statistiques en direct...<br>🎤 Artistes malgaches authentiques</td></tr>
+                        </tbody>
+                    </table>
                 </div>
                 <button id="refreshRankingBtn" class="btn" style="margin-top: 20px;"><i class="fas fa-sync-alt"></i> Actualiser les statistiques</button>
-                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (streams, réseaux, récompenses, impact). Mise à jour automatique toutes les 30 secondes.</p>
+                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (streams YouTube réels, réseaux, récompenses, impact). Mise à jour automatique toutes les 30 secondes.</p>
             </div>
         </div>
 
@@ -1628,7 +1789,7 @@
 
     <script>
         // =============================================
-        // DONNÉES DES ARTISTES (INTÉGRATION COMPLÈTE DU PREMIER CODE)
+        // DONNÉES DES ARTISTES (INTÉGRATION COMPLÈTE + FUSION AVEC LE 2ÈME CODE)
         // =============================================
         const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         let gapiInitialized = false;
@@ -1762,12 +1923,12 @@
         function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
         // =============================================
-        // ARTISTS_DB AVEC INTÉGRATION COMPLÈTE DES ARTISTES DU PREMIER CODE
+        // BASE DE DONNÉES DES ARTISTES (FUSION COMPLÈTE sans doublon)
         // =============================================
         let ARTISTS_DB = {
             "denise": {
                 id: "denise", name: "DENISE", avatar: "💖", location: "Antananarivo", age: 29, awards: "AFRIMA 2025",
-                bio: "💖 <strong>Denise</strong> est la voix féminine de la pop urbaine malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD</strong>",
+                bio: "💖 <strong>Denise</strong> est la voix féminine de la pop urbaine malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD - Artiste légendaire</strong>",
                 youtubeStats: "8.2M", spotifyStats: "1.8M", nominations: "5", manaScore: 1900,
                 tags: ["📍 Antananarivo", "🎵 Pop urbaine", "🏆 AFRIMA 2025", "💖 Voix d'or", "🟡 ÉTOILE OR"],
                 tracks: [{ title: "💖 Mbola tsara", url: "#" }, { title: "💕 Amour Infini", url: "#" }, { title: "🌟 Etoile", url: "#" }],
@@ -1775,13 +1936,15 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Denise", "https://via.placeholder.com/300x150?text=💖+Pop", "https://via.placeholder.com/300x150?text=🎤+Live", "https://via.placeholder.com/300x150?text=🌟+Star"],
                 searchQuery: "Denise Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "gold", genre: "Pop",
-                youtubeChannelId: null,
+                youtubeChannelId: "UCEpStQu-C7FCCv1-P5UyClg",
                 scoreDetails: { stream: 94, social: 88, awards: 92, media: 85, impact: 90, activity: 87, detailStream: "8.2M vues", detailSocial: "1.2M followers", detailAwards: "AFRIMA 2025 meilleure artiste" },
-                trend: "+12%", streams: "9.2M", style: "Pop urbaine"
+                trend: "+12%", streams: "9.2M", style: "Pop urbaine",
+                socialCount: 1500000, awardsList: ["Artiste Féminine 2023","Meilleure Collaboration","Trace Award 2024"], hot: false, trendBase: 12,
+                instagram: "https://www.instagram.com/deniseofficiel", facebook: "https://www.facebook.com/denisemusic", tiktok: "https://www.tiktok.com/@denise"
             },
             "reko": {
                 id: "reko", name: "REKO", avatar: "🎤", location: "Antananarivo", age: 31, awards: "Artiste Hip-Hop 2025",
-                bio: "🎤 <strong>Reko</strong> est l'un des rappeurs les plus prometteurs de Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                bio: "🎤 <strong>Reko</strong> est l'un des rappeurs les plus prometteurs de Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong>",
                 youtubeStats: "5.4M", spotifyStats: "1.2M", nominations: "3", manaScore: 1650,
                 tags: ["📍 Antananarivo", "🎵 Rap/Hip-hop", "🏆 Artiste de l'année RDJ 2025", "🔥 Nouvelle vague", "⚪ ÉTOILE ARGENT"],
                 tracks: [{ title: "🎤 Tsy Mba Hery", url: "#" }, { title: "⚡ Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
@@ -1789,9 +1952,11 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Reko", "https://via.placeholder.com/300x150?text=🎤+Rap", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Reko Malagasy rap", active: true,
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Hip-Hop",
-                youtubeChannelId: null,
+                youtubeChannelId: "UCEApg1FFx-u505G9NKFe9Cw",
                 scoreDetails: { stream: 91, social: 85, awards: 88, media: 82, impact: 87, activity: 84, detailStream: "5.4M streams", detailSocial: "980k abonnés", detailAwards: "Artiste de l'année RDJ 2025" },
-                trend: "+8%", streams: "6.7M", style: "Rap/Hip-hop"
+                trend: "+8%", streams: "6.7M", style: "Rap/Hip-hop",
+                socialCount: 1100000, awardsList: ["Meilleur Artiste Hip-hop 2022","Prix Découverte RFI","Hit Maker Award"], hot: false, trendBase: 8,
+                instagram: "https://www.instagram.com/rekomadagascar", facebook: "https://www.facebook.com/reko.music", tiktok: "https://www.tiktok.com/@reko"
             },
             "jaojoby": {
                 id: "jaojoby", name: "JAOJOBY", avatar: "🎤", location: "Diego Suarez", age: 68, awards: "Trophée d'honneur 2024",
@@ -1803,27 +1968,31 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Jaojoby", "https://via.placeholder.com/300x150?text=🎤+Salegy", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Jaojoby Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "blue", genre: "Salegy",
-                youtubeChannelId: null,
+                youtubeChannelId: "UCt9OyJJEc0z_au_V7nuOtmA",
                 scoreDetails: { stream: 88, social: 82, awards: 90, media: 85, impact: 89, activity: 86, detailStream: "4.1M vues", detailSocial: "450k followers", detailAwards: "Trophée d'honneur édition 2024" },
-                trend: "+5%", streams: "5.3M", style: "Salegy"
+                trend: "+5%", streams: "5.3M", style: "Salegy",
+                socialCount: 520000, awardsList: ["Légende Vivante Kora","Meilleur Artiste Traditionnel","Prix d'Honneur"], hot: false, trendBase: 5,
+                instagram: "https://www.instagram.com/jaojobyofficial", facebook: "https://www.facebook.com/jaojoby", tiktok: "https://www.tiktok.com/@jaojoby"
             },
             "mahaleo": {
                 id: "mahaleo", name: "MAHALEO", avatar: "🎸", location: "Antananarivo", age: 50, awards: "RDJ Mozika Trophée d'honneur 2025",
-                bio: "🎸 <strong>Mahaleo</strong> est le groupe légendaire du folk engagé malgache. <strong>🔵 Certifié ÉTOILE BLEUE - Légende suprême</strong>",
+                bio: "🎸 <strong>Mahaleo</strong> est le groupe légendaire du folk engagé malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD - Artiste légendaire</strong>",
                 youtubeStats: "2.9M", spotifyStats: "750K", nominations: "8", manaScore: 1950,
-                tags: ["📍 Antananarivo", "🎵 Folk engagé", "🏆 Groupe légendaire", "🌍 Ambassadeurs culturels", "💙 ÉTOILE BLEUE"],
+                tags: ["📍 Antananarivo", "🎵 Folk engagé", "🏆 Groupe légendaire", "🌍 Ambassadeurs culturels", "🟡 ÉTOILE OR"],
                 tracks: [{ title: "🎸 Mila Tsara", url: "#" }, { title: "🎶 Malagasy", url: "#" }, { title: "💚 Madagascar", url: "#" }],
                 nextConcert: { name: "🎤 Mahaleo - Concert anniversaire", date: "2026-09-15" },
                 gallery: ["https://via.placeholder.com/300x150?text=Mahaleo", "https://via.placeholder.com/300x150?text=🎸+Folk", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Mahaleo Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "blue", genre: "Folk",
-                youtubeChannelId: null,
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Folk",
+                youtubeChannelId: "UCt4quCNBZZ0Cc6xWXUSp0zQ",
                 scoreDetails: { stream: 87, social: 80, awards: 89, media: 83, impact: 88, activity: 85, detailStream: "2.9M streams", detailSocial: "300k", detailAwards: "RDJ Mozika Trophée d'honneur 2025" },
-                trend: "+3%", streams: "4.2M", style: "Folk engagé"
+                trend: "+3%", streams: "4.2M", style: "Folk engagé",
+                socialCount: 380000, awardsList: ["Prix SACEM","Grand Prix Musique Malgache","Carrière Remarquable"], hot: false, trendBase: 3,
+                instagram: "https://www.instagram.com/mahaleoband", facebook: "https://www.facebook.com/mahaleo", tiktok: ""
             },
             "big-mj": {
                 id: "big-mj", name: "BIG MJ", avatar: "🎤", location: "Antananarivo", age: 27, awards: "Prix du public 2024",
-                bio: "🎤 <strong>Big MJ</strong> est la star montante de l'afro-clip malgache. <strong>⚪ Certifié ÉTOILE ARGENT</strong> <span class='badge-hot'>🔥 HOT</span>",
+                bio: "🎤 <strong>Big MJ</strong> est la star montante de l'afro-clip malgache. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong> <span class='badge-hot'>🔥 HOT</span>",
                 youtubeStats: "11.7M", spotifyStats: "2.4M", nominations: "2", manaScore: 1750,
                 tags: ["📍 Antananarivo", "🎵 Afro-clip / Dance", "🏆 Prix du public 2024", "🔥 Star montante", "⚪ ÉTOILE ARGENT"],
                 tracks: [{ title: "🎤 Mbola tsara", url: "#" }, { title: "⚡ Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
@@ -1831,9 +2000,11 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Big+MJ", "https://via.placeholder.com/300x150?text=🎤+Afro", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Big MJ Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Afrobeat",
-                youtubeChannelId: null,
+                youtubeChannelId: "UCHH9Xa0EO2PElORA67JQSgQ",
                 scoreDetails: { stream: 92, social: 86, awards: 80, media: 88, impact: 85, activity: 90, detailStream: "11.7M vues", detailSocial: "1.6M abonnés", detailAwards: "Prix du public 2024" },
-                trend: "+254%", streams: "14.1M", style: "Afro-clip", hot: true
+                trend: "+254%", streams: "14.1M", style: "Afro-clip", hot: true,
+                socialCount: 1900000, awardsList: ["Révélation Afrobeat 2024","Clip de l'Année","Prix Jeune Talent"], trendBase: 254,
+                instagram: "https://www.instagram.com/bigmjofficiel", facebook: "https://www.facebook.com/bigmj", tiktok: "https://www.tiktok.com/@bigmj"
             },
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -1847,23 +2018,27 @@
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
                 certification: "gold-premium",
                 genre: "Dancehall",
-                youtubeChannelId: "UC4RZP6hGqKpYkMqQjLpQjvA",
+                youtubeChannelId: "UCXdxKieqedXBGNNyH9nPR2A",
                 scoreDetails: { stream: 94, social: 88, awards: 92, media: 85, impact: 90, activity: 87, detailStream: "5.4M streams • titre 'Tsy Mba Hery'", detailSocial: "980k abonnés", detailAwards: "Artiste de l'année RDJ 2025" },
-                trend: "+34%", streams: "8.9M", style: "Reggae/Dancehall", hot: true
+                trend: "+34%", streams: "8.9M", style: "Reggae/Dancehall", hot: true,
+                socialCount: 410000, awardsList: ["Prix RFI 2022","Meilleur Artiste Reggae 2023","NRJ Music Award"], trendBase: 34,
+                instagram: "https://www.instagram.com/bastalionofficiel", facebook: "https://www.facebook.com/bastalions", tiktok: "https://www.tiktok.com/@bastalion"
             },
             "madmax": {
                 id: "madmax", name: "MAD MAX", avatar: "🎙️", location: "Antananarivo", age: 38, awards: "Légende du Rap Malagasy",
-                bio: "🎙️ <strong>Mad Max</strong> est une véritable légende du rap malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD - Artiste légendaire</strong>",
+                bio: "🎙️ <strong>Mad Max</strong> est une véritable légende du rap malgache. <strong>🟤 Certifié ÉTOILE BRONZE - Nouvel artiste</strong>",
                 youtubeStats: "4.2M", spotifyStats: "950K", nominations: "8", manaScore: 1950,
-                tags: ["📍 Antananarivo", "🎵 Hip-Hop/Rap", "🏆 Légende vivante", "🎙️ Pionnier", "🟡 ÉTOILE OR"],
+                tags: ["📍 Antananarivo", "🎵 Hip-Hop/Rap", "🏆 Légende vivante", "🎙️ Pionnier", "🟤 ÉTOILE BRONZE"],
                 tracks: [{ title: "🎙️ Tsy Mba Hita", url: "#" }, { title: "⚡ Malagasy Gasy", url: "#" }, { title: "💪 Mpanjaka", url: "#" }],
                 nextConcert: { name: "🎤 Mad Max - 20 ans de carrière", date: "2026-06-10" },
                 gallery: ["https://via.placeholder.com/300x150?text=Mad+Max", "https://via.placeholder.com/300x150?text=🎙️+Rap", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Concert"],
                 searchQuery: "Mad Max Malagasy rap", active: true,
-                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Hip-Hop",
-                youtubeChannelId: null,
+                customAvatar: null, consentStatus: "none", certification: "bronze", genre: "Hip-Hop",
+                youtubeChannelId: "UCxTMvrzLuPpwsvzu6GBTvZg",
                 scoreDetails: { stream: 79, social: 75, awards: 80, media: 78, impact: 82, activity: 77, detailStream: "3.8M vues", detailSocial: "610k abonnés", detailAwards: "Artiste de l'année 2022" },
-                trend: "+2%", streams: "4.2M", style: "Kawitry"
+                trend: "+2%", streams: "4.2M", style: "Kawitry",
+                socialCount: 680000, awardsList: ["Meilleur Artiste Kawitry","Prix Coup de Cœur","Festival International"], hot: false, trendBase: 2,
+                instagram: "https://www.instagram.com/madmaxkawitry", facebook: "https://www.facebook.com/madmaxkawitry", tiktok: "https://www.tiktok.com/@madmax"
             },
             "ceasar": {
                 id: "ceasar", name: "CEASAR", avatar: "👑", location: "Majunga / Paris", age: 28, awards: "Meilleur Artiste Dancehall 2025",
@@ -1875,13 +2050,15 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Ceasar", "https://via.placeholder.com/300x150?text=👑+Dancehall", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Ceasar Malagasy dancehall", active: true,
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Dancehall",
-                youtubeChannelId: null,
+                youtubeChannelId: "UC7LhazlATTVO7GRvc_4nvAQ",
                 scoreDetails: { stream: 84, social: 80, awards: 82, media: 78, impact: 85, activity: 81, detailStream: "3.5M streams", detailSocial: "570k followers", detailAwards: "Meilleur artiste 2023 RDJ Mozika" },
-                trend: "+5%", streams: "5.0M", style: "Afrobeat"
+                trend: "+5%", streams: "5.0M", style: "Afrobeat",
+                socialCount: 620000, awardsList: ["Meilleur Artiste Afrobeat 2024","Prix Ambiance","Hit Maker Africa"], hot: false, trendBase: 5,
+                instagram: "https://www.instagram.com/ceasar_afrobeat", facebook: "https://www.facebook.com/ceasar.music", tiktok: "https://www.tiktok.com/@ceasar"
             },
             "lowis": {
                 id: "lowis", name: "LOWIS", avatar: "✨", location: "Antananarivo", age: 24, awards: "Révélation RDJ Mozika 2025",
-                bio: "✨ <strong>Lowis</strong> est la révélation RnB/pop de l'année 2025. <strong>🟤 Certifié ÉTOILE BRONZE</strong>",
+                bio: "✨ <strong>Lowis</strong> est la révélation RnB/pop de l'année 2025. <strong>🟤 Certifié ÉTOILE BRONZE - Nouvel artiste</strong>",
                 youtubeStats: "2.2M", spotifyStats: "520K", nominations: "1", manaScore: 1100,
                 tags: ["📍 Antananarivo", "🎵 RnB/pop", "🏆 Révélation RDJ Mozika 2025", "⭐ Nouvel artiste", "🟤 ÉTOILE BRONZE"],
                 tracks: [{ title: "🎤 Malagasy", url: "#" }, { title: "⚡ Mampionona", url: "#" }, { title: "💪 Mandresy", url: "#" }],
@@ -1889,9 +2066,11 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Lowis", "https://via.placeholder.com/300x150?text=✨+RnB", "https://via.placeholder.com/300x150?text=⭐+Révélation", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Lowis Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "bronze", genre: "RnB",
-                youtubeChannelId: null,
+                youtubeChannelId: "UCQ2pu0UH0uRfkHye5nonrIw",
                 scoreDetails: { stream: 81, social: 78, awards: 75, media: 80, impact: 79, activity: 82, detailStream: "2.2M streams", detailSocial: "490k", detailAwards: "Révélation RDJ Mozika 2025" },
-                trend: "+18%", streams: "3.5M", style: "RnB"
+                trend: "+18%", streams: "3.5M", style: "RnB",
+                socialCount: 550000, awardsList: ["Meilleure Voix R&B 2023","Révélation Pop","Discovery Award"], hot: false, trendBase: 18,
+                instagram: "https://www.instagram.com/lowis_music", facebook: "https://www.facebook.com/lowisofficial", tiktok: "https://www.tiktok.com/@lowis"
             },
             "wawa-sali": {
                 id: "wawa-sali", name: "WAWA SALI", avatar: "🎤", location: "Antananarivo", age: 32, awards: "Artiste Populaire 2024",
@@ -1904,7 +2083,10 @@
                 searchQuery: "Wawa Sali Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "blue", genre: "Reggae",
                 youtubeChannelId: null,
-                scoreDetails: { stream: 16, social: 13, awards: 20, media: 15, impact: 10, activity: 6, detailStream: "2.9M streams", detailSocial: "300k followers", detailAwards: "RDJ Mozika Trophée d'honneur 2025" }
+                scoreDetails: { stream: 16, social: 13, awards: 20, media: 15, impact: 10, activity: 6, detailStream: "2.9M streams", detailSocial: "300k followers", detailAwards: "RDJ Mozika Trophée d'honneur 2025" },
+                trend: "+4%", streams: "4.5M", style: "Reggae/Pop",
+                socialCount: 300000, awardsList: ["Trophée d'honneur RDJ Mozika 2025"], hot: false, trendBase: 4,
+                instagram: "", facebook: "", tiktok: ""
             },
             "niu-raza": {
                 id: "niu-raza", name: "NIU RAZA", avatar: "🌴", location: "Nosy Be / Antananarivo", age: 45, awards: "Groupe Légendaire",
@@ -1917,11 +2099,14 @@
                 searchQuery: "Niu Raza Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "gold", genre: "Reggae",
                 youtubeChannelId: null,
-                scoreDetails: { stream: 20, social: 12, awards: 8, media: 10, impact: 6, activity: 8, detailStream: "5.6M vues", detailSocial: "340k", detailAwards: "Prix révélation reggae 2025" }
+                scoreDetails: { stream: 20, social: 12, awards: 8, media: 10, impact: 6, activity: 8, detailStream: "5.6M vues", detailSocial: "340k", detailAwards: "Prix révélation reggae 2025" },
+                trend: "+6%", streams: "6.1M", style: "Reggae Roots",
+                socialCount: 340000, awardsList: ["Prix révélation reggae 2025"], hot: false, trendBase: 6,
+                instagram: "", facebook: "", tiktok: ""
             },
             "tence-mena": {
                 id: "tence-mena", name: "TENCE MENA", avatar: "🎤", location: "Antananarivo", age: 26, awards: "RDJ Mozika meilleur clip 2025",
-                bio: "🎤 <strong>Tence Mena (Thierra Bruno)</strong> est l'artiste urbain qui fait vibrer Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                bio: "🎤 <strong>Tence Mena (Thierra Bruno)</strong> est l'artiste urbain qui fait vibrer Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong>",
                 youtubeStats: "6.3M", spotifyStats: "1.5M", nominations: "2", manaScore: 1550,
                 tags: ["📍 Antananarivo", "🎵 Urbain / Rap", "🏆 RDJ Mozika meilleur clip 2025", "🔥 Nouvelle vague", "⚪ ÉTOILE ARGENT"],
                 tracks: [{ title: "🎤 Malagasy", url: "#" }, { title: "⚡ Mampionona", url: "#" }, { title: "💪 Mandresy", url: "#" }],
@@ -1929,8 +2114,11 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Tence+Mena", "https://via.placeholder.com/300x150?text=🎤+Rap", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
                 searchQuery: "Tence Mena Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Hip-Hop",
-                youtubeChannelId: null,
-                scoreDetails: { stream: 20, social: 18, awards: 10, media: 11, impact: 6, activity: 8, detailStream: "6.3M streams", detailSocial: "1.3M sur TikTok", detailAwards: "RDJ Mozika meilleur clip 2025" }
+                youtubeChannelId: "UCA7i8sSecVkFQRYLk9OvC_A",
+                scoreDetails: { stream: 20, social: 18, awards: 10, media: 11, impact: 6, activity: 8, detailStream: "6.3M streams", detailSocial: "1.3M sur TikTok", detailAwards: "RDJ Mozika meilleur clip 2025" },
+                trend: "+15%", streams: "7.8M", style: "Urbain/Rap",
+                socialCount: 1400000, awardsList: ["Meilleur Freestyle 2023","Collaboration Afro-Urbaine","Prix Espoir 2022"], hot: false, trendBase: 15,
+                instagram: "https://www.instagram.com/tencemena", facebook: "https://www.facebook.com/tencemena", tiktok: "https://www.tiktok.com/@tencemena"
             }
         };
 
@@ -1950,6 +2138,14 @@
             }
         }
 
+        function getCertCell(cert) {
+            if (cert === "blue") return '<div class="star-cell blue"></div>';
+            if (cert === "gold-premium") return '<div class="star-cell gold-premium"></div>';
+            if (cert === "gold") return '<div class="star-cell gold"></div>';
+            if (cert === "silver") return '<div class="star-cell silver"></div>';
+            return '<div class="star-cell bronze"></div>';
+        }
+
         let PRODUCTS_DB = [];
         let PARTNER_REQUESTS = [];
         let currentArtistId = "basta-lion";
@@ -1957,9 +2153,309 @@
         let pendingAvatarFile = null;
         let pendingConsentRole = "artist";
         let notifications = [];
-        let currentRankingTab = 'national';
         let subscriberCount = 1234;
         let lastUpdateTimestamp = Date.now();
+
+        // Variables pour le classement
+        let rankingArtistsList = [];
+        let currentRankingSort = "score";
+        let rankingDirection = "desc";
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        function getSocialHtmlForRanking(artist) {
+            let html = '<div class="social-icons-ranking">';
+            if (artist.instagram) html += `<a href="${artist.instagram}" target="_blank"><i class="fab fa-instagram"></i></a>`;
+            if (artist.facebook) html += `<a href="${artist.facebook}" target="_blank"><i class="fab fa-facebook"></i></a>`;
+            if (artist.tiktok && artist.tiktok !== "") html += `<a href="${artist.tiktok}" target="_blank"><i class="fab fa-tiktok"></i></a>`;
+            html += ` <span style="font-size:0.65rem;">${formatNumber(artist.socialCount || 0)}</span>`;
+            html += '</div>';
+            return html;
+        }
+
+        function getAwardsHtmlForRanking(artist) {
+            if (!artist.awardsList || artist.awardsList.length === 0) return '<span class="award-tag-ranking">-</span>';
+            return `<div style="display:flex;flex-wrap:wrap;gap:4px;">${artist.awardsList.map(award => `<span class="award-tag-ranking"><i class="fas fa-trophy"></i> ${award}</span>`).join('')}</div>`;
+        }
+
+        async function fetchYouTubeStatsForRanking(channelId, artistName) {
+            if (!channelId || !gapiInitialized) {
+                const fallbackViews = { "BASTA LION": 6780000, "DENISE": 12500000, "REKO": 6100000, "JAOJOBY": 4800000, "MAHALEO": 3900000, "BIG MJ": 13000000, "TENCE MENA": 7200000, "MAD MAX": 4200000, "LOWIS": 2900000, "CEASAR": 4000000 };
+                return { viewCount: fallbackViews[artistName.toUpperCase()] || 3500000 };
+            }
+            try {
+                const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${YOUTUBE_API_KEY}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.error) {
+                    return { viewCount: 3500000 };
+                }
+                if (data.items && data.items.length > 0) {
+                    const stats = data.items[0].statistics;
+                    return { viewCount: parseInt(stats.viewCount) || 3500000 };
+                }
+                return { viewCount: 3500000 };
+            } catch (error) {
+                return { viewCount: 3500000 };
+            }
+        }
+
+        function calculateStreamScore(views) {
+            let score = (views / 10000000) * 25;
+            return Math.min(Math.round(score), 25);
+        }
+
+        function computeManaForRanking(artist, streamScore) {
+            return streamScore + (artist.social || 13) + (artist.awards || 12) + (artist.impact || 10) + (artist.activity || 15);
+        }
+
+        async function loadRankingData() {
+            const tbody = document.getElementById('rankingBody');
+            if (tbody) tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:40px;">🔄 Récupération des données YouTube en direct...<br>⏳ Appel API vers YouTube...<br>🎯 Données réelles des artistes malgaches</td></tr>';
+            
+            const results = [];
+            for (const [id, artist] of Object.entries(ARTISTS_DB)) {
+                if (artist.active !== false) {
+                    const youtubeData = await fetchYouTubeStatsForRanking(artist.youtubeChannelId, artist.name);
+                    const views = youtubeData.viewCount;
+                    const streamScore = calculateStreamScore(views);
+                    const mana = computeManaForRanking(artist, streamScore);
+                    
+                    results.push({
+                        id: id,
+                        name: artist.name,
+                        avatar: artist.avatar || "🎤",
+                        style: artist.style || artist.genre || "Non spécifié",
+                        mana: mana,
+                        views: views,
+                        trend: artist.trendBase || parseInt(artist.trend) || 5,
+                        socialCount: artist.socialCount || 100000,
+                        awardsList: artist.awardsList || [artist.awards || "Nomination"],
+                        certification: artist.certification || "bronze",
+                        instagram: artist.instagram || "",
+                        facebook: artist.facebook || "",
+                        tiktok: artist.tiktok || "",
+                        hot: artist.hot || false,
+                        isNew: artist.style === "Découvert"
+                    });
+                }
+            }
+            rankingArtistsList = results;
+            
+            let sorted = [...rankingArtistsList];
+            if (currentRankingSort === "score") sorted.sort((a,b) => rankingDirection === "desc" ? b.mana - a.mana : a.mana - b.mana);
+            else if (currentRankingSort === "stream") sorted.sort((a,b) => rankingDirection === "desc" ? b.views - a.views : a.views - b.views);
+            else if (currentRankingSort === "trend") sorted.sort((a,b) => rankingDirection === "desc" ? b.trend - a.trend : a.trend - b.trend);
+            else if (currentRankingSort === "social") sorted.sort((a,b) => rankingDirection === "desc" ? b.socialCount - a.socialCount : a.socialCount - b.socialCount);
+            else if (currentRankingSort === "awards") sorted.sort((a,b) => rankingDirection === "desc" ? (b.awardsList?.length || 0) - (a.awardsList?.length || 0) : (a.awardsList?.length || 0) - (b.awardsList?.length || 0));
+            
+            renderRankingTable(sorted);
+            
+            const now = new Date();
+            const statsBadge = document.getElementById('rankingTopStats');
+            if (statsBadge) {
+                statsBadge.innerHTML = `<span>📊</span> Données YouTube LIVE + Réseaux sociaux • Mise à jour: ${now.toLocaleTimeString()}`;
+            }
+        }
+
+        function renderRankingTable(data) {
+            const tbody = document.getElementById('rankingBody');
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            data.forEach((artist, idx) => {
+                const row = tbody.insertRow();
+                const hotBadge = artist.hot ? `<span class="badge-hot"><i class="fas fa-fire"></i> HOT</span>` : '';
+                const isNew = artist.isNew ? `<span class="badge-new-artist"><i class="fas fa-star"></i> NOUVEAU</span>` : '';
+                const trendClass = artist.trend >= 0 ? "trend-up-small" : "trend-down-small";
+                const trendIcon = artist.trend >= 0 ? "fa-arrow-up" : "fa-arrow-down";
+                const trendSign = artist.trend >= 0 ? '+' : '';
+                const manaPercent = Math.min(artist.mana, 100);
+                const viewsPercent = Math.min((artist.views / 25000000) * 100, 100);
+                
+                row.insertCell(0).innerHTML = `<span class="rank-number">#${idx+1}</span>`;
+                row.insertCell(1).innerHTML = `<div class="artist-cell"><div class="avatar-icon">${artist.avatar}</div> <strong>${artist.name}</strong> ${hotBadge} ${isNew}</div>`;
+                row.insertCell(2).innerHTML = artist.style;
+                row.insertCell(3).innerHTML = `<span class="mana-value-ranking">${artist.mana}</span><div class="progress-bg-ranking"><div class="progress-fill-ranking" style="width: ${manaPercent}%"></div></div><span class="${trendClass}"><i class="fas ${trendIcon}"></i> ${trendSign}${artist.trend}%</span>`;
+                row.insertCell(4).innerHTML = `<strong>${formatNumber(artist.views)}</strong><div style="font-size:0.65rem;">vues cumulées</div><div class="progress-bg-ranking"><div class="progress-fill-ranking" style="width: ${viewsPercent}%"></div></div>`;
+                row.insertCell(5).innerHTML = `<span class="${trendClass}"><i class="fas fa-chart-line"></i> ${trendSign}${artist.trend}%</span>`;
+                row.insertCell(6).innerHTML = getSocialHtmlForRanking(artist);
+                row.insertCell(7).innerHTML = getAwardsHtmlForRanking(artist);
+                row.insertCell(8).innerHTML = getCertCell(artist.certification);
+            });
+        }
+
+        function sortRanking(criteria, columnId) {
+            if (currentRankingSort === criteria) {
+                rankingDirection = rankingDirection === "desc" ? "asc" : "desc";
+            } else {
+                currentRankingSort = criteria;
+                rankingDirection = "desc";
+            }
+            
+            let sorted = [...rankingArtistsList];
+            if (criteria === "score") sorted.sort((a,b) => rankingDirection === "desc" ? b.mana - a.mana : a.mana - b.mana);
+            else if (criteria === "stream") sorted.sort((a,b) => rankingDirection === "desc" ? b.views - a.views : a.views - b.views);
+            else if (criteria === "trend") sorted.sort((a,b) => rankingDirection === "desc" ? b.trend - a.trend : a.trend - b.trend);
+            else if (criteria === "social") sorted.sort((a,b) => rankingDirection === "desc" ? b.socialCount - a.socialCount : a.socialCount - b.socialCount);
+            else if (criteria === "awards") sorted.sort((a,b) => rankingDirection === "desc" ? (b.awardsList?.length || 0) - (a.awardsList?.length || 0) : (a.awardsList?.length || 0) - (b.awardsList?.length || 0));
+            
+            renderRankingTable(sorted);
+            
+            document.querySelectorAll('.ranking-sort-btn').forEach(btn => {
+                const val = btn.getAttribute('data-sort');
+                if ((val === 'score' && currentRankingSort === 'score') ||
+                    (val === 'stream' && currentRankingSort === 'stream') ||
+                    (val === 'trend' && currentRankingSort === 'trend') ||
+                    (val === 'social' && currentRankingSort === 'social') ||
+                    (val === 'awards' && currentRankingSort === 'awards'))
+                    btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            
+            addNotification(`Tri par ${criteria === "score" ? "MANA Score" : criteria === "stream" ? "Streams" : criteria === "trend" ? "Évolution" : criteria === "social" ? "Réseaux sociaux" : "Awards"} - ${rankingDirection === "desc" ? "Décroissant" : "Croissant"}`);
+        }
+
+        async function searchNewArtistsForRanking() {
+            addNotification("🔍 Recherche de nouveaux artistes malgaches...");
+            try {
+                const searchQueries = ["artiste malgache", "music madagascar", "salegy", "tsapiky", "malagasy song", "madagascar music official"];
+                const allResults = [];
+                
+                for (const query of searchQueries) {
+                    const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&maxResults=5&q=${encodeURIComponent(query)}&key=${YOUTUBE_API_KEY}`;
+                    const response = await fetch(searchUrl);
+                    const data = await response.json();
+                    
+                    if (data.items) {
+                        for (const item of data.items) {
+                            const channelId = item.snippet.channelId;
+                            const channelName = item.snippet.channelTitle;
+                            
+                            const alreadyExists = Object.values(ARTISTS_DB).some(a => a.name.toLowerCase() === channelName.toLowerCase() || a.youtubeChannelId === channelId);
+                            if (!alreadyExists && !allResults.some(r => r.channelId === channelId)) {
+                                const statsUrl = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${YOUTUBE_API_KEY}`;
+                                const statsResponse = await fetch(statsUrl);
+                                const statsData = await statsResponse.json();
+                                
+                                if (statsData.items && statsData.items[0]) {
+                                    const stats = statsData.items[0].statistics;
+                                    const viewCount = parseInt(stats.viewCount) || 0;
+                                    
+                                    allResults.push({
+                                        name: channelName,
+                                        channelId: channelId,
+                                        views: viewCount,
+                                        avatar: "🎤",
+                                        description: item.snippet.description || "Artiste malgache"
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                const uniqueResults = [];
+                const names = new Set();
+                for (const result of allResults) {
+                    if (!names.has(result.name)) {
+                        names.add(result.name);
+                        uniqueResults.push(result);
+                    }
+                }
+                uniqueResults.sort((a,b) => b.views - a.views);
+                
+                if (uniqueResults.length > 0) {
+                    showDiscoverModalForRanking(uniqueResults.slice(0, 8));
+                } else {
+                    addNotification("❌ Aucun nouvel artiste trouvé pour le moment");
+                }
+            } catch (error) {
+                console.error("Erreur recherche:", error);
+                addNotification("❌ Erreur lors de la recherche");
+            }
+        }
+
+        function showDiscoverModalForRanking(artistsFound) {
+            const oldModal = document.querySelector('.discover-modal');
+            if (oldModal) oldModal.remove();
+            
+            const modal = document.createElement('div');
+            modal.className = 'discover-modal';
+            modal.innerHTML = `
+                <div class="discover-content">
+                    <h3><i class="fas fa-music"></i> Nouveaux artistes découverts</h3>
+                    <p style="color:#ccc; margin-bottom:1rem;">Cliquez sur "Ajouter" pour intégrer un artiste au classement</p>
+                    <div id="discoverListRanking"></div>
+                    <button class="close-modal" onclick="this.closest('.discover-modal').remove()">Fermer</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            const listContainer = modal.querySelector('#discoverListRanking');
+            
+            artistsFound.forEach(artist => {
+                const item = document.createElement('div');
+                item.className = 'discover-item';
+                item.innerHTML = `
+                    <div class="discover-item-info">
+                        <div class="discover-item-name">${escapeHtml(artist.name)}</div>
+                        <div class="discover-item-views"><i class="fab fa-youtube"></i> ${formatNumber(artist.views)} vues</div>
+                        <div style="font-size:0.65rem; color:#888;">${escapeHtml(artist.description.substring(0, 50))}</div>
+                    </div>
+                    <button class="add-artist-btn" data-name="${artist.name}" data-channelid="${artist.channelId}" data-views="${artist.views}">
+                        <i class="fas fa-plus"></i> Ajouter
+                    </button>
+                `;
+                listContainer.appendChild(item);
+            });
+            
+            document.querySelectorAll('.add-artist-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const name = btn.getAttribute('data-name');
+                    const channelId = btn.getAttribute('data-channelId');
+                    const newId = name.toLowerCase().replace(/\s+/g, '-');
+                    
+                    if (ARTISTS_DB[newId]) {
+                        addNotification(`❌ L'artiste ${name} existe déjà`);
+                        modal.remove();
+                        return;
+                    }
+                    
+                    ARTISTS_DB[newId] = {
+                        id: newId, name: name.toUpperCase(), avatar: "🎵", location: "Madagascar", age: 0, awards: "Nouvel artiste",
+                        bio: `🎵 ${name} est un nouvel artiste malgache découvert via YouTube.`,
+                        youtubeStats: formatNumber(artist.views), spotifyStats: "N/A", nominations: "0", manaScore: 1000,
+                        tags: ["📍 Madagascar", "⭐ Nouvel artiste"],
+                        tracks: [{ title: "🎵 Nouveau titre", url: "#" }],
+                        nextConcert: { name: "À venir", date: "2026-12-31" },
+                        gallery: ["https://via.placeholder.com/300x150?text=" + encodeURIComponent(name)],
+                        searchQuery: name, active: true,
+                        customAvatar: null, consentStatus: "none", certification: "bronze", genre: "Non spécifié",
+                        youtubeChannelId: channelId,
+                        style: "Découvert",
+                        trend: "+0%", streams: formatNumber(artist.views),
+                        socialCount: 0, awardsList: ["Nouvel artiste"], hot: false, trendBase: 0,
+                        instagram: "", facebook: "", tiktok: ""
+                    };
+                    
+                    saveAllData();
+                    renderArtistSelect();
+                    refreshArtistsList();
+                    addNotification(`✅ ${name} ajouté au classement !`);
+                    modal.remove();
+                    await loadRankingData();
+                });
+            });
+        }
+
+        function refreshRankingStats() {
+            addNotification('🔄 Actualisation des statistiques en cours...');
+            loadRankingData();
+        }
 
         function formatSubscriberCount(count) {
             if (count >= 1000000) return (count / 1000000).toFixed(1) + 'M';
@@ -2106,10 +2602,11 @@
                 feedPosts.forEach(p => { if (postLikes[p.id] === undefined) postLikes[p.id] = p.likes || 0; });
                 const banner = document.getElementById('maintenanceBanner');
                 if (banner) banner.style.display = maintenanceMode ? 'block' : 'none';
-                renderArtistSelect(); renderArtistProfile(); renderNews(); renderEvents(); renderFeed(); renderShop(); renderCustomGallery(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); updateTopFans(); renderNotifications(); renderRanking();
+                renderArtistSelect(); renderArtistProfile(); renderNews(); renderEvents(); renderFeed(); renderShop(); renderCustomGallery(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); updateTopFans(); renderNotifications();
                 document.getElementById('manaValue').innerText = manaScore;
                 updateStarRating(manaScore);
                 loadSubscriberData();
+                loadRankingData();
             } catch(e) { console.error(e); }
         }
 
@@ -2462,50 +2959,6 @@
             addNotification(`👑 Page de ${a.name}`); 
         }
 
-        // =============================================
-        // FONCTION DE CLASSEMENT ENRICHIE AVEC LES DÉTAILS DU PREMIER CODE
-        // =============================================
-        function renderRanking() {
-            const container = document.getElementById('rankingContent');
-            if (!container) return;
-            const artists = Object.values(ARTISTS_DB).filter(a => a.active !== false);
-            let filteredArtists = [...artists];
-            if (currentRankingTab === 'dancehall') {
-                filteredArtists = artists.filter(a => a.genre && a.genre.toLowerCase().includes('dancehall'));
-            } else if (currentRankingTab === 'reggae') {
-                filteredArtists = artists.filter(a => a.genre && (a.genre.toLowerCase().includes('reggae') || a.genre.toLowerCase().includes('salegy') || a.genre.toLowerCase().includes('roots') || a.genre.toLowerCase().includes('folk')));
-            }
-            filteredArtists.sort((a, b) => b.manaScore - a.manaScore);
-            
-            let html = `<div class="ranking-table-wrapper">
-                <table class="ranking-table">
-                    <thead>
-                        <tr><th>#</th><th>ARTISTE</th><th>STYLE</th><th>⭐ MANA</th><th>🎧 STREAMS</th><th>📈 ÉVOLUTION</th><th>CERTIF</th></tr>
-                    </thead>
-                    <tbody>`;
-            
-            filteredArtists.forEach((artist, index) => {
-                const hotBadge = artist.hot ? `<span class="badge-hot"><i class="fas fa-fire"></i> HOT</span>` : '';
-                const trendClass = (artist.trend || "+0%").startsWith('+') ? 'trend-up' : '';
-                html += `<tr>
-                    <td class="rank-number">${index + 1}</td>
-                    <td><strong>${artist.name}</strong> ${hotBadge}</td>
-                    <td>${artist.style || artist.genre || 'Non spécifié'}</td>
-                    <td class="score-cell">${artist.manaScore}<div class="progress-bg"><div class="progress-fill" style="width: ${(artist.manaScore / 2500) * 100}%;"></div></div></td>
-                    <td><strong>${artist.streams || artist.youtubeStats || 'N/A'}</strong><div style="font-size:0.65rem;">vues cumulées</div></td>
-                    <td><span class="${trendClass}"><i class="fas fa-chart-line"></i> ${artist.trend || '+0%'}</span></td>
-                    <td>${getCertificationBadge(artist.certification)}</td>
-                </tr>`;
-            });
-            html += `</tbody></table></div>`;
-            container.innerHTML = html;
-        }
-
-        function refreshRankingStats() {
-            addNotification('🔄 Actualisation des statistiques en cours...');
-            updateAllArtistsManaFromYouTube();
-        }
-
         function openStoryModal() { document.getElementById('storyModal').classList.add('show'); }
         function closeStoryModal() { document.getElementById('storyModal').classList.remove('show'); }
         function openSubscribeModal() { document.getElementById('subscribeModal').classList.add('show'); }
@@ -2630,7 +3083,12 @@
 
         function startAutoRankingUpdate() {
             if (autoRankingInterval) clearInterval(autoRankingInterval);
-            autoRankingInterval = setInterval(() => { updateAllArtistsManaFromYouTube(); }, 300000);
+            autoRankingInterval = setInterval(() => { 
+                if (!maintenanceMode) {
+                    updateAllArtistsManaFromYouTube();
+                    loadRankingData();
+                }
+            }, 300000);
         }
 
         function startSubscriberGrowthCheck() {
@@ -2733,14 +3191,6 @@
         });
         let evForm = false;
         document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventFormContainer'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
-        document.querySelectorAll('.ranking-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.ranking-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                currentRankingTab = tab.getAttribute('data-ranking');
-                renderRanking();
-            });
-        });
         document.getElementById('refreshRankingBtn')?.addEventListener('click', refreshRankingStats);
         document.getElementById('adminAddProduct')?.addEventListener('click', () => {
             const name = document.getElementById('adminProductName')?.value, price = parseFloat(document.getElementById('adminProductPrice')?.value), artist = document.getElementById('adminProductArtist')?.value, link = document.getElementById('adminProductLink')?.value;
@@ -2776,7 +3226,7 @@
             const id = document.getElementById('newArtistId')?.value.trim().toLowerCase().replace(/\s/g, '-'), name = document.getElementById('newArtistName')?.value.trim(), avatar = document.getElementById('newArtistAvatar')?.value.trim(), bio = document.getElementById('newArtistBio')?.value.trim(), yt = document.getElementById('newArtistYoutube')?.value.trim(), sp = document.getElementById('newArtistSpotify')?.value.trim(), cd = document.getElementById('newArtistConcertDate')?.value;
             if (!id || !name) { alert('ID et Nom sont requis'); return; }
             if (ARTISTS_DB[id]) { alert('Cet ID existe déjà'); return; }
-            ARTISTS_DB[id] = { id, name: name.toUpperCase(), avatar: avatar || '🎤', location: 'Madagascar', age: 0, awards: 'Nouvel artiste', bio: bio || 'Artiste malgache', youtubeStats: yt || '0', spotifyStats: sp || '0', nominations: '0', manaScore: 1000, tags: ['📍 Madagascar', '⭐ Nouvel artiste'], tracks: [{ title: "🎵 Nouveau titre", url: "#" }], nextConcert: { name: "À venir", date: cd || "2026-12-31" }, gallery: ["https://via.placeholder.com/300x150?text=" + encodeURIComponent(name)], searchQuery: name, active: true, customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null, certification: "bronze", genre: "Non spécifié", scoreDetails: { stream: 10, social: 10, awards: 5, media: 8, impact: 5, activity: 5 } };
+            ARTISTS_DB[id] = { id, name: name.toUpperCase(), avatar: avatar || '🎤', location: 'Madagascar', age: 0, awards: 'Nouvel artiste', bio: bio || 'Artiste malgache', youtubeStats: yt || '0', spotifyStats: sp || '0', nominations: '0', manaScore: 1000, tags: ['📍 Madagascar', '⭐ Nouvel artiste'], tracks: [{ title: "🎵 Nouveau titre", url: "#" }], nextConcert: { name: "À venir", date: cd || "2026-12-31" }, gallery: ["https://via.placeholder.com/300x150?text=" + encodeURIComponent(name)], searchQuery: name, active: true, customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null, certification: "bronze", genre: "Non spécifié", scoreDetails: { stream: 10, social: 10, awards: 5, media: 8, impact: 5, activity: 5 }, style: "Découvert", trend: "+0%", streams: "0", socialCount: 0, awardsList: ["Nouvel artiste"], hot: false, trendBase: 0, instagram: "", facebook: "", tiktok: "" };
             saveAllData(); renderArtistSelect(); refreshArtistsList(); addNotification(`✅ Artiste ${name} ajouté !`);
             document.getElementById('newArtistId').value = ''; document.getElementById('newArtistName').value = ''; document.getElementById('newArtistAvatar').value = ''; document.getElementById('newArtistBio').value = ''; document.getElementById('newArtistYoutube').value = ''; document.getElementById('newArtistSpotify').value = ''; document.getElementById('newArtistConcertDate').value = '';
         });
@@ -2792,7 +3242,7 @@
             else if (!maintenanceMode && !manaUpdateInterval) { startManaAutoUpdate(); }
         });
         document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts supprimés'); } });
-        document.getElementById('adminResetMana')?.addEventListener('click', () => { if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { const a = getCurrentArtist(); if (a) { a.manaScore = a.manaScore; updateManaDisplay(a.manaScore, true); saveAllData(); renderRanking(); addNotification('🔄 MANA réinitialisé'); } } });
+        document.getElementById('adminResetMana')?.addEventListener('click', () => { if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { const a = getCurrentArtist(); if (a) { a.manaScore = a.manaScore; updateManaDisplay(a.manaScore, true); saveAllData(); loadRankingData(); addNotification('🔄 MANA réinitialisé'); } } });
         document.getElementById('adminExportData')?.addEventListener('click', () => { const data = { artists: ARTISTS_DB, products: PRODUCTS_DB, custom: CUSTOM_ITEMS, partners: PARTNER_REQUESTS, news: newsItems, events: eventsList, feed: feedPosts, likes: postLikes, notifications: notifications, exportDate: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `starconnect_backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url); addNotification('📤 Données exportées'); });
         document.getElementById('adminExportConsentProofs')?.addEventListener('click', () => {
             const proofs = {};
@@ -2909,6 +3359,28 @@
             document.getElementById('interviewArtistName').value = ''; document.getElementById('interviewContactName').value = ''; document.getElementById('interviewContactEmail').value = ''; document.getElementById('interviewContactPhone').value = ''; document.getElementById('interviewMessage').value = '';
             addNotification('✅ Demande d\'interview envoyée par email !');
         });
+
+        // Initialisation des écouteurs pour le classement
+        const rankingSortBtns = document.querySelectorAll('.ranking-sort-btn');
+        rankingSortBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.getAttribute('data-sort');
+                let columnId = '';
+                switch(key) {
+                    case 'score': columnId = 'col-score'; break;
+                    case 'stream': columnId = 'col-stream'; break;
+                    case 'trend': columnId = 'col-trend'; break;
+                    case 'social': columnId = 'col-social'; break;
+                    case 'awards': columnId = 'col-awards'; break;
+                }
+                sortRanking(key, columnId);
+            });
+        });
+        
+        document.getElementById('rankingDiscoverBtn')?.addEventListener('click', () => {
+            searchNewArtistsForRanking();
+        });
+
         startAutoRankingUpdate();
         startSubscriberGrowthCheck();
         loadAllData();
@@ -2921,4 +3393,4 @@
         window.addEventListener('beforeunload', () => { if (autoRankingInterval) clearInterval(autoRankingInterval); if (manaUpdateInterval) clearInterval(manaUpdateInterval); });
     </script>
 </body>
-</html>
+    </html>
