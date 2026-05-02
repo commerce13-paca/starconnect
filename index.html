@@ -801,6 +801,7 @@
         .ranking-table-wrapper {
             overflow-x: auto;
             border-radius: 20px;
+            scroll-behavior: smooth;
         }
         .ranking-table {
             width: 100%;
@@ -1500,14 +1501,14 @@
                     <span>📊</span> Données YouTube LIVE + Réseaux sociaux + Awards officiels
                 </div>
                 <div class="ranking-toolbar">
-                    <button class="ranking-sort-btn" data-sort="score">⚡ MANA Score</button>
-                    <button class="ranking-sort-btn" data-sort="stream">🎧 Streams</button>
-                    <button class="ranking-sort-btn" data-sort="trend">📈 Évolution</button>
-                    <button class="ranking-sort-btn" data-sort="social">🌐 RÉSEAUX</button>
-                    <button class="ranking-sort-btn" data-sort="awards">🏆 AWARDS</button>
+                    <button class="ranking-sort-btn" data-sort="score" data-col="⭐ MANA">⭐ MANA Score</button>
+                    <button class="ranking-sort-btn" data-sort="stream" data-col="🎧 Streams">🎧 Streams</button>
+                    <button class="ranking-sort-btn" data-sort="trend" data-col="📈 Évolution">📈 Évolution</button>
+                    <button class="ranking-sort-btn" data-sort="social" data-col="🌐 RÉSEAUX">🌐 RÉSEAUX</button>
+                    <button class="ranking-sort-btn" data-sort="awards" data-col="🏆 AWARDS">🏆 AWARDS</button>
                     <button class="ranking-discover-btn" id="rankingDiscoverBtn">🔍 DÉCOUVRIR</button>
                 </div>
-                <div class="ranking-table-wrapper">
+                <div class="ranking-table-wrapper" id="rankingTableWrapper">
                     <table class="ranking-table" id="starRankingTable">
                         <thead>
                             <tr>
@@ -1992,7 +1993,7 @@
             },
             "big-mj": {
                 id: "big-mj", name: "BIG MJ", avatar: "🎤", location: "Antananarivo", age: 27, awards: "Prix du public 2024",
-                bio: "🎤 <strong>Big MJ</strong> est la star montante de l'afro-clip malgache. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong> <span class='badge-hot'>🔥 HOT</span>",
+                bio: "🎤 <strong>Big MJ</strong> est la star montante de l'afro-clip malgache. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong> <span class='badge-hot' style='background:#ff3300; color:white; padding:2px 8px; border-radius:40px; font-size:0.7rem; margin-left:8px;'><i class='fas fa-fire'></i> HOT</span>",
                 youtubeStats: "11.7M", spotifyStats: "2.4M", nominations: "2", manaScore: 1750,
                 tags: ["📍 Antananarivo", "🎵 Afro-clip / Dance", "🏆 Prix du public 2024", "🔥 Star montante", "⚪ ÉTOILE ARGENT"],
                 tracks: [{ title: "🎤 Mbola tsara", url: "#" }, { title: "⚡ Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
@@ -2082,7 +2083,7 @@
                 gallery: ["https://via.placeholder.com/300x150?text=Wawa+Sali", "https://via.placeholder.com/300x150?text=🎤+Concert", "https://via.placeholder.com/300x150?text=⭐+Star", "https://via.placeholder.com/300x150?text=🎵+Music"],
                 searchQuery: "Wawa Sali Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "blue", genre: "Reggae",
-                youtubeChannelId: null,
+                youtubeChannelId: "UCeLK8FpvY3qo_qUTJfNisnw",
                 scoreDetails: { stream: 16, social: 13, awards: 20, media: 15, impact: 10, activity: 6, detailStream: "2.9M streams", detailSocial: "300k followers", detailAwards: "RDJ Mozika Trophée d'honneur 2025" },
                 trend: "+4%", streams: "4.5M", style: "Reggae/Pop",
                 socialCount: 300000, awardsList: ["Trophée d'honneur RDJ Mozika 2025"], hot: false, trendBase: 4,
@@ -2160,6 +2161,20 @@
         let rankingArtistsList = [];
         let currentRankingSort = "score";
         let rankingDirection = "desc";
+
+        // Fonctions de scroll horizontal
+        function scrollToColumn(columnIndex) {
+            const wrapper = document.getElementById('rankingTableWrapper');
+            if (!wrapper) return;
+            const table = document.getElementById('starRankingTable');
+            if (!table) return;
+            const targetCell = table.querySelector(`th:nth-child(${columnIndex})`);
+            if (!targetCell) return;
+            const containerRect = wrapper.getBoundingClientRect();
+            const targetRect = targetCell.getBoundingClientRect();
+            const scrollLeft = wrapper.scrollLeft + (targetRect.left - containerRect.left) - (containerRect.width / 2) + (targetRect.width / 2);
+            wrapper.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        }
 
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -2268,7 +2283,7 @@
             tbody.innerHTML = "";
             data.forEach((artist, idx) => {
                 const row = tbody.insertRow();
-                const hotBadge = artist.hot ? `<span class="badge-hot"><i class="fas fa-fire"></i> HOT</span>` : '';
+                const hotBadge = artist.hot ? `<span class="badge-hot" style="background:#ff3300; color:white; padding:2px 8px; border-radius:40px; font-size:0.6rem; font-weight:bold; margin-left:8px;"><i class="fas fa-fire"></i> HOT</span>` : '';
                 const isNew = artist.isNew ? `<span class="badge-new-artist"><i class="fas fa-star"></i> NOUVEAU</span>` : '';
                 const trendClass = artist.trend >= 0 ? "trend-up-small" : "trend-down-small";
                 const trendIcon = artist.trend >= 0 ? "fa-arrow-up" : "fa-arrow-down";
@@ -2288,7 +2303,7 @@
             });
         }
 
-        function sortRanking(criteria, columnId) {
+        function sortRanking(criteria, columnId, columnName) {
             if (currentRankingSort === criteria) {
                 rankingDirection = rankingDirection === "desc" ? "asc" : "desc";
             } else {
@@ -2316,7 +2331,20 @@
                 else btn.classList.remove('active');
             });
             
-            addNotification(`Tri par ${criteria === "score" ? "MANA Score" : criteria === "stream" ? "Streams" : criteria === "trend" ? "Évolution" : criteria === "social" ? "Réseaux sociaux" : "Awards"} - ${rankingDirection === "desc" ? "Décroissant" : "Croissant"}`);
+            // Défilement vers la colonne correspondante
+            const columnMapping = {
+                'score': 4,
+                'stream': 5,
+                'trend': 6,
+                'social': 7,
+                'awards': 8
+            };
+            const columnIndex = columnMapping[criteria];
+            if (columnIndex) {
+                scrollToColumn(columnIndex);
+            }
+            
+            addNotification(`Tri par ${columnName || (criteria === "score" ? "MANA Score" : criteria === "stream" ? "Streams" : criteria === "trend" ? "Évolution" : criteria === "social" ? "Réseaux sociaux" : "Awards")} - ${rankingDirection === "desc" ? "Décroissant" : "Croissant"}`);
         }
 
         async function searchNewArtistsForRanking() {
@@ -2783,7 +2811,7 @@
             }
             
             const certificationBadge = getCertificationBadge(a.certification || 'gold');
-            const hotBadge = a.hot ? `<span class="badge-hot"><i class="fas fa-fire"></i> HOT</span>` : '';
+            const hotBadge = a.hot ? `<span class="badge-hot" style="background:#ff3300; color:white; padding:2px 8px; border-radius:40px; font-size:0.7rem; margin-left:8px;"><i class="fas fa-fire"></i> HOT</span>` : '';
             document.getElementById('artistName').innerHTML = `${a.name} ${certificationBadge} ${hotBadge} <button class="story-btn" onclick="openStoryModal()"><i class="fas fa-book-open"></i> 📖 Son histoire</button>`;
             document.getElementById('artistTags').innerHTML = a.tags.map(t => `<span>${escapeHtml(t)}</span>`).join('');
             document.getElementById('artistBio').innerHTML = a.bio;
@@ -3365,6 +3393,7 @@
         rankingSortBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const key = btn.getAttribute('data-sort');
+                const columnName = btn.innerText.trim();
                 let columnId = '';
                 switch(key) {
                     case 'score': columnId = 'col-score'; break;
@@ -3373,7 +3402,7 @@
                     case 'social': columnId = 'col-social'; break;
                     case 'awards': columnId = 'col-awards'; break;
                 }
-                sortRanking(key, columnId);
+                sortRanking(key, columnId, columnName);
             });
         });
         
@@ -3393,4 +3422,4 @@
         window.addEventListener('beforeunload', () => { if (autoRankingInterval) clearInterval(autoRankingInterval); if (manaUpdateInterval) clearInterval(manaUpdateInterval); });
     </script>
 </body>
-    </html>
+</html>
