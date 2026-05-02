@@ -652,7 +652,7 @@
             filter: blur(1px);
         }
         
-        /* === NOUVEAU STYLE POUR LE CLASSEMENT (fusionné avec le deuxième code) === */
+        /* === STYLE CLASSEMENT (fusionné avec le deuxième code) === */
         .ranking-header-stats {
             background: rgba(224,165,0,0.1);
             border-radius: 60px;
@@ -831,7 +831,7 @@
             font-size: 1rem;
             color: #e0a500;
         }
-        .progress-bg-ranking {
+        .progress-bg-rank {
             background: #2a2a2a;
             border-radius: 10px;
             height: 5px;
@@ -839,13 +839,13 @@
             margin-top: 4px;
             overflow: hidden;
         }
-        .progress-fill-ranking {
+        .progress-fill-rank {
             background: #e0a500;
             height: 5px;
             border-radius: 10px;
             width: 0%;
         }
-        .mana-value-ranking {
+        .mana-value-rank {
             color: #ffd966;
             font-weight: bold;
             font-size: 1rem;
@@ -1492,7 +1492,7 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- NOUVEAU CLASSEMENT STYLE PREMIUM (fusionné avec le 2ème code) -->
+        <!-- CLASSEMENT STYLE PREMIUM (fusionné avec le 2ème code - DONNÉES RÉELLES) -->
         <!-- ========================================== -->
         <div id="classements" class="section panel">
             <div class="card">
@@ -1501,11 +1501,11 @@
                     <span>📊</span> Données YouTube LIVE + Réseaux sociaux + Awards officiels
                 </div>
                 <div class="ranking-toolbar">
-                    <button class="ranking-sort-btn" data-sort="score" data-col="⭐ MANA">⭐ MANA Score</button>
-                    <button class="ranking-sort-btn" data-sort="stream" data-col="🎧 Streams">🎧 Streams</button>
-                    <button class="ranking-sort-btn" data-sort="trend" data-col="📈 Évolution">📈 Évolution</button>
-                    <button class="ranking-sort-btn" data-sort="social" data-col="🌐 RÉSEAUX">🌐 RÉSEAUX</button>
-                    <button class="ranking-sort-btn" data-sort="awards" data-col="🏆 AWARDS">🏆 AWARDS</button>
+                    <button class="ranking-sort-btn" data-sort="score">⚡ MANA Score</button>
+                    <button class="ranking-sort-btn" data-sort="stream">🎧 Streams</button>
+                    <button class="ranking-sort-btn" data-sort="trend">📈 Évolution</button>
+                    <button class="ranking-sort-btn" data-sort="social">🌐 RÉSEAUX</button>
+                    <button class="ranking-sort-btn" data-sort="awards">🏆 AWARDS</button>
                     <button class="ranking-discover-btn" id="rankingDiscoverBtn">🔍 DÉCOUVRIR</button>
                 </div>
                 <div class="ranking-table-wrapper" id="rankingTableWrapper">
@@ -2161,19 +2161,42 @@
         let rankingArtistsList = [];
         let currentRankingSort = "score";
         let rankingDirection = "desc";
+        let previousViews = {};
 
-        // Fonctions de scroll horizontal
-        function scrollToColumn(columnIndex) {
+        function loadPreviousViews() {
+            const saved = localStorage.getItem('starconnect_previous_views_ranking');
+            if (saved) {
+                try {
+                    previousViews = JSON.parse(saved);
+                } catch(e) {}
+            }
+        }
+
+        function savePreviousViews() {
+            localStorage.setItem('starconnect_previous_views_ranking', JSON.stringify(previousViews));
+        }
+
+        function calculateRealTrend(currentViews, artistName) {
+            const previous = previousViews[artistName];
+            if (!previous || previous === 0) return 0;
+            const diff = ((currentViews - previous) / previous) * 100;
+            return Math.round(diff * 10) / 10;
+        }
+
+        function scrollToColumn(columnId) {
+            const column = document.getElementById(columnId);
             const wrapper = document.getElementById('rankingTableWrapper');
-            if (!wrapper) return;
-            const table = document.getElementById('starRankingTable');
-            if (!table) return;
-            const targetCell = table.querySelector(`th:nth-child(${columnIndex})`);
-            if (!targetCell) return;
-            const containerRect = wrapper.getBoundingClientRect();
-            const targetRect = targetCell.getBoundingClientRect();
-            const scrollLeft = wrapper.scrollLeft + (targetRect.left - containerRect.left) - (containerRect.width / 2) + (targetRect.width / 2);
-            wrapper.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+            if (column && wrapper) {
+                const columnOffsetLeft = column.offsetLeft;
+                wrapper.scrollLeft = columnOffsetLeft - 20;
+            }
+        }
+
+        function scrollToTop() {
+            const topElement = document.getElementById('rankingTopStats');
+            if (topElement) {
+                topElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         function formatNumber(num) {
@@ -2233,12 +2256,17 @@
             if (tbody) tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:40px;">🔄 Récupération des données YouTube en direct...<br>⏳ Appel API vers YouTube...<br>🎯 Données réelles des artistes malgaches</td></tr>';
             
             const results = [];
+            const newViews = {};
+            
             for (const [id, artist] of Object.entries(ARTISTS_DB)) {
                 if (artist.active !== false) {
                     const youtubeData = await fetchYouTubeStatsForRanking(artist.youtubeChannelId, artist.name);
                     const views = youtubeData.viewCount;
+                    newViews[artist.name] = views;
+                    
                     const streamScore = calculateStreamScore(views);
                     const mana = computeManaForRanking(artist, streamScore);
+                    const realTrend = calculateRealTrend(views, artist.name);
                     
                     results.push({
                         id: id,
@@ -2247,7 +2275,7 @@
                         style: artist.style || artist.genre || "Non spécifié",
                         mana: mana,
                         views: views,
-                        trend: artist.trendBase || parseInt(artist.trend) || 5,
+                        trend: realTrend !== 0 ? realTrend : (artist.trendBase || 0),
                         socialCount: artist.socialCount || 100000,
                         awardsList: artist.awardsList || [artist.awards || "Nomination"],
                         certification: artist.certification || "bronze",
@@ -2259,6 +2287,10 @@
                     });
                 }
             }
+            
+            Object.assign(previousViews, newViews);
+            savePreviousViews();
+            
             rankingArtistsList = results;
             
             let sorted = [...rankingArtistsList];
@@ -2275,12 +2307,21 @@
             if (statsBadge) {
                 statsBadge.innerHTML = `<span>📊</span> Données YouTube LIVE + Réseaux sociaux • Mise à jour: ${now.toLocaleTimeString()}`;
             }
+            
+            const autoCount = Object.values(ARTISTS_DB).filter(a => a.autoAdded === true).length;
+            if (autoCount > 0 && !window._autoNotifShown) {
+                addNotification(`🤖 ${autoCount} artiste(s) détecté(s) automatiquement dans le classement`);
+                window._autoNotifShown = true;
+            }
         }
 
         function renderRankingTable(data) {
             const tbody = document.getElementById('rankingBody');
             if (!tbody) return;
             tbody.innerHTML = "";
+            
+            const maxViews = Math.max(...data.map(a => a.views));
+            
             data.forEach((artist, idx) => {
                 const row = tbody.insertRow();
                 const hotBadge = artist.hot ? `<span class="badge-hot" style="background:#ff3300; color:white; padding:2px 8px; border-radius:40px; font-size:0.6rem; font-weight:bold; margin-left:8px;"><i class="fas fa-fire"></i> HOT</span>` : '';
@@ -2294,9 +2335,9 @@
                 row.insertCell(0).innerHTML = `<span class="rank-number">#${idx+1}</span>`;
                 row.insertCell(1).innerHTML = `<div class="artist-cell"><div class="avatar-icon">${artist.avatar}</div> <strong>${artist.name}</strong> ${hotBadge} ${isNew}</div>`;
                 row.insertCell(2).innerHTML = artist.style;
-                row.insertCell(3).innerHTML = `<span class="mana-value-ranking">${artist.mana}</span><div class="progress-bg-ranking"><div class="progress-fill-ranking" style="width: ${manaPercent}%"></div></div><span class="${trendClass}"><i class="fas ${trendIcon}"></i> ${trendSign}${artist.trend}%</span>`;
-                row.insertCell(4).innerHTML = `<strong>${formatNumber(artist.views)}</strong><div style="font-size:0.65rem;">vues cumulées</div><div class="progress-bg-ranking"><div class="progress-fill-ranking" style="width: ${viewsPercent}%"></div></div>`;
-                row.insertCell(5).innerHTML = `<span class="${trendClass}"><i class="fas fa-chart-line"></i> ${trendSign}${artist.trend}%</span>`;
+                row.insertCell(3).innerHTML = `<span class="mana-value-rank">${artist.mana}</span><div class="progress-bg-rank"><div class="progress-fill-rank" style="width: ${manaPercent}%"></div></div><span class="${trendClass}"><i class="fas ${trendIcon}"></i> ${trendSign}${artist.trend}%</span>`;
+                row.insertCell(4).innerHTML = `<strong>${formatNumber(artist.views)}</strong><div style="font-size:0.65rem;">vues cumulées</div><div class="progress-bg-rank"><div class="progress-fill-rank" style="width: ${viewsPercent}%"></div></div>`;
+                row.insertCell(5).innerHTML = `<span class="${trendClass}"><i class="fas ${trendIcon}"></i> ${trendSign}${artist.trend}%</span>`;
                 row.insertCell(6).innerHTML = getSocialHtmlForRanking(artist);
                 row.insertCell(7).innerHTML = getAwardsHtmlForRanking(artist);
                 row.insertCell(8).innerHTML = getCertCell(artist.certification);
@@ -2331,18 +2372,19 @@
                 else btn.classList.remove('active');
             });
             
-            // Défilement vers la colonne correspondante
             const columnMapping = {
-                'score': 4,
-                'stream': 5,
-                'trend': 6,
-                'social': 7,
-                'awards': 8
+                'score': 'col-score',
+                'stream': 'col-stream',
+                'trend': 'col-trend',
+                'social': 'col-social',
+                'awards': 'col-awards'
             };
-            const columnIndex = columnMapping[criteria];
-            if (columnIndex) {
-                scrollToColumn(columnIndex);
+            const targetColumnId = columnMapping[criteria];
+            if (targetColumnId) {
+                scrollToColumn(targetColumnId);
             }
+            
+            scrollToTop();
             
             addNotification(`Tri par ${columnName || (criteria === "score" ? "MANA Score" : criteria === "stream" ? "Streams" : criteria === "trend" ? "Évolution" : criteria === "social" ? "Réseaux sociaux" : "Awards")} - ${rankingDirection === "desc" ? "Décroissant" : "Croissant"}`);
         }
@@ -2352,6 +2394,7 @@
             try {
                 const searchQueries = ["artiste malgache", "music madagascar", "salegy", "tsapiky", "malagasy song", "madagascar music official"];
                 const allResults = [];
+                const existingNames = new Set(Object.values(ARTISTS_DB).map(a => a.name.toLowerCase()));
                 
                 for (const query of searchQueries) {
                     const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&maxResults=5&q=${encodeURIComponent(query)}&key=${YOUTUBE_API_KEY}`;
@@ -2363,8 +2406,7 @@
                             const channelId = item.snippet.channelId;
                             const channelName = item.snippet.channelTitle;
                             
-                            const alreadyExists = Object.values(ARTISTS_DB).some(a => a.name.toLowerCase() === channelName.toLowerCase() || a.youtubeChannelId === channelId);
-                            if (!alreadyExists && !allResults.some(r => r.channelId === channelId)) {
+                            if (!existingNames.has(channelName.toLowerCase()) && !allResults.some(r => r.channelId === channelId)) {
                                 const statsUrl = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${YOUTUBE_API_KEY}`;
                                 const statsResponse = await fetch(statsUrl);
                                 const statsData = await statsResponse.json();
@@ -2373,13 +2415,15 @@
                                     const stats = statsData.items[0].statistics;
                                     const viewCount = parseInt(stats.viewCount) || 0;
                                     
-                                    allResults.push({
-                                        name: channelName,
-                                        channelId: channelId,
-                                        views: viewCount,
-                                        avatar: "🎤",
-                                        description: item.snippet.description || "Artiste malgache"
-                                    });
+                                    if (viewCount > 500000) {
+                                        allResults.push({
+                                            name: channelName,
+                                            channelId: channelId,
+                                            views: viewCount,
+                                            avatar: "🎤",
+                                            description: item.snippet.description || "Artiste malgache"
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -2418,7 +2462,7 @@
                     <h3><i class="fas fa-music"></i> Nouveaux artistes découverts</h3>
                     <p style="color:#ccc; margin-bottom:1rem;">Cliquez sur "Ajouter" pour intégrer un artiste au classement</p>
                     <div id="discoverListRanking"></div>
-                    <button class="close-modal" onclick="this.closest('.discover-modal').remove()">Fermer</button>
+                    <button class="close-modal" onclick="this.closest('.discover-modal').remove()" style="background:#333; color:#e0a500; border:none; padding:8px 20px; border-radius:40px; margin-top:10px; cursor:pointer;">Fermer</button>
                 </div>
             `;
             document.body.appendChild(modal);
@@ -2445,6 +2489,7 @@
                 btn.addEventListener('click', async (e) => {
                     const name = btn.getAttribute('data-name');
                     const channelId = btn.getAttribute('data-channelId');
+                    const views = parseInt(btn.getAttribute('data-views'));
                     const newId = name.toLowerCase().replace(/\s+/g, '-');
                     
                     if (ARTISTS_DB[newId]) {
@@ -2456,7 +2501,7 @@
                     ARTISTS_DB[newId] = {
                         id: newId, name: name.toUpperCase(), avatar: "🎵", location: "Madagascar", age: 0, awards: "Nouvel artiste",
                         bio: `🎵 ${name} est un nouvel artiste malgache découvert via YouTube.`,
-                        youtubeStats: formatNumber(artist.views), spotifyStats: "N/A", nominations: "0", manaScore: 1000,
+                        youtubeStats: formatNumber(views), spotifyStats: "N/A", nominations: "0", manaScore: 1000,
                         tags: ["📍 Madagascar", "⭐ Nouvel artiste"],
                         tracks: [{ title: "🎵 Nouveau titre", url: "#" }],
                         nextConcert: { name: "À venir", date: "2026-12-31" },
@@ -2465,9 +2510,9 @@
                         customAvatar: null, consentStatus: "none", certification: "bronze", genre: "Non spécifié",
                         youtubeChannelId: channelId,
                         style: "Découvert",
-                        trend: "+0%", streams: formatNumber(artist.views),
-                        socialCount: 0, awardsList: ["Nouvel artiste"], hot: false, trendBase: 0,
-                        instagram: "", facebook: "", tiktok: ""
+                        trend: "+0%", streams: formatNumber(views),
+                        socialCount: Math.floor(views / 100), awardsList: ["Nouvel artiste"], hot: false, trendBase: 0,
+                        instagram: "", facebook: "", tiktok: "", autoAdded: true
                     };
                     
                     saveAllData();
@@ -2594,6 +2639,7 @@
             localStorage.setItem('starconnect_partners', JSON.stringify(PARTNER_REQUESTS));
             localStorage.setItem('starconnect_notifications', JSON.stringify(notifications));
             saveSubscriberData();
+            savePreviousViews();
         }
 
         function loadAllData() {
@@ -2634,6 +2680,7 @@
                 document.getElementById('manaValue').innerText = manaScore;
                 updateStarRating(manaScore);
                 loadSubscriberData();
+                loadPreviousViews();
                 loadRankingData();
             } catch(e) { console.error(e); }
         }
