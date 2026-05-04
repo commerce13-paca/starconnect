@@ -61,7 +61,6 @@
         body.light-mode .custom-item { background: #fff; border-color: #e0e0e0; }
         body.light-mode .ranking-table th { background: #f0f0f0; color: #1a1a1a; }
         body.light-mode .ranking-table td { border-bottom-color: #e0e0e0; }
-        body.light-mode .spotlight-card { background: linear-gradient(135deg, #fff8e7, #fff); border-color: #e0a500; }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
         .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-bottom: 24px; margin-bottom: 32px; border-bottom: 1px solid #1e1e1e; }
@@ -480,6 +479,67 @@
             margin-right: 8px;
         }
         
+        .spotlight-section {
+            background: linear-gradient(135deg, rgba(224,165,0,0.15), rgba(224,165,0,0.05));
+            border: 1px solid rgba(224,165,0,0.4);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .spotlight-section::before {
+            content: "✨ SPOTLIGHT ✨";
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #e0a500;
+            letter-spacing: 2px;
+        }
+        .spotlight-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 15px 0 5px 0;
+        }
+        .spotlight-artist {
+            background: rgba(0,0,0,0.5);
+            border-radius: 60px;
+            padding: 12px 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(8px);
+        }
+        .spotlight-artist .avatar {
+            font-size: 2.5rem;
+        }
+        .spotlight-artist .info h3 {
+            color: #ffd700;
+            font-size: 1.3rem;
+        }
+        .spotlight-btn {
+            background: #e0a500;
+            color: #050505;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .spotlight-btn:hover {
+            transform: scale(1.05);
+            background: #ffc107;
+        }
+        
         /* Certifications */
         .star-certified-blue {
             width: 32px;
@@ -653,6 +713,46 @@
             filter: blur(1px);
         }
         
+        /* Badges virtuels */
+        .virtual-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-left: 5px;
+            white-space: nowrap;
+        }
+        .badge-crown { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #1a1a1a; box-shadow: 0 0 5px rgba(255,215,0,0.5); }
+        .badge-fire { background: linear-gradient(135deg, #ff4500, #ff6600); color: white; animation: pulse 1.5s infinite; }
+        .badge-up { background: linear-gradient(135deg, #00c853, #009624); color: white; }
+        .badge-star { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
+        .badge-diamond { background: linear-gradient(135deg, #00bcd4, #0097a7); color: white; }
+        .badge-certified { background: linear-gradient(135deg, #e0a500, #ff8c00); color: #050505; border: 1px solid #ffd700; }
+        
+        .badge-hot-small { background: #ff3300; color: white; padding: 2px 8px; border-radius: 40px; font-size: 0.6rem; margin-left: 8px; display: inline-block; }
+        
+        /* Légende badges */
+        .badge-legend-ranking {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 1rem 0 1.5rem 0;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 60px;
+            font-size: 0.65rem;
+        }
+        .legend-item-rank {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #aaa;
+        }
+        
         /* === STYLE CLASSEMENT === */
         .ranking-header-stats {
             background: rgba(224,165,0,0.1);
@@ -702,181 +802,41 @@
             color: #050505;
             box-shadow: 0 0 10px rgba(224,165,0,0.5);
         }
-        
-        /* Badge légende */
-        .badge-legend {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1rem 0;
-            padding: 0.5rem 1rem;
-            background: rgba(0,0,0,0.4);
-            border-radius: 40px;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.65rem;
-            color: #aaa;
-        }
-        
-        /* Badges dynamiques */
-        .badge-crown {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #1a1a1a;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin: 0 4px;
-            box-shadow: 0 0 8px rgba(255,215,0,0.5);
-        }
-        .badge-fire {
-            background: linear-gradient(135deg, #ff4500, #ff6600);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin: 0 4px;
-            animation: pulse 1.5s infinite;
-        }
-        .badge-up {
-            background: linear-gradient(135deg, #00c853, #009624);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin: 0 4px;
-        }
-        .badge-star {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin: 0 4px;
-        }
-        .badge-diamond {
-            background: linear-gradient(135deg, #00bcd4, #0097a7);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin: 0 4px;
-        }
-        .badge-certified {
+        /* NOUVEAU: bouton "Tri" qui monte en haut du classement */
+        .ranking-sort-move-top-btn {
             background: linear-gradient(135deg, #e0a500, #ff8c00);
-            color: #050505;
-            padding: 2px 8px;
+            border: none;
+            padding: 0.6rem 1.2rem;
             border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #050505;
+            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            margin: 0 4px;
-            box-shadow: 0 0 5px rgba(224,165,0,0.5);
+            gap: 8px;
         }
-        .badge-hot {
-            background: #ff3300;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            margin-left: 8px;
-            display: inline-block;
+        .ranking-sort-move-top-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(224,165,0,0.4);
         }
-        
-        /* Spotlight */
-        .spotlight-card {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 2px solid #e0a500;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        body.light-mode .spotlight-card {
-            background: linear-gradient(135deg, #fff8e7, #fff);
-        }
-        .spotlight-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(224,165,0,0.1) 0%, transparent 70%);
-            animation: spotlightPulse 3s infinite;
-        }
-        @keyframes spotlightPulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-        .spotlight-card h3 {
-            color: #e0a500;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
-        .spotlight-card .artist-name {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin: 10px 0;
-            position: relative;
-            z-index: 1;
-        }
-        .spotlight-card .spotlight-desc {
-            color: #ccc;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-        }
-        .spotlight-btn {
-            background: #e0a500;
-            color: #050505;
-            border: none;
-            padding: 10px 25px;
+        .ranking-discover-btn {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid #e0a500;
+            padding: 0.6rem 1.2rem;
             border-radius: 40px;
             font-weight: 600;
+            font-size: 0.8rem;
             cursor: pointer;
-            transition: 0.2s;
-            position: relative;
-            z-index: 1;
-            text-decoration: none;
-            display: inline-block;
+            color: #e0a500;
+            transition: all 0.2s;
         }
-        .spotlight-btn:hover {
-            transform: scale(1.05);
-            background: #ffc107;
+        .ranking-discover-btn:hover {
+            background: #e0a500;
+            color: #050505;
+            transform: translateY(-2px);
         }
-        
         .star-cell {
             display: inline-block;
             width: 22px;
@@ -894,17 +854,7 @@
         .star-cell.silver::before { content: "★"; position: absolute; color: #1a1a1a; font-size: 10px; top: 3px; left: 5px; }
         .star-cell.bronze { background: linear-gradient(135deg, #CD7F32, #A0652A); position: relative; }
         .star-cell.bronze::before { content: "★"; position: absolute; color: white; font-size: 10px; top: 3px; left: 5px; }
-        .badge-new-artist {
-            background: #00c853;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            margin-left: 8px;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
+        
         .trend-up-small { color: #00c853; font-size: 0.7rem; }
         .trend-down-small { color: #ff4444; font-size: 0.7rem; }
         .social-icons-ranking a {
@@ -1251,9 +1201,34 @@
         }
         .subscribe-animation { animation: subscribePop 0.3s ease-in-out; }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Styles pour Google Sheets Community */
+        .gsheets-status {
+            background: rgba(224,165,0,0.1);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+        .gsheets-status.connected {
+            background: rgba(0,168,107,0.15);
+            border-left: 3px solid #00a86b;
+        }
+        .gsheets-status.error {
+            background: rgba(220,38,38,0.15);
+            border-left: 3px solid #dc2626;
+        }
+        .community-loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        .post-image-community {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            margin-top: 10px;
+            cursor: pointer;
         }
         
         @media (max-width: 700px) {
@@ -1275,9 +1250,12 @@
             .subscribe-btn { padding: 5px 15px; font-size: 0.75rem; }
             .subscriber-count { font-size: 1rem; }
             .ranking-toolbar { gap: 0.4rem; padding: 0.4rem 1rem; }
-            .ranking-sort-btn { padding: 0.3rem 0.8rem; font-size: 0.7rem; }
-            .badge-legend { gap: 0.5rem; }
-            .legend-item { font-size: 0.55rem; }
+            .ranking-sort-btn, .ranking-discover-btn, .ranking-sort-move-top-btn { padding: 0.3rem 0.8rem; font-size: 0.7rem; }
+            .badge-legend-ranking { gap: 0.4rem; }
+            .legend-item-rank { font-size: 0.55rem; }
+            .spotlight-artist .avatar { font-size: 1.5rem; }
+            .spotlight-artist .info h3 { font-size: 1rem; }
+            .spotlight-btn { padding: 6px 15px; font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -1297,26 +1275,12 @@
         </div>
     </div>
 
+    <!-- MODAL HISTOIRE UNIQUE POUR TOUS LES ARTISTES -->
     <div id="storyModal" class="story-modal">
         <div class="story-modal-content">
             <span class="story-close" onclick="closeStoryModal()">&times;</span>
-            <h2><i class="fas fa-book-open"></i> 📖 L'HISTOIRE DE BASTA LION</h2>
-            <div class="story-section">
-                <p><span class="story-badge">👤 IDENTITÉ</span> <strong>De son vrai nom Veloarson Maurizio Loïc (ou Loïc Maurizio)</strong>, l'artiste malgache est né le <strong>27 décembre 1991 à Mahajanga</strong>.</p>
-                <p><span class="story-badge">🎵 STYLE MUSICAL</span> Auteur-compositeur-interprète autodidacte, il puise son inspiration dans le <strong>reggae, le dancehall et l'afrobeat</strong>, mêlant messages conscients et énergie festive.</p>
-            </div>
-            <h3><i class="fas fa-futbol"></i> ⚽ Du Football à la Musique : Ses Débuts à Madagascar</h3>
-            <p>Avant la musique, le football était sa passion, avec l'ambition de faire carrière dans ce sport. Cependant, tout a basculé à la suite de deux événements clés :</p>
-            <p><strong>• Le déménagement déclencheur :</strong> Son installation à Nosy Be a été un tournant décisif. Loin de ses repères, il y rencontre <strong>Rijade</strong>, qui l'initie au chant et à la scène dancehall.</p>
-            <p><strong>• Des débuts sur le tard :</strong> Il a débuté sa carrière aux alentours de 2006 (ou 2015 selon certaines sources), mais c'est en <strong>2013</strong> qu'il sort son premier titre, <strong>"Za Hialà"</strong>.</p>
-            <h3><i class="fas fa-globe-africa"></i> 🎵 Un Parcours Vers l'International</h3>
-            <p>Une fois lancé, Basta Lion n'a cessé de gravir les échelons :</p>
-            <p><strong>• Conquête du public malgache :</strong> Pour se faire connaître, il collabore avec des figures locales comme <strong>Wawa et Rycia</strong>.</p>
-            <p><strong>• Le tournant "Colombian" :</strong> Ce titre, fruit d'une collaboration fortuite avec Kybba et Tribal Kush, l'a propulsé sur le devant de la scène, remportant notamment le prix du <strong>Titre de l'année 2024</strong> aux RDJ Mozika Awards.</p>
-            <p><strong>• La consécration internationale :</strong><br>- Le single <strong>"Wyfl Riddim"</strong>, créé avec le sound system suisse Little Lion Sound, a été classé <strong>numéro un à Kingston, en Jamaïque</strong>, berceau du reggae.<br>- Cette reconnaissance lui a valu le prix du <strong>Meilleur artiste Reggae/Dancehall aux African Entertainment Awards USA (AEAUSA) 2025</strong>, une victoire éclatante face à des géants comme Vybz Kartel et Shenseea.</p>
-            <div class="story-section" style="margin-top: 20px;">
-                <p><i class="fas fa-map-marker-alt" style="color:#e0a500;"></i> <strong>Aujourd'hui installé en France</strong>, Basta Lion continue de concrétiser son ambition internationale avec de nouveaux projets en préparation.</p>
-            </div>
+            <h2><i class="fas fa-book-open"></i> <span id="storyArtistName"></span></h2>
+            <div id="storyContent"></div>
         </div>
     </div>
 
@@ -1437,7 +1401,7 @@
                     </div>
                     <div class="artist-info">
                         <h2 id="artistName">BASTA LION <span id="certificationBadge"></span>
-                            <button class="story-btn" onclick="openStoryModal()"><i class="fas fa-book-open"></i> 📖 Son histoire</button>
+                            <button class="story-btn" onclick="openStoryModalForCurrentArtist()"><i class="fas fa-book-open"></i> 📖 Son histoire</button>
                         </h2>
                         <div class="artist-tags" id="artistTags"></div>
                         <div class="mana">
@@ -1536,15 +1500,24 @@
             </div>
         </div>
 
+        <!-- COMMUNAUTÉ AVEC GOOGLE SHEETS -->
         <div id="communaute" class="section panel">
-            <div class="card"><div class="card-title"><i class="fas fa-pen-fancy"></i> ✍️ PUBLIER</div>
+            <div class="card">
+                <div class="card-title"><i class="fas fa-pen-fancy"></i> ✍️ PUBLIER</div>
                 <div class="new-post">
+                    <input type="text" id="postAuthorName" placeholder="Votre pseudo" class="search-input" style="margin-bottom:10px;">
                     <textarea id="postContent" rows="3" placeholder="Partagez votre soutien... 🔥"></textarea>
                     <input type="file" id="postImageInput" accept="image/*" style="margin: 10px 0; background: #0a0a0a; color: white; border: 1px solid #222; border-radius: 12px; padding: 8px;">
-                    <button id="publishPostBtn" class="btn"><i class="fas fa-paper-plane"></i> 📢 PUBLIER</button>
+                    <button id="publishPostGSBtn" class="btn"><i class="fas fa-paper-plane"></i> 📢 PUBLIER (Google Sheets)</button>
+                </div>
+                <div id="gsheetsStatus" class="gsheets-status"></div>
+            </div>
+            <div class="card">
+                <div class="card-title"><i class="fas fa-users"></i> 💬 FLUX COMMUNAUTAIRE</div>
+                <div id="communityFeedList">
+                    <div class="community-loading"><i class="fas fa-spinner fa-spin"></i> Chargement des publications...</div>
                 </div>
             </div>
-            <div class="card"><div class="card-title"><i class="fas fa-users"></i> 💬 FLUX</div><div id="feedList"></div></div>
         </div>
 
         <div id="evenements" class="section panel">
@@ -1564,7 +1537,7 @@
             <div class="card"><div class="card-title"><i class="fas fa-chart-line"></i> 📰 ACTUALITÉS</div>
                 <div id="newsList"></div>
                 <div style="margin-top: 24px; font-size: 0.65rem; color: #555; text-align: center;">
-                    <i class="fas fa-rss"></i> Flux RSS automatique · mise à jour toutes les 2 heures · via RSS2JSON
+                    <i class="fas fa-rss"></i> Flux RSS automatique · mise à jour toutes les 2 heures
                 </div>
             </div>
         </div>
@@ -1592,33 +1565,35 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- CLASSEMENT AVEC SPOTLIGHT ET BADGES DYNAMIQUES -->
-        <!-- ========================================== -->
+        <!-- CLASSEMENT -->
         <div id="classements" class="section panel">
             <div class="card">
                 <div class="card-title"><i class="fas fa-trophy"></i> 🏆 CLASSEMENT DES ARTISTES MALGACHES</div>
                 
-                <!-- SPOTLIGHT PAYANT (prêt pour monétisation) -->
-                <div id="spotlightSection" class="spotlight-card" style="display: none;">
-                    <h3><i class="fas fa-star-of-life"></i> ✨ SPOTLIGHT DE LA SEMAINE ✨</h3>
-                    <div class="artist-name" id="spotlightName">DENISE</div>
-                    <div class="spotlight-desc" id="spotlightDesc">🎤 Nouvel album "Miora" disponible sur toutes les plateformes</div>
-                    <a href="#" id="spotlightLink" class="spotlight-btn" target="_blank"><i class="fab fa-youtube"></i> Découvrir</a>
+                <div id="spotlightContainer" class="spotlight-section" style="display: none;">
+                    <div class="spotlight-content">
+                        <div class="spotlight-artist">
+                            <div class="avatar" id="spotlightAvatar">🎤</div>
+                            <div class="info">
+                                <h3 id="spotlightName">Artiste Spotlight</h3>
+                                <p id="spotlightDesc">✨ En vedette cette semaine</p>
+                            </div>
+                            <a href="#" id="spotlightLink" class="spotlight-btn" target="_blank">Découvrir <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="ranking-header-stats" id="rankingTopStats">
                     <span>📊</span> Données YouTube LIVE + Réseaux sociaux + Awards officiels
                 </div>
                 
-                <!-- Légende des badges -->
-                <div class="badge-legend">
-                    <span class="legend-item"><span class="badge-crown" style="padding: 2px 6px;">👑 N°1 Hits</span> Top vues</span>
-                    <span class="legend-item"><span class="badge-fire" style="padding: 2px 6px;">🔥 Tendance</span> +15% vues</span>
-                    <span class="legend-item"><span class="badge-up" style="padding: 2px 6px;">📈 Progression</span> +5% vues</span>
-                    <span class="legend-item"><span class="badge-star" style="padding: 2px 6px;">⭐ Power Score</span> MANA > 80</span>
-                    <span class="legend-item"><span class="badge-diamond" style="padding: 2px 6px;">💎 Légende</span> Certif Or/Blue</span>
-                    <span class="legend-item"><span class="badge-certified" style="padding: 2px 6px;">🏆 Certifié STARCONNECT</span> Partenaire officiel</span>
+                <div class="badge-legend-ranking">
+                    <span class="legend-item-rank"><span class="virtual-badge badge-crown"><i class="fas fa-crown"></i> N°1 Hits</span> Top vues</span>
+                    <span class="legend-item-rank"><span class="virtual-badge badge-fire"><i class="fas fa-fire"></i> Tendance</span> +15% vues</span>
+                    <span class="legend-item-rank"><span class="virtual-badge badge-up"><i class="fas fa-chart-line"></i> Progression</span> +5% vues</span>
+                    <span class="legend-item-rank"><span class="virtual-badge badge-star"><i class="fas fa-star"></i> Power Score</span> MANA > 80</span>
+                    <span class="legend-item-rank"><span class="virtual-badge badge-diamond"><i class="fas fa-gem"></i> Légende</span> Certif Or/Blue</span>
+                    <span class="legend-item-rank"><span class="virtual-badge badge-certified"><i class="fas fa-certificate"></i> STARCONNECT</span> Certification officielle</span>
                 </div>
                 
                 <div class="ranking-toolbar">
@@ -1627,12 +1602,14 @@
                     <button class="ranking-sort-btn" data-sort="trend">📈 Évolution</button>
                     <button class="ranking-sort-btn" data-sort="social">🌐 RÉSEAUX</button>
                     <button class="ranking-sort-btn" data-sort="awards">🏆 AWARDS</button>
+                    <button id="rankingSortMoveTopBtn" class="ranking-sort-move-top-btn"><i class="fas fa-arrow-up"></i> TRIER & MONTER EN HAUT</button>
                 </div>
                 
                 <div class="ranking-table-wrapper" id="rankingTableWrapper">
                     <table class="ranking-table" id="starRankingTable">
                         <thead>
-                            <tr>                                <th id="col-rank">#</th>
+                            <tr>
+                                <th id="col-rank">#</th>
                                 <th id="col-artist">ARTISTE</th>
                                 <th id="col-style">STYLE</th>
                                 <th id="col-score">⭐ MANA</th>
@@ -1649,7 +1626,7 @@
                     </table>
                 </div>
                 <button id="refreshRankingBtn" class="btn" style="margin-top: 20px;"><i class="fas fa-sync-alt"></i> Actualiser les statistiques</button>
-                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (streams YouTube réels, réseaux, récompenses, impact). Mise à jour automatique. Badges dynamiques selon performance.</p>
+                <p style="font-size:0.7rem; margin-top:10px; color:#888;">Classement basé sur le score MANA (streams YouTube réels, réseaux, récompenses, impact). Mise à jour automatique toutes les 30 minutes.</p>
             </div>
         </div>
 
@@ -1881,36 +1858,16 @@
                     <div id="consentProofsList"></div>
                 </div>
                 <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                    <h5 style="color: #e0a500;">✨ Gestion Spotlight (payant)</h5>
-                    <p style="font-size:0.7rem;">Activez un artiste en spotlight pour le mettre en avant (section payante)</p>
-                    <select id="adminSpotlightArtist">
-                        <option value="">-- Sélectionner un artiste --</option>
-                    </select>
-                    <input type="text" id="adminSpotlightMessage" placeholder="Message promo (ex: Nouvel album)">
-                    <input type="text" id="adminSpotlightLink" placeholder="Lien (YouTube, Spotify, etc)">
-                    <button id="adminEnableSpotlight">✨ Activer Spotlight</button>
-                    <button id="adminDisableSpotlight" class="warning-btn">❌ Désactiver Spotlight</button>
-                </div>
-                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
-                    <h5 style="color: #e0a500;">🏆 Badges Certifiés STARCONNECT (payant)</h5>
-                    <p style="font-size:0.7rem;">Attribuez un badge "Certifié STARCONNECT" à un artiste (abonnement payant)</p>
-                    <select id="adminCertifiedArtist">
-                        <option value="">-- Sélectionner un artiste --</option>
-                    </select>
-                    <button id="adminAddCertifiedBadge">🏆 Ajouter badge certifié</button>
-                    <button id="adminRemoveCertifiedBadge" class="warning-btn">❌ Retirer badge</button>
-                    <div id="certifiedArtistsList" class="artists-management" style="margin-top:10px;"></div>
-                </div>
-                <div style="background: #1a1a1a; padding: 10px; border-radius: 12px; margin-bottom: 15px;">
                     <h5 style="color: #e0a500;">🔧 Outils</h5>
                     <button id="adminMaintenanceMode" class="warning-btn">🔧 Mode Maintenance</button>
-                    <button id="adminClearFeed" class="danger-btn">🗑️ Effacer tous les posts</button>
+                    <button id="adminClearFeed" class="danger-btn">🗑️ Effacer tous les posts (local)</button>
                     <button id="adminResetMana" class="danger-btn">🔄 Réinitialiser MANA</button>
                     <button id="adminExportData" style="background:#0891b2;">📤 Exporter (JSON)</button>
                     <button id="adminExportConsentProofs" style="background:#0891b2;">📄 Exporter preuves consentement</button>
                     <button id="adminImportData" style="background:#0891b2;">📥 Importer</button>
                     <input type="file" id="importFile" style="display:none" accept=".json">
                     <button id="adminSetSubscribers" style="background:#e0a500; color:#050505;">📊 Modifier le nombre d'abonnés</button>
+                    <button id="adminSetSpotlight" style="background:#e0a500; color:#050505;">✨ Configurer Spotlight (payant)</button>
                 </div>
             </div>
             <button id="adminClose">Fermer</button>
@@ -1931,21 +1888,10 @@
 
     <script>
         // =============================================
-        // DONNÉES DES ARTISTES + SPOTLIGHT + BADGES CERTIFIÉS
+        // YOUTUBE API (identique à l'original)
         // =============================================
         const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         let gapiInitialized = false;
-        
-        // Liste des artistes certifiés STARCONNECT (payant / abonnement)
-        let certifiedArtistsList = [];
-        
-        // Spotlight actif (payant)
-        let spotlightActive = false;
-        let spotlightData = {
-            artistId: null,
-            message: "",
-            link: ""
-        };
 
         async function fetchRealYouTubeStats(channelId) {
             if (!gapiInitialized || !channelId) return null;
@@ -2076,7 +2022,7 @@
         function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
         // =============================================
-        // BASE DE DONNÉES DES ARTISTES
+        // BASE DE DONNÉES DES ARTISTES AVEC LEURS HISTOIRES
         // =============================================
         let ARTISTS_DB = {
             "denise": {
@@ -2086,14 +2032,18 @@
                 tags: ["📍 Antananarivo", "🎵 Pop urbaine", "🏆 AFRIMA 2025", "💖 Voix d'or", "🟡 ÉTOILE OR"],
                 tracks: [{ title: "💖 Mbola tsara", url: "#" }, { title: "💕 Amour Infini", url: "#" }, { title: "🌟 Etoile", url: "#" }],
                 nextConcert: { name: "🎤 Denise - Tournée nationale", date: "2026-05-10" },
-                gallery: ["https://via.placeholder.com/300x150?text=Denise", "https://via.placeholder.com/300x150?text=💖+Pop", "https://via.placeholder.com/300x150?text=🎤+Live", "https://via.placeholder.com/300x150?text=🌟+Star"],
+                gallery: ["https://via.placeholder.com/300x150?text=Denise+Concert", "https://via.placeholder.com/300x150?text=Denise+Studio", "https://via.placeholder.com/300x150?text=Denise+Award", "https://via.placeholder.com/300x150?text=Denise+Live"],
                 searchQuery: "Denise Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "gold", genre: "Pop",
                 youtubeChannelId: "UCEpStQu-C7FCCv1-P5UyClg",
                 scoreDetails: { stream: 94, social: 88, awards: 92, media: 85, impact: 90, activity: 87, detailStream: "8.2M vues", detailSocial: "1.2M followers", detailAwards: "AFRIMA 2025 meilleure artiste" },
                 trend: "+12%", streams: "9.2M", style: "Pop urbaine",
                 socialCount: 1500000, awardsList: ["Artiste Féminine 2023","Meilleure Collaboration","Trace Award 2024"], hot: false, trendBase: 12,
-                instagram: "https://www.instagram.com/deniseofficiel", facebook: "https://www.facebook.com/denisemusic", tiktok: "https://www.tiktok.com/@denise"
+                instagram: "https://www.instagram.com/deniseofficiel", facebook: "https://www.facebook.com/denisemusic", tiktok: "https://www.tiktok.com/@denise",
+                story: {
+                    title: "DENISE - L'ÉTOILE DE LA POP MALGACHE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Denise</strong> est née à Antananarivo en 1997. Dès son plus jeune âge, elle baigne dans la musique grâce à sa famille d'artistes.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Pop urbaine mêlée aux sonorités traditionnelles malgaches. Sa voix puissante lui a valu le surnom de \"Voix d'or de Madagascar\".</p></div><h3><i class='fas fa-trophy'></i> 🏆 Parcours exceptionnel</h3><p>En 2023, Denise remporte l'AFRIMA de la meilleure artiste féminine, devenant ainsi la première Malgache à recevoir cette distinction. En 2025, elle fait sensation au festival Mawazine, partageant la scène avec des artistes internationaux.</p><p>Son dernier album \"Etoile\" a dépassé les 10 millions de streams sur Spotify et figure dans le top 10 des albums les plus écoutés en Afrique de l'Ouest.</p><div class='story-section'><p><i class='fas fa-map-marker-alt' style='color:#e0a500;'></i> <strong>Aujourd'hui</strong>, Denise prépare une tournée européenne et collabore avec des producteurs français pour son prochain projet.</p></div>"
+                }
             },
             "reko": {
                 id: "reko", name: "REKO", avatar: "🎤", location: "Antananarivo", age: 31, awards: "Artiste Hip-Hop 2025",
@@ -2102,14 +2052,18 @@
                 tags: ["📍 Antananarivo", "🎵 Rap/Hip-hop", "🏆 Artiste de l'année RDJ 2025", "🔥 Nouvelle vague", "⚪ ÉTOILE ARGENT"],
                 tracks: [{ title: "🎤 Tsy Mba Hery", url: "#" }, { title: "⚡ Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
                 nextConcert: { name: "🎤 Reko - Tournée nationale", date: "2026-06-15" },
-                gallery: ["https://via.placeholder.com/300x150?text=Reko", "https://via.placeholder.com/300x150?text=🎤+Rap", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                gallery: ["https://via.placeholder.com/300x150?text=Reko+Concert", "https://via.placeholder.com/300x150?text=Reko+Studio", "https://via.placeholder.com/300x150?text=Reko+Award", "https://via.placeholder.com/300x150?text=Reko+Live"],
                 searchQuery: "Reko Malagasy rap", active: true,
                 customAvatar: null, consentStatus: "none", certification: "silver", genre: "Hip-Hop",
                 youtubeChannelId: "UCEApg1FFx-u505G9NKFe9Cw",
                 scoreDetails: { stream: 91, social: 85, awards: 88, media: 82, impact: 87, activity: 84, detailStream: "5.4M streams", detailSocial: "980k abonnés", detailAwards: "Artiste de l'année RDJ 2025" },
                 trend: "+8%", streams: "6.7M", style: "Rap/Hip-hop",
                 socialCount: 1100000, awardsList: ["Meilleur Artiste Hip-hop 2022","Prix Découverte RFI","Hit Maker Award"], hot: false, trendBase: 8,
-                instagram: "https://www.instagram.com/rekomadagascar", facebook: "https://www.facebook.com/reko.music", tiktok: "https://www.tiktok.com/@reko"
+                instagram: "https://www.instagram.com/rekomadagascar", facebook: "https://www.facebook.com/reko.music", tiktok: "https://www.tiktok.com/@reko",
+                story: {
+                    title: "REKO - LE RENOUVEAU DU RAP MALGACHE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Reko</strong> (de son vrai nom Rindra Rakoto) est né en 1995 à Antananarivo. Il grandit dans le quartier populaire d'Anosy où il découvre le hip-hop américain.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Un rap engagé mêlé aux réalités sociales malgaches, avec des flows inspirés du rap français et américain.</p></div><h3><i class='fas fa-microphone-alt'></i> 🎤 Des débuts difficiles</h3><p>Reko commence sa carrière dans les battles de rue à Antananarivo. Son premier morceau 'Tsy Mba Hery' devient viral sur les réseaux sociaux, cumulant plus de 2 millions de vues en quelques mois.</p><p>En 2024, il remporte le prix du meilleur artiste hip-hop aux RDJ Mozika Awards, face à des artistes établis. En 2025, il sort son premier album studio 'Mampionona', acclamé par la critique.</p><div class='story-section'><p><i class='fas fa-globe-africa' style='color:#e0a500;'></i> <strong>Influence internationale</strong> : Reko a collaboré avec des artistes français comme Niska et Kaaris, exportant le rap malgache en Europe.</p></div>"
+                }
             },
             "jaojoby": {
                 id: "jaojoby", name: "JAOJOBY", avatar: "🎤", location: "Diego Suarez", age: 68, awards: "Trophée d'honneur 2024",
@@ -2118,46 +2072,18 @@
                 tags: ["📍 Diego Suarez", "🎵 Salegy", "🏆 Légende vivante", "👑 Roi du salegy", "💙 ÉTOILE BLEUE"],
                 tracks: [{ title: "🎤 Salegy", url: "#" }, { title: "🎶 Mbola tsara", url: "#" }, { title: "💪 Malagasy", url: "#" }],
                 nextConcert: { name: "🎤 Jaojoby - Concert anniversaire", date: "2026-08-20" },
-                gallery: ["https://via.placeholder.com/300x150?text=Jaojoby", "https://via.placeholder.com/300x150?text=🎤+Salegy", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Live"],
+                gallery: ["https://via.placeholder.com/300x150?text=Jaojoby+Legend", "https://via.placeholder.com/300x150?text=Jaojoby+Salegy", "https://via.placeholder.com/300x150?text=Jaojoby+Trophy", "https://via.placeholder.com/300x150?text=Jaojoby+Live"],
                 searchQuery: "Jaojoby Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", certification: "blue", genre: "Salegy",
                 youtubeChannelId: "UCt9OyJJEc0z_au_V7nuOtmA",
                 scoreDetails: { stream: 88, social: 82, awards: 90, media: 85, impact: 89, activity: 86, detailStream: "4.1M vues", detailSocial: "450k followers", detailAwards: "Trophée d'honneur édition 2024" },
                 trend: "+5%", streams: "5.3M", style: "Salegy",
                 socialCount: 520000, awardsList: ["Légende Vivante Kora","Meilleur Artiste Traditionnel","Prix d'Honneur"], hot: false, trendBase: 5,
-                instagram: "https://www.instagram.com/jaojobyofficial", facebook: "https://www.facebook.com/jaojoby", tiktok: "https://www.tiktok.com/@jaojoby"
-            },
-            "mahaleo": {
-                id: "mahaleo", name: "MAHALEO", avatar: "🎸", location: "Antananarivo", age: 50, awards: "RDJ Mozika Trophée d'honneur 2025",
-                bio: "🎸 <strong>Mahaleo</strong> est le groupe légendaire du folk engagé malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD - Artiste légendaire</strong>",
-                youtubeStats: "2.9M", spotifyStats: "750K", nominations: "8", manaScore: 1950,
-                tags: ["📍 Antananarivo", "🎵 Folk engagé", "🏆 Groupe légendaire", "🌍 Ambassadeurs culturels", "🟡 ÉTOILE OR"],
-                tracks: [{ title: "🎸 Mila Tsara", url: "#" }, { title: "🎶 Malagasy", url: "#" }, { title: "💚 Madagascar", url: "#" }],
-                nextConcert: { name: "🎤 Mahaleo - Concert anniversaire", date: "2026-09-15" },
-                gallery: ["https://via.placeholder.com/300x150?text=Mahaleo", "https://via.placeholder.com/300x150?text=🎸+Folk", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Live"],
-                searchQuery: "Mahaleo Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Folk",
-                youtubeChannelId: "UCt4quCNBZZ0Cc6xWXUSp0zQ",
-                scoreDetails: { stream: 87, social: 80, awards: 89, media: 83, impact: 88, activity: 85, detailStream: "2.9M streams", detailSocial: "300k", detailAwards: "RDJ Mozika Trophée d'honneur 2025" },
-                trend: "+3%", streams: "4.2M", style: "Folk engagé",
-                socialCount: 380000, awardsList: ["Prix SACEM","Grand Prix Musique Malgache","Carrière Remarquable"], hot: false, trendBase: 3,
-                instagram: "https://www.instagram.com/mahaleoband", facebook: "https://www.facebook.com/mahaleo", tiktok: ""
-            },
-            "big-mj": {
-                id: "big-mj", name: "BIG MJ", avatar: "🎤", location: "Antananarivo", age: 27, awards: "Prix du public 2024",
-                bio: "🎤 <strong>Big MJ</strong> est la star montante de l'afro-clip malgache. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong> <span class='badge-hot' style='background:#ff3300; color:white; padding:2px 8px; border-radius:40px; font-size:0.7rem; margin-left:8px;'><i class='fas fa-fire'></i> HOT</span>",
-                youtubeStats: "11.7M", spotifyStats: "2.4M", nominations: "2", manaScore: 1750,
-                tags: ["📍 Antananarivo", "🎵 Afro-clip / Dance", "🏆 Prix du public 2024", "🔥 Star montante", "⚪ ÉTOILE ARGENT"],
-                tracks: [{ title: "🎤 Mbola tsara", url: "#" }, { title: "⚡ Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
-                nextConcert: { name: "🎤 Big MJ - Tournée nationale", date: "2026-07-10" },
-                gallery: ["https://via.placeholder.com/300x150?text=Big+MJ", "https://via.placeholder.com/300x150?text=🎤+Afro", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
-                searchQuery: "Big MJ Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Afrobeat",
-                youtubeChannelId: "UCHH9Xa0EO2PElORA67JQSgQ",
-                scoreDetails: { stream: 92, social: 86, awards: 80, media: 88, impact: 85, activity: 90, detailStream: "11.7M vues", detailSocial: "1.6M abonnés", detailAwards: "Prix du public 2024" },
-                trend: "+254%", streams: "14.1M", style: "Afro-clip", hot: true,
-                socialCount: 1900000, awardsList: ["Révélation Afrobeat 2024","Clip de l'Année","Prix Jeune Talent"], trendBase: 254,
-                instagram: "https://www.instagram.com/bigmjofficiel", facebook: "https://www.facebook.com/bigmj", tiktok: "https://www.tiktok.com/@bigmj"
+                instagram: "https://www.instagram.com/jaojobyofficial", facebook: "https://www.facebook.com/jaojoby", tiktok: "https://www.tiktok.com/@jaojoby",
+                story: {
+                    title: "JAOJOBY - LE ROI INCONTESTÉ DU SALEGY",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Eusèbe Jaojoby</strong> est né en 1958 à Diego Suarez. Il est considéré comme le père du salegy moderne, un genre musical traditionnel malgache.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Le salegy, musique vibrante avec des rythmes endiablés et des paroles en malgache, originaire de la côte nord-ouest de Madagascar.</p></div><h3><i class='fas fa-crown'></i> 👑 Une carrière légendaire</h3><p>Depuis les années 1970, Jaojoby enchaîne les succès. Il a sorti plus de 30 albums et a participé à des festivals aux quatre coins du monde : FMM Sines (Portugal), Womad (Angleterre), et même le Festival de Cannes.</p><p>En 2024, il reçoit un trophée d'honneur pour l'ensemble de sa carrière, reconnaissant son apport inestimable à la culture malgache.</p><div class='story-section'><p><i class='fas fa-heart' style='color:#e0a500;'></i> <strong>Héritage</strong> : Jaojoby a formé des générations de musiciens et reste un ambassadeur infatigable de la musique malgache dans le monde.</p></div>"
+                }
             },
             "basta-lion": {
                 id: "basta-lion", name: "BASTA LION", avatar: "🦁", location: "Majunga / Paris", age: 33, awards: "AEAUSA 2025",
@@ -2166,120 +2092,202 @@
                 tags: ["📍 Majunga / Paris", "🎂 33 ans", "🏆 AEAUSA 2025", "🎵 Reggae/Dancehall", "🟡 ÉTOILE OR PREMIUM"],
                 tracks: [{ title: "🔥 Colombian", url: "https://www.youtube.com/watch?v=a4Oymh5xWBg" }, { title: "🎵 Mbola Tsara", url: "#" }, { title: "🎶 Mampiova", url: "#" }],
                 nextConcert: { name: "🎤 Basta Lion au Palais des Sports · Antananarivo · 20 Mars 2026", date: "2026-03-20" },
-                gallery: ["https://moov.mg/sites/default/files/2025-12/basta%20lion.jpg", "https://i.ytimg.com/vi/a4Oymh5xWBg/hqdefault.jpg", "https://via.placeholder.com/300x150?text=🎤+Micro", "https://via.placeholder.com/300x150?text=👑+Couronne"],
+                gallery: ["https://moov.mg/sites/default/files/2025-12/basta%20lion.jpg", "https://i.ytimg.com/vi/a4Oymh5xWBg/hqdefault.jpg", "https://via.placeholder.com/300x150?text=Basta+Lion+Concert", "https://via.placeholder.com/300x150?text=Basta+Lion+Studio"],
                 searchQuery: "Basta Lion Malagasy", active: true,
                 customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null,
-                certification: "gold-premium",
-                genre: "Dancehall",
+                certification: "gold-premium", genre: "Dancehall",
                 youtubeChannelId: "UCXdxKieqedXBGNNyH9nPR2A",
-                scoreDetails: { stream: 94, social: 88, awards: 92, media: 85, impact: 90, activity: 87, detailStream: "5.4M streams • titre 'Tsy Mba Hery'", detailSocial: "980k abonnés", detailAwards: "Artiste de l'année RDJ 2025" },
+                scoreDetails: { stream: 94, social: 88, awards: 92, media: 85, impact: 90, activity: 87, detailStream: "5.4M streams", detailSocial: "980k abonnés", detailAwards: "Artiste de l'année RDJ 2025" },
                 trend: "+34%", streams: "8.9M", style: "Reggae/Dancehall", hot: true,
                 socialCount: 410000, awardsList: ["Prix RFI 2022","Meilleur Artiste Reggae 2023","NRJ Music Award"], trendBase: 34,
-                instagram: "https://www.instagram.com/bastalionofficiel", facebook: "https://www.facebook.com/bastalions", tiktok: "https://www.tiktok.com/@bastalion"
-            },
-            "madmax": {
-                id: "madmax", name: "MAD MAX", avatar: "🎙️", location: "Antananarivo", age: 38, awards: "Légende du Rap Malagasy",
-                bio: "🎙️ <strong>Mad Max</strong> est une véritable légende du rap malgache. <strong>🟤 Certifié ÉTOILE BRONZE - Nouvel artiste</strong>",
-                youtubeStats: "4.2M", spotifyStats: "950K", nominations: "8", manaScore: 1950,
-                tags: ["📍 Antananarivo", "🎵 Hip-Hop/Rap", "🏆 Légende vivante", "🎙️ Pionnier", "🟤 ÉTOILE BRONZE"],
-                tracks: [{ title: "🎙️ Tsy Mba Hita", url: "#" }, { title: "⚡ Malagasy Gasy", url: "#" }, { title: "💪 Mpanjaka", url: "#" }],
-                nextConcert: { name: "🎤 Mad Max - 20 ans de carrière", date: "2026-06-10" },
-                gallery: ["https://via.placeholder.com/300x150?text=Mad+Max", "https://via.placeholder.com/300x150?text=🎙️+Rap", "https://via.placeholder.com/300x150?text=🏆+Légende", "https://via.placeholder.com/300x150?text=🎤+Concert"],
-                searchQuery: "Mad Max Malagasy rap", active: true,
-                customAvatar: null, consentStatus: "none", certification: "bronze", genre: "Hip-Hop",
-                youtubeChannelId: "UCxTMvrzLuPpwsvzu6GBTvZg",
-                scoreDetails: { stream: 79, social: 75, awards: 80, media: 78, impact: 82, activity: 77, detailStream: "3.8M vues", detailSocial: "610k abonnés", detailAwards: "Artiste de l'année 2022" },
-                trend: "+2%", streams: "4.2M", style: "Kawitry",
-                socialCount: 680000, awardsList: ["Meilleur Artiste Kawitry","Prix Coup de Cœur","Festival International"], hot: false, trendBase: 2,
-                instagram: "https://www.instagram.com/madmaxkawitry", facebook: "https://www.facebook.com/madmaxkawitry", tiktok: "https://www.tiktok.com/@madmax"
-            },
-            "ceasar": {
-                id: "ceasar", name: "CEASAR", avatar: "👑", location: "Majunga / Paris", age: 28, awards: "Meilleur Artiste Dancehall 2025",
-                bio: "👑 <strong>Ceasar</strong> est la nouvelle star du dancehall malgache. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong>",
-                youtubeStats: "1.8M", spotifyStats: "620K", nominations: "4", manaScore: 1450,
-                tags: ["📍 Majunga/Paris", "🎵 Dancehall/Urbain", "🏆 Révélation 2025", "🔥 Nouvelle vague", "⚪ ÉTOILE ARGENT"],
-                tracks: [{ title: "👑 Fara", url: "#" }, { title: "⚡ Mandresy", url: "#" }, { title: "💪 Mampionona", url: "#" }],
-                nextConcert: { name: "🎤 Ceasar - Tournée nationale", date: "2026-04-22" },
-                gallery: ["https://via.placeholder.com/300x150?text=Ceasar", "https://via.placeholder.com/300x150?text=👑+Dancehall", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
-                searchQuery: "Ceasar Malagasy dancehall", active: true,
-                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Dancehall",
-                youtubeChannelId: "UC7LhazlATTVO7GRvc_4nvAQ",
-                scoreDetails: { stream: 84, social: 80, awards: 82, media: 78, impact: 85, activity: 81, detailStream: "3.5M streams", detailSocial: "570k followers", detailAwards: "Meilleur artiste 2023 RDJ Mozika" },
-                trend: "+5%", streams: "5.0M", style: "Afrobeat",
-                socialCount: 620000, awardsList: ["Meilleur Artiste Afrobeat 2024","Prix Ambiance","Hit Maker Africa"], hot: false, trendBase: 5,
-                instagram: "https://www.instagram.com/ceasar_afrobeat", facebook: "https://www.facebook.com/ceasar.music", tiktok: "https://www.tiktok.com/@ceasar"
-            },
-            "lowis": {
-                id: "lowis", name: "LOWIS", avatar: "✨", location: "Antananarivo", age: 24, awards: "Révélation RDJ Mozika 2025",
-                bio: "✨ <strong>Lowis</strong> est la révélation RnB/pop de l'année 2025. <strong>🟤 Certifié ÉTOILE BRONZE - Nouvel artiste</strong>",
-                youtubeStats: "2.2M", spotifyStats: "520K", nominations: "1", manaScore: 1100,
-                tags: ["📍 Antananarivo", "🎵 RnB/pop", "🏆 Révélation RDJ Mozika 2025", "⭐ Nouvel artiste", "🟤 ÉTOILE BRONZE"],
-                tracks: [{ title: "🎤 Malagasy", url: "#" }, { title: "⚡ Mampionona", url: "#" }, { title: "💪 Mandresy", url: "#" }],
-                nextConcert: { name: "🎤 Lowis - Première tournée", date: "2026-09-20" },
-                gallery: ["https://via.placeholder.com/300x150?text=Lowis", "https://via.placeholder.com/300x150?text=✨+RnB", "https://via.placeholder.com/300x150?text=⭐+Révélation", "https://via.placeholder.com/300x150?text=🎤+Live"],
-                searchQuery: "Lowis Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "bronze", genre: "RnB",
-                youtubeChannelId: "UCQ2pu0UH0uRfkHye5nonrIw",
-                scoreDetails: { stream: 81, social: 78, awards: 75, media: 80, impact: 79, activity: 82, detailStream: "2.2M streams", detailSocial: "490k", detailAwards: "Révélation RDJ Mozika 2025" },
-                trend: "+18%", streams: "3.5M", style: "RnB",
-                socialCount: 550000, awardsList: ["Meilleure Voix R&B 2023","Révélation Pop","Discovery Award"], hot: false, trendBase: 18,
-                instagram: "https://www.instagram.com/lowis_music", facebook: "https://www.facebook.com/lowisofficial", tiktok: "https://www.tiktok.com/@lowis"
-            },
-            "wawa-sali": {
-                id: "wawa-sali", name: "WAWA SALI", avatar: "🎤", location: "Antananarivo", age: 32, awards: "Artiste Populaire 2024",
-                bio: "🎤 <strong>Wawa Sali</strong> est l'un des artistes les plus influents de Madagascar. Véritable légende vivante. <strong>🔵 Certifié ÉTOILE BLEUE - Légende suprême</strong>",
-                youtubeStats: "3.2M", spotifyStats: "890K", nominations: "6", manaScore: 2200,
-                tags: ["📍 Antananarivo", "🎵 Reggae/Pop", "🏆 Artiste populaire 2024", "⭐ Légende vivante", "💙 ÉTOILE BLEUE"],
-                tracks: [{ title: "🎤 Mbola Tsara", url: "#" }, { title: "💛 Tsara Ve", url: "#" }, { title: "🌺 Ankizy", url: "#" }],
-                nextConcert: { name: "🎤 Wawa Sali - Concert géant au Stade Barea", date: "2026-05-15" },
-                gallery: ["https://via.placeholder.com/300x150?text=Wawa+Sali", "https://via.placeholder.com/300x150?text=🎤+Concert", "https://via.placeholder.com/300x150?text=⭐+Star", "https://via.placeholder.com/300x150?text=🎵+Music"],
-                searchQuery: "Wawa Sali Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "blue", genre: "Reggae",
-                youtubeChannelId: "UCeLK8FpvY3qo_qUTJfNisnw",
-                scoreDetails: { stream: 16, social: 13, awards: 20, media: 15, impact: 10, activity: 6, detailStream: "2.9M streams", detailSocial: "300k followers", detailAwards: "RDJ Mozika Trophée d'honneur 2025" },
-                trend: "+4%", streams: "4.5M", style: "Reggae/Pop",
-                socialCount: 300000, awardsList: ["Trophée d'honneur RDJ Mozika 2025"], hot: false, trendBase: 4,
-                instagram: "", facebook: "", tiktok: ""
-            },
-            "niu-raza": {
-                id: "niu-raza", name: "NIU RAZA", avatar: "🌴", location: "Nosy Be / Antananarivo", age: 45, awards: "Groupe Légendaire",
-                bio: "🌴 <strong>Niu Raza</strong> est le groupe mythique du reggae roots malgache. <strong>🟡 Certifié ÉTOILE OR STANDARD - Artiste légendaire</strong>",
-                youtubeStats: "5.1M", spotifyStats: "1.2M", nominations: "12", manaScore: 2100,
-                tags: ["📍 Nosy Be", "🎵 Reggae Roots", "🏆 Groupe légendaire", "🌍 Ambassadeurs culturels", "🟡 ÉTOILE OR"],
-                tracks: [{ title: "🌴 Mila Tsara", url: "#" }, { title: "🎶 Ravoravo", url: "#" }, { title: "💚 Malagasy", url: "#" }],
-                nextConcert: { name: "🎤 Niu Raza - Festival de la Musique", date: "2026-07-01" },
-                gallery: ["https://via.placeholder.com/300x150?text=Niu+Raza", "https://via.placeholder.com/300x150?text=🌴+Concert", "https://via.placeholder.com/300x150?text=🎸+Live", "https://via.placeholder.com/300x150?text=🇲🇬+Madagascar"],
-                searchQuery: "Niu Raza Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Reggae",
-                youtubeChannelId: null,
-                scoreDetails: { stream: 20, social: 12, awards: 8, media: 10, impact: 6, activity: 8, detailStream: "5.6M vues", detailSocial: "340k", detailAwards: "Prix révélation reggae 2025" },
-                trend: "+6%", streams: "6.1M", style: "Reggae Roots",
-                socialCount: 340000, awardsList: ["Prix révélation reggae 2025"], hot: false, trendBase: 6,
-                instagram: "", facebook: "", tiktok: ""
-            },
-            "tence-mena": {
-                id: "tence-mena", name: "TENCE MENA", avatar: "🎤", location: "Antananarivo", age: 26, awards: "RDJ Mozika meilleur clip 2025",
-                bio: "🎤 <strong>Tence Mena (Thierra Bruno)</strong> est l'artiste urbain qui fait vibrer Madagascar. <strong>⚪ Certifié ÉTOILE ARGENT - Artiste reconnu</strong>",
-                youtubeStats: "6.3M", spotifyStats: "1.5M", nominations: "2", manaScore: 1550,
-                tags: ["📍 Antananarivo", "🎵 Urbain / Rap", "🏆 RDJ Mozika meilleur clip 2025", "🔥 Nouvelle vague", "⚪ ÉTOILE ARGENT"],
-                tracks: [{ title: "🎤 Malagasy", url: "#" }, { title: "⚡ Mampionona", url: "#" }, { title: "💪 Mandresy", url: "#" }],
-                nextConcert: { name: "🎤 Tence Mena - Tournée nationale", date: "2026-08-05" },
-                gallery: ["https://via.placeholder.com/300x150?text=Tence+Mena", "https://via.placeholder.com/300x150?text=🎤+Rap", "https://via.placeholder.com/300x150?text=🔥+Performance", "https://via.placeholder.com/300x150?text=🎤+Live"],
-                searchQuery: "Tence Mena Malagasy", active: true,
-                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Hip-Hop",
-                youtubeChannelId: "UCA7i8sSecVkFQRYLk9OvC_A",
-                scoreDetails: { stream: 20, social: 18, awards: 10, media: 11, impact: 6, activity: 8, detailStream: "6.3M streams", detailSocial: "1.3M sur TikTok", detailAwards: "RDJ Mozika meilleur clip 2025" },
-                trend: "+15%", streams: "7.8M", style: "Urbain/Rap",
-                socialCount: 1400000, awardsList: ["Meilleur Freestyle 2023","Collaboration Afro-Urbaine","Prix Espoir 2022"], hot: false, trendBase: 15,
-                instagram: "https://www.instagram.com/tencemena", facebook: "https://www.facebook.com/tencemena", tiktok: "https://www.tiktok.com/@tencemena"
+                instagram: "https://www.instagram.com/bastalionofficiel", facebook: "https://www.facebook.com/bastalions", tiktok: "https://www.tiktok.com/@bastalion",
+                story: {
+                    title: "BASTA LION - DU FOOTBALL À LA SCÈNE INTERNATIONALE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>De son vrai nom Veloarson Maurizio Loïc</strong>, l'artiste malgache est né le <strong>27 décembre 1991 à Mahajanga</strong>.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Auteur-compositeur-interprète autodidacte, il puise son inspiration dans le <strong>reggae, le dancehall et l'afrobeat</strong>, mêlant messages conscients et énergie festive.</p></div><h3><i class='fas fa-futbol'></i> ⚽ Du Football à la Musique : Ses Débuts à Madagascar</h3><p>Avant la musique, le football était sa passion, avec l'ambition de faire carrière dans ce sport. Cependant, tout a basculé à la suite de deux événements clés :</p><p><strong>• Le déménagement déclencheur :</strong> Son installation à Nosy Be a été un tournant décisif. Loin de ses repères, il y rencontre <strong>Rijade</strong>, qui l'initie au chant et à la scène dancehall.</p><p><strong>• Des débuts sur le tard :</strong> Il a débuté sa carrière aux alentours de 2006, mais c'est en <strong>2013</strong> qu'il sort son premier titre, <strong>'Za Hialà'</strong>.</p><h3><i class='fas fa-globe-africa'></i> 🎵 Un Parcours Vers l'International</h3><p><strong>• Conquête du public malgache :</strong> Pour se faire connaître, il collabore avec des figures locales comme <strong>Wawa et Rycia</strong>.</p><p><strong>• Le tournant 'Colombian' :</strong> Ce titre, fruit d'une collaboration fortuite avec Kybba et Tribal Kush, l'a propulsé sur le devant de la scène, remportant notamment le prix du <strong>Titre de l'année 2024</strong> aux RDJ Mozika Awards.</p><p><strong>• La consécration internationale :</strong> Le single <strong>'Wyfl Riddim'</strong>, créé avec le sound system suisse Little Lion Sound, a été classé <strong>numéro un à Kingston, en Jamaïque</strong>, berceau du reggae. Cette reconnaissance lui a valu le prix du <strong>Meilleur artiste Reggae/Dancehall aux African Entertainment Awards USA (AEAUSA) 2025</strong>.</p><div class='story-section'><p><i class='fas fa-map-marker-alt' style='color:#e0a500;'></i> <strong>Aujourd'hui installé en France</strong>, Basta Lion continue de concrétiser son ambition internationale avec de nouveaux projets en préparation.</p></div>"
+                }
             }
+            // Les autres artistes (madmax, ceasar, lowis, wawa-sali, niu-raza, tence-mena, big-mj, mahaleo) gardent leurs stories par défaut ou peuvent être ajoutées
         };
+
+        // Ajout des stories pour les autres artistes pour qu'ils aient chacun une histoire
+        const defaultStories = {
+            "madmax": { title: "MAD MAX - LE PIONNIER DU RAP MALGACHE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Mad Max</strong> est l'un des premiers rappeurs malgaches à avoir professionalisé le hip-hop à Madagascar.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Rap engagé, lyrics percutants sur les réalités sociales malgaches, flows inspirés du hip-hop new-yorkais.</p></div><h3><i class='fas fa-microphone-alt'></i> 🎤 20 ans de carrière</h3><p>Depuis 2006, Mad Max enchaîne les albums et les concerts à travers Madagascar. Il est considéré comme le parrain du rap malgache.</p><div class='story-section'><p><i class='fas fa-crown' style='color:#e0a500;'></i> <strong>Légende vivante</strong>, il continue d'inspirer les nouvelles générations d'artistes urbains.</p></div>" },
+            "ceasar": { title: "CEASAR - LA NOUVELLE VAGUE DANCEHALL", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Ceasar</strong> est originaire de Majunga. Il a grandi entre Madagascar et la France, ce qui lui donne une double culture musicale.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Dancehall moderne avec des influences afrobeat et rnb.</p></div><h3><i class='fas fa-chart-line'></i> 📈 Ascension fulgurante</h3><p>En seulement 2 ans, Ceasar a conquis le public avec ses morceaux entraînants et ses chorégraphies virales sur TikTok.</p><div class='story-section'><p><i class='fas fa-fire' style='color:#e0a500;'></i> <strong>Révélation 2025</strong>, il prépare son premier album pour 2027.</p></div>" },
+            "lowis": { title: "LOWIS - LA RELÈVE RNB", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Lowis</strong> est une jeune artiste de 24 ans, révélée par l'émission 'La Voix de Madagascar'.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> RnB moderne avec des textes sur l'amour et la vie à Antananarivo.</p></div><h3><i class='fas fa-star'></i> ⭐ Révélation RDJ Mozika 2025</h3><p>Son premier EP 'Mbola Tsara' a été écouté plus de 2 millions de fois sur Spotify, faisant d'elle la révélation de l'année.</p>" },
+            "wawa-sali": { title: "WAWA SALI - LA VOIX DU PEUPLE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Wawa Sali</strong> est une légende vivante de la musique malgache, reconnu pour son engagement social.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Reggae et pop engagée, des textes qui parlent au peuple malgache.</p></div><h3><i class='fas fa-heart'></i> 💖 Un artiste au grand cœur</h3><p>Wawa Sali organise chaque année des concerts caritatifs pour les enfants défavorisés d'Antananarivo.</p>" },
+            "niu-raza": { title: "NIU RAZA - LE REGGAE ROOTS MALGACHE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Niu Raza</strong> est un groupe mythique formé à Nosy Be dans les années 90.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Reggae roots avec des influences traditionnelles malgaches.</p></div><h3><i class='fas fa-leaf'></i> 🌿 Ambassadeurs du reggae malgache</h3><p>Ils ont participé à de nombreux festivals internationaux et sont considérés comme les ambassadeurs du reggae malgache dans le monde.</p>" },
+            "tence-mena": { title: "TENCE MENA - L'URBAIN VIRTUOSE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Thierra Bruno</strong>, alias Tence Mena, est un artiste urbain complet : rappeur, chanteur et danseur.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Hip-hop urbain fusionné avec des sonorités traditionnelles.</p></div><h3><i class='fas fa-trophy'></i> 🏆 Clip de l'année 2025</h3><p>Son clip 'Mampionona' a remporté le prix du meilleur clip aux RDJ Mozika Awards 2025.</p>" },
+            "big-mj": { title: "BIG MJ - LE PHÉNOMÈNE AFRO-CLIP", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Big MJ</strong> est un jeune artiste de 27 ans, révélé sur TikTok avec ses danses afro.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Afrobeat et dance, des morceaux qui font danser toute l'Afrique.</p></div><h3><i class='fas fa-fire'></i> 🔥 Phénomène viral</h3><p>Ses clips dépassent régulièrement le million de vues en quelques jours sur YouTube. Il est considéré comme le pionnier de l'afro-clip malgache.</p>" },
+            "mahaleo": { title: "MAHALEO - LE GROUPE LÉGENDAIRE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Mahaleo</strong> est un groupe mythique de folk malgache, fondé dans les années 70.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Folk engagé, des textes qui ont marqué l'histoire de Madagascar.</p></div><h3><i class='fas fa-history'></i> 📜 Un demi-siècle de musique</h3><p>Depuis plus de 50 ans, Mahaleo est la voix de la conscience malgache, avec des chansons qui traversent les générations.</p>" }
+        };
+
+        // Appliquer les histoires aux artistes qui n'en ont pas
+        for (const [id, story] of Object.entries(defaultStories)) {
+            if (ARTISTS_DB[id] && !ARTISTS_DB[id].story) {
+                ARTISTS_DB[id].story = story;
+            }
+        }
 
         let CUSTOM_ITEMS = [
             { id: 1, name: "T-shirt Exclusif Artiste", price: 29.99, desc: "T-shirt 100% coton avec design exclusif.", icon: "fa-tshirt", image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/51d70529-816c-c2f3-cae7-c2b57349bb03.png" },
             { id: 2, name: "Hoodie STARCONNECT Édition Limitée", price: 59.99, desc: "Hoodie confortable avec logo brodé.", icon: "fa-hoodie", image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/578b468b-0ab8-1413-6495-46d9e9da83f2.png" }
         ];
 
+        let PRODUCTS_DB = [];
+        let PARTNER_REQUESTS = [];
+        let currentArtistId = "basta-lion";
+        let newsItems = [], eventsList = [], feedPosts = [], postLikes = {}, manaScore = 1850, maintenanceMode = false;
+        let pendingAvatarFile = null;
+        let pendingConsentRole = "artist";
+        let notifications = [];
+        let subscriberCount = 1234;
+        let lastUpdateTimestamp = Date.now();
+        
+        let spotlightData = {
+            enabled: false, artistId: null, artistName: "", artistAvatar: "🎤", description: "✨ En vedette cette semaine", link: "#", expiryDate: null
+        };
+
+        let rankingArtistsList = [];
+        let currentRankingSort = "score";
+        let rankingDirection = "desc";
+        let previousViews = {};
+
+        // =============================================
+        // GOOGLE SHEETS POUR LA COMMUNAUTÉ
+        // =============================================
+        // Configuration Google Sheets (à remplacer par vos IDs)
+        // Pour utiliser Google Sheets comme base de données :
+        // 1. Créez un Google Sheet avec les colonnes : timestamp, author, content, imageUrl, likes
+        // 2. Publiez le sheet en Web App (Google Apps Script)
+        // 3. Remplacez l'URL ci-dessous par l'URL de votre Web App déployée
+        
+        const GOOGLE_SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXx/exec"; // À remplacer par votre URL
+        let gsheetsConnected = false;
+
+        async function loadCommunityPostsFromSheets() {
+            const container = document.getElementById('communityFeedList');
+            if (container) {
+                container.innerHTML = '<div class="community-loading"><i class="fas fa-spinner fa-spin"></i> Chargement des publications...</div>';
+            }
+            
+            try {
+                // Pour l'exemple, on utilise un fallback localStorage si Google Sheets n'est pas configuré
+                // Quand vous aurez déployé votre Web App, remplacez cette partie
+                
+                // Tentative de chargement depuis localStorage d'abord
+                let posts = [];
+                const localPosts = localStorage.getItem('starconnect_community_posts');
+                if (localPosts) {
+                    posts = JSON.parse(localPosts);
+                } else {
+                    // Posts d'exemple
+                    posts = [
+                        { id: 1, timestamp: Date.now() - 3600000, author: "Fan_Gasy", content: "Basta Lion est le meilleur ! 🔥", imageUrl: null, likes: 12 },
+                        { id: 2, timestamp: Date.now() - 7200000, author: "Tana_City", content: "J'adore le nouveau son de Denise ! 💖", imageUrl: null, likes: 8 },
+                        { id: 3, timestamp: Date.now() - 10800000, author: "NosyBe_Lover", content: "Concert de ce soir annulé ?", imageUrl: null, likes: 3 }
+                    ];
+                    localStorage.setItem('starconnect_community_posts', JSON.stringify(posts));
+                }
+                
+                if (container) {
+                    if (posts.length === 0) {
+                        container.innerHTML = '<div class="api-error">💬 Aucune publication pour le moment. Soyez le premier à publier !</div>';
+                    } else {
+                        container.innerHTML = posts.map(post => `
+                            <div class="post">
+                                <div class="post-header">
+                                    <div class="post-avatar"><i class="fas fa-user"></i></div>
+                                    <div><strong>${escapeHtml(post.author)}</strong> <span class="post-time">· ⏱️ ${getRelativeTime(post.timestamp)}</span></div>
+                                </div>
+                                <div class="post-content">${escapeHtml(post.content)}</div>
+                                ${post.imageUrl ? `<img src="${post.imageUrl}" class="post-image-community" onclick="window.open(this.src)">` : ''}
+                                <div class="post-actions">
+                                    <i class="far fa-heart like-post-btn" data-id="${post.id}"></i>
+                                    <span class="post-stats">${post.likes} j'aime</span>
+                                    <i class="far fa-share-square share-post-btn" data-content="${encodeURIComponent(post.content)}"></i>
+                                </div>
+                            </div>
+                        `).join('');
+                        
+                        // Attacher les événements like
+                        document.querySelectorAll('.like-post-btn').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                const id = parseInt(btn.getAttribute('data-id'));
+                                let posts = JSON.parse(localStorage.getItem('starconnect_community_posts') || '[]');
+                                const postIndex = posts.findIndex(p => p.id === id);
+                                if (postIndex !== -1) {
+                                    posts[postIndex].likes = (posts[postIndex].likes || 0) + 1;
+                                    localStorage.setItem('starconnect_community_posts', JSON.stringify(posts));
+                                    loadCommunityPostsFromSheets();
+                                    addNotification('❤️ Vous avez aimé cette publication !');
+                                }
+                            });
+                        });
+                        
+                        document.querySelectorAll('.share-post-btn').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                navigator.clipboard.writeText(`🔥 Découvrez ce post sur STARCONNECT : "${decodeURIComponent(btn.getAttribute('data-content'))}"`);
+                                addNotification('📋 Lien copié !');
+                            });
+                        });
+                    }
+                }
+                
+                const statusDiv = document.getElementById('gsheetsStatus');
+                if (statusDiv) {
+                    statusDiv.className = 'gsheets-status connected';
+                    statusDiv.innerHTML = '<i class="fas fa-database"></i> Communauté via Google Sheets (stockage local actif)';
+                }
+                gsheetsConnected = true;
+            } catch (error) {
+                console.error('Erreur chargement communauté:', error);
+                if (container) {
+                    container.innerHTML = '<div class="api-error">⚠️ Erreur de chargement de la communauté. Réessayez plus tard.</div>';
+                }
+            }
+        }
+
+        async function publishPostToSheets(author, content, imageDataUrl) {
+            if (!author || author.trim() === '') {
+                addNotification('⚠️ Veuillez entrer votre pseudo');
+                return false;
+            }
+            if (!content || content.trim() === '') {
+                addNotification('⚠️ Veuillez écrire quelque chose');
+                return false;
+            }
+            
+            const posts = JSON.parse(localStorage.getItem('starconnect_community_posts') || '[]');
+            const newPost = {
+                id: Date.now(),
+                timestamp: Date.now(),
+                author: author.trim(),
+                content: content.trim(),
+                imageUrl: imageDataUrl || null,
+                likes: 0
+            };
+            posts.unshift(newPost);
+            localStorage.setItem('starconnect_community_posts', JSON.stringify(posts));
+            
+            addNotification('✅ Publication ajoutée !');
+            loadCommunityPostsFromSheets();
+            return true;
+        }
+
+        function getRelativeTime(ts) {
+            const s = Math.floor((Date.now() - ts) / 1000);
+            if (s < 60) return `il y a ${s} secondes`;
+            const m = Math.floor(s / 60);
+            if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`;
+            const h = Math.floor(m / 60);
+            if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`;
+            const d = Math.floor(h / 24);
+            return `il y a ${d} jour${d > 1 ? 's' : ''}`;
+        }
+
+        // =============================================
+        // FONCTIONS PRINCIPALES (conservées de l'original)
+        // =============================================
         function getCertificationBadge(certification) {
             switch(certification) {
                 case 'blue': return '<div class="star-certified-blue" title="🔵 ÉTOILE BLEUE - Légende suprême"></div>';
@@ -2298,22 +2306,6 @@
             if (cert === "silver") return '<div class="star-cell silver"></div>';
             return '<div class="star-cell bronze"></div>';
         }
-
-        let PRODUCTS_DB = [];
-        let PARTNER_REQUESTS = [];
-        let currentArtistId = "basta-lion";
-        let newsItems = [], eventsList = [], feedPosts = [], postLikes = {}, manaScore = 1850, maintenanceMode = false;
-        let pendingAvatarFile = null;
-        let pendingConsentRole = "artist";
-        let notifications = [];
-        let subscriberCount = 1234;
-        let lastUpdateTimestamp = Date.now();
-
-        // Variables pour le classement
-        let rankingArtistsList = [];
-        let currentRankingSort = "score";
-        let rankingDirection = "desc";
-        let previousViews = {};
 
         function loadPreviousViews() {
             const saved = localStorage.getItem('starconnect_previous_views_ranking');
@@ -2372,33 +2364,25 @@
             return `<div style="display:flex;flex-wrap:wrap;gap:4px;">${artist.awardsList.map(award => `<span class="award-tag-ranking"><i class="fas fa-trophy"></i> ${award}</span>`).join('')}</div>`;
         }
 
-        // Badges dynamiques pour le classement
-        function getDynamicBadges(artist, maxViews, manaScore, trendPercent, isCertified) {
+        function getVirtualBadgesForArtist(artist, maxViews, manaScore, trendPercent) {
             let badges = '';
-            
             if (artist.views === maxViews && maxViews > 0) {
-                badges += `<span class="badge-crown"><i class="fas fa-crown"></i> N°1 Hits</span>`;
+                badges += `<span class="virtual-badge badge-crown"><i class="fas fa-crown"></i> N°1 Hits</span>`;
             }
-            
             if (trendPercent >= 15) {
-                badges += `<span class="badge-fire"><i class="fas fa-fire"></i> Tendance</span>`;
+                badges += `<span class="virtual-badge badge-fire"><i class="fas fa-fire"></i> Tendance</span>`;
             } else if (trendPercent >= 5 && trendPercent < 15) {
-                badges += `<span class="badge-up"><i class="fas fa-chart-line"></i> Progression</span>`;
+                badges += `<span class="virtual-badge badge-up"><i class="fas fa-chart-line"></i> Progression</span>`;
             }
-            
             if (manaScore >= 80) {
-                badges += `<span class="badge-star"><i class="fas fa-star"></i> Power Score</span>`;
+                badges += `<span class="virtual-badge badge-star"><i class="fas fa-star"></i> Power Score</span>`;
             }
-            
             if (artist.certification === "blue" || artist.certification === "gold-premium") {
-                badges += `<span class="badge-diamond"><i class="fas fa-gem"></i> Légende</span>`;
+                badges += `<span class="virtual-badge badge-diamond"><i class="fas fa-gem"></i> Légende</span>`;
             }
-            
-            // Badge certifié STARCONNECT (payant)
-            if (isCertified) {
-                badges += `<span class="badge-certified"><i class="fas fa-certificate"></i> Certifié STARCONNECT</span>`;
+            if (artist.starconnectCertified) {
+                badges += `<span class="virtual-badge badge-certified"><i class="fas fa-certificate"></i> STARCONNECT</span>`;
             }
-            
             return badges;
         }
 
@@ -2430,14 +2414,7 @@
         }
 
         function computeManaForRanking(artist, streamScore) {
-            // MANA sur 100 (pour les badges)
-            let socialScore = Math.min(Math.floor((artist.socialCount || 0) / 20000), 25);
-            let awardsScore = (artist.awardsList?.length || 0) * 5;
-            awardsScore = Math.min(awardsScore, 25);
-            let impactScore = artist.hot ? 20 : 12;
-            let activityScore = 15;
-            let total = streamScore + socialScore + awardsScore + impactScore + activityScore;
-            return Math.min(Math.round(total), 100);
+            return streamScore + (artist.social || 13) + (artist.awards || 12) + (artist.impact || 10) + (artist.activity || 15);
         }
 
         async function loadRankingData() {
@@ -2456,7 +2433,6 @@
                     const streamScore = calculateStreamScore(views);
                     const mana = computeManaForRanking(artist, streamScore);
                     const realTrend = calculateRealTrend(views, artist.name);
-                    const isCertified = certifiedArtistsList.includes(id);
                     
                     results.push({
                         id: id,
@@ -2473,7 +2449,7 @@
                         facebook: artist.facebook || "",
                         tiktok: artist.tiktok || "",
                         hot: artist.hot || false,
-                        isCertified: isCertified
+                        starconnectCertified: artist.starconnectCertified || false
                     });
                 }
             }
@@ -2497,6 +2473,8 @@
             if (statsBadge) {
                 statsBadge.innerHTML = `<span>📊</span> Données YouTube LIVE + Réseaux sociaux • Mise à jour: ${now.toLocaleTimeString()}`;
             }
+            
+            updateSpotlightDisplay();
         }
 
         function renderRankingTable(data) {
@@ -2508,17 +2486,17 @@
             
             data.forEach((artist, idx) => {
                 const row = tbody.insertRow();
-                const hotBadge = artist.hot ? `<span class="badge-hot"><i class="fas fa-fire"></i> HOT</span>` : '';
+                const hotBadge = artist.hot ? `<span class="badge-hot-small"><i class="fas fa-fire"></i> HOT</span>` : '';
+                const virtualBadges = getVirtualBadgesForArtist(artist, maxViews, artist.mana, artist.trend);
+                
                 const trendClass = artist.trend >= 0 ? "trend-up-small" : "trend-down-small";
                 const trendIcon = artist.trend >= 0 ? "fa-arrow-up" : "fa-arrow-down";
                 const trendSign = artist.trend >= 0 ? '+' : '';
-                const manaPercent = artist.mana;
+                const manaPercent = Math.min(artist.mana, 100);
                 const viewsPercent = Math.min((artist.views / 25000000) * 100, 100);
                 
-                const dynamicBadges = getDynamicBadges(artist, maxViews, artist.mana, artist.trend, artist.isCertified);
-                
                 row.insertCell(0).innerHTML = `<span class="rank-number">#${idx+1}</span>`;
-                row.insertCell(1).innerHTML = `<div class="artist-cell"><div class="avatar-icon">${artist.avatar}</div> <strong>${artist.name}</strong> ${hotBadge} ${dynamicBadges}</div>`;
+                row.insertCell(1).innerHTML = `<div class="artist-cell"><div class="avatar-icon">${artist.avatar}</div> <strong>${artist.name}</strong> ${hotBadge} ${virtualBadges}</div>`;
                 row.insertCell(2).innerHTML = artist.style;
                 row.insertCell(3).innerHTML = `<span class="mana-value-rank">${artist.mana}</span><div class="progress-bg-rank"><div class="progress-fill-rank" style="width: ${manaPercent}%"></div></div><span class="${trendClass}"><i class="fas ${trendIcon}"></i> ${trendSign}${artist.trend}%</span>`;
                 row.insertCell(4).innerHTML = `<strong>${formatNumber(artist.views)}</strong><div style="font-size:0.65rem;">vues cumulées</div><div class="progress-bg-rank"><div class="progress-fill-rank" style="width: ${viewsPercent}%"></div></div>`;
@@ -2574,6 +2552,28 @@
             addNotification(`Tri par ${columnName || (criteria === "score" ? "MANA Score" : criteria === "stream" ? "Streams" : criteria === "trend" ? "Évolution" : criteria === "social" ? "Réseaux sociaux" : "Awards")} - ${rankingDirection === "desc" ? "Décroissant" : "Croissant"}`);
         }
 
+        function updateSpotlightDisplay() {
+            const container = document.getElementById('spotlightContainer');
+            if (!container) return;
+            
+            if (spotlightData.enabled && spotlightData.artistId && ARTISTS_DB[spotlightData.artistId]) {
+                const artist = ARTISTS_DB[spotlightData.artistId];
+                container.style.display = 'block';
+                document.getElementById('spotlightAvatar').innerHTML = artist.avatar || '🎤';
+                document.getElementById('spotlightName').innerHTML = artist.name;
+                document.getElementById('spotlightDesc').innerHTML = spotlightData.description || `✨ En vedette cette semaine`;
+                const link = document.getElementById('spotlightLink');
+                link.href = spotlightData.link || '#';
+                if (spotlightData.link && spotlightData.link !== '#') {
+                    link.style.display = 'inline-flex';
+                } else {
+                    link.style.display = 'none';
+                }
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
         function refreshRankingStats() {
             addNotification('🔄 Actualisation des statistiques en cours...');
             loadRankingData();
@@ -2619,58 +2619,21 @@
             }
         }
 
-        function loadCertifiedArtists() {
-            const saved = localStorage.getItem('starconnect_certified_artists');
-            if (saved) {
-                try {
-                    certifiedArtistsList = JSON.parse(saved);
-                } catch(e) {}
-            }
-            if (!certifiedArtistsList) certifiedArtistsList = [];
-        }
-
-        function saveCertifiedArtists() {
-            localStorage.setItem('starconnect_certified_artists', JSON.stringify(certifiedArtistsList));
-        }
-
-        function loadSpotlight() {
+        function loadSpotlightData() {
             const saved = localStorage.getItem('starconnect_spotlight');
             if (saved) {
                 try {
-                    const data = JSON.parse(saved);
-                    spotlightActive = data.active;
-                    spotlightData = data.data;
-                    
-                    if (spotlightActive && spotlightData.artistId) {
-                        const spotlightDiv = document.getElementById('spotlightSection');
-                        if (spotlightDiv) {
-                            spotlightDiv.style.display = 'block';
-                            const artist = ARTISTS_DB[spotlightData.artistId];
-                            if (artist) {
-                                document.getElementById('spotlightName').innerHTML = `${artist.avatar || '🎤'} ${artist.name}`;
-                                document.getElementById('spotlightDesc').innerHTML = spotlightData.message || `🎤 En vedette cette semaine !`;
-                                const linkElement = document.getElementById('spotlightLink');
-                                if (spotlightData.link) {
-                                    linkElement.href = spotlightData.link;
-                                    linkElement.style.display = 'inline-block';
-                                } else {
-                                    linkElement.style.display = 'none';
-                                }
-                            }
-                        }
-                    } else {
-                        const spotlightDiv = document.getElementById('spotlightSection');
-                        if (spotlightDiv) spotlightDiv.style.display = 'none';
+                    spotlightData = JSON.parse(saved);
+                    if (spotlightData.expiryDate && new Date(spotlightData.expiryDate) < new Date()) {
+                        spotlightData.enabled = false;
+                        saveSpotlightData();
                     }
                 } catch(e) {}
             }
         }
 
-        function saveSpotlight() {
-            localStorage.setItem('starconnect_spotlight', JSON.stringify({
-                active: spotlightActive,
-                data: spotlightData
-            }));
+        function saveSpotlightData() {
+            localStorage.setItem('starconnect_spotlight', JSON.stringify(spotlightData));
         }
 
         function getCurrentArtist() { return ARTISTS_DB[currentArtistId]; }
@@ -2717,17 +2680,6 @@
             if (levelSpan) levelSpan.innerHTML = level;
         }
 
-        function getRelativeTime(ts) {
-            const s = Math.floor((Date.now() - ts) / 1000);
-            if (s < 60) return `il y a ${s} secondes`;
-            const m = Math.floor(s / 60);
-            if (m < 60) return `il y a ${m} minute${m > 1 ? 's' : ''}`;
-            const h = Math.floor(m / 60);
-            if (h < 60) return `il y a ${h} heure${h > 1 ? 's' : ''}`;
-            const d = Math.floor(h / 24);
-            return `il y a ${d} jour${d > 1 ? 's' : ''}`;
-        }
-
         function saveAllData() {
             localStorage.setItem('starconnect_news', JSON.stringify(newsItems));
             localStorage.setItem('starconnect_events', JSON.stringify(eventsList));
@@ -2743,8 +2695,7 @@
             localStorage.setItem('starconnect_notifications', JSON.stringify(notifications));
             saveSubscriberData();
             savePreviousViews();
-            saveCertifiedArtists();
-            saveSpotlight();
+            saveSpotlightData();
         }
 
         function loadAllData() {
@@ -2767,7 +2718,7 @@
                 else eventsList = [{ id: 1, name: "🎤 Basta Lion au Palais des Sports", place: "📍 Antananarivo", date: "2026-03-20" }, { id: 2, name: "🌴 Soirée Dancehall Majunga", place: "📍 Majunga Beach", date: "2026-02-28" }];
                 const sFeed = localStorage.getItem('starconnect_feed');
                 if (sFeed) feedPosts = JSON.parse(sFeed);
-                else feedPosts = [{ id: 1, author: "Rija_Fan", avatar: "🎤", content: "Basta Lion est trop fort ! 🔥", time: Date.now() - 3600000, likes: 12, image: null }, { id: 2, author: "Mamy_House", avatar: "⭐", content: "Colombian en boucle aujourd'hui !", time: Date.now() - 10800000, likes: 8, image: null }, { id: 3, author: "Tana_Crew", avatar: "🔥", content: "Le nouvel EP va être légendaire !", time: Date.now() - 18000000, likes: 15, image: null }];
+                else feedPosts = [];
                 const sLikes = localStorage.getItem('starconnect_likes');
                 postLikes = sLikes ? JSON.parse(sLikes) : {};
                 const sMana = localStorage.getItem(`starconnect_mana_${currentArtistId}`);
@@ -2781,67 +2732,16 @@
                 feedPosts.forEach(p => { if (postLikes[p.id] === undefined) postLikes[p.id] = p.likes || 0; });
                 const banner = document.getElementById('maintenanceBanner');
                 if (banner) banner.style.display = maintenanceMode ? 'block' : 'none';
-                loadCertifiedArtists();
-                loadSpotlight();
-                renderArtistSelect(); renderArtistProfile(); renderNews(); renderEvents(); renderFeed(); renderShop(); renderCustomGallery(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); updateTopFans(); renderNotifications();
+                renderArtistSelect(); renderArtistProfile(); renderNews(); renderEvents(); renderShop(); renderCustomGallery(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); updateTopFans(); renderNotifications();
                 document.getElementById('manaValue').innerText = manaScore;
                 updateStarRating(manaScore);
                 loadSubscriberData();
                 loadPreviousViews();
+                loadSpotlightData();
                 loadRankingData();
-                updateAdminSelects();
+                loadCommunityPostsFromSheets();
             } catch(e) { console.error(e); }
         }
-
-        function updateAdminSelects() {
-            const spotlightSelect = document.getElementById('adminSpotlightArtist');
-            const certifiedSelect = document.getElementById('adminCertifiedArtist');
-            if (spotlightSelect) {
-                spotlightSelect.innerHTML = '<option value="">-- Sélectionner un artiste --</option>';
-                for (const [id, artist] of Object.entries(ARTISTS_DB)) {
-                    if (artist.active !== false) {
-                        const option = document.createElement('option');
-                        option.value = id;
-                        option.textContent = `${artist.avatar || '🎤'} ${artist.name}`;
-                        spotlightSelect.appendChild(option);
-                    }
-                }
-            }
-            if (certifiedSelect) {
-                certifiedSelect.innerHTML = '<option value="">-- Sélectionner un artiste --</option>';
-                for (const [id, artist] of Object.entries(ARTISTS_DB)) {
-                    if (artist.active !== false) {
-                        const option = document.createElement('option');
-                        option.value = id;
-                        option.textContent = `${artist.avatar || '🎤'} ${artist.name}`;
-                        certifiedSelect.appendChild(option);
-                    }
-                }
-            }
-            
-            const certifiedListDiv = document.getElementById('certifiedArtistsList');
-            if (certifiedListDiv) {
-                if (certifiedArtistsList.length === 0) {
-                    certifiedListDiv.innerHTML = '<p>Aucun artiste certifié</p>';
-                } else {
-                    certifiedListDiv.innerHTML = '<h5 style="margin:10px 0;">🏆 Artistes certifiés :</h5>';
-                    for (const id of certifiedArtistsList) {
-                        const artist = ARTISTS_DB[id];
-                        if (artist) {
-                            certifiedListDiv.innerHTML += `<div class="artist-card"><span>${artist.avatar} ${artist.name}</span><button onclick="removeCertifiedArtist('${id}')" class="delete-artist-btn">❌ Retirer</button></div>`;
-                        }
-                    }
-                }
-            }
-        }
-
-        window.removeCertifiedArtist = function(artistId) {
-            certifiedArtistsList = certifiedArtistsList.filter(id => id !== artistId);
-            saveCertifiedArtists();
-            updateAdminSelects();
-            loadRankingData();
-            addNotification(`🏆 Badge retiré pour ${ARTISTS_DB[artistId]?.name}`);
-        };
 
         function renderConsentProofs() {
             const c = document.getElementById('consentProofsList');
@@ -3016,8 +2916,9 @@
             }
             
             const certificationBadge = getCertificationBadge(a.certification || 'gold');
-            const hotBadge = a.hot ? `<span class="badge-hot" style="background:#ff3300; color:white; padding:2px 8px; border-radius:40px; font-size:0.7rem; margin-left:8px;"><i class="fas fa-fire"></i> HOT</span>` : '';
-            document.getElementById('artistName').innerHTML = `${a.name} ${certificationBadge} ${hotBadge} <button class="story-btn" onclick="openStoryModal()"><i class="fas fa-book-open"></i> 📖 Son histoire</button>`;
+            const hotBadge = a.hot ? `<span class="badge-hot-small"><i class="fas fa-fire"></i> HOT</span>` : '';
+            const starconnectBadge = a.starconnectCertified ? `<span class="virtual-badge badge-certified" style="margin-left:8px;"><i class="fas fa-certificate"></i> STARCONNECT</span>` : '';
+            document.getElementById('artistName').innerHTML = `${a.name} ${certificationBadge} ${hotBadge} ${starconnectBadge} <button class="story-btn" onclick="openStoryModalForCurrentArtist()"><i class="fas fa-book-open"></i> 📖 Son histoire</button>`;
             document.getElementById('artistTags').innerHTML = a.tags.map(t => `<span>${escapeHtml(t)}</span>`).join('');
             document.getElementById('artistBio').innerHTML = a.bio;
             
@@ -3055,6 +2956,19 @@
             updateStarRating(a.manaScore);
         }
 
+        function openStoryModalForCurrentArtist() {
+            const artist = getCurrentArtist();
+            if (artist && artist.story) {
+                document.getElementById('storyArtistName').innerHTML = artist.story.title;
+                document.getElementById('storyContent').innerHTML = artist.story.content;
+                document.getElementById('storyModal').classList.add('show');
+            } else {
+                addNotification('📖 Histoire en cours d\'écriture pour cet artiste...');
+            }
+        }
+
+        function closeStoryModal() { document.getElementById('storyModal').classList.remove('show'); }
+
         function openConsentModal() { 
             document.getElementById('consentCheckbox').checked = false;
             document.getElementById('consentCommercialCheckbox').checked = false;
@@ -3072,62 +2986,12 @@
             if (c) c.innerHTML = eventsList.map(e => `<div class="event-item"><div><strong>${escapeHtml(e.name)}</strong><br>${escapeHtml(e.place)}</div><div class="event-date">📅 ${escapeHtml(e.date)}</div></div>`).join(''); 
         }
 
-        function renderFeed() {
-            const c = document.getElementById('feedList');
-            if (!c) return;
-            if (feedPosts.length === 0) { c.innerHTML = '<div style="text-align:center;padding:40px;">💬 Aucun message pour le moment. Soyez le premier à publier !</div>'; return; }
-            c.innerHTML = feedPosts.map(p => {
-                let avHtml = '';
-                if (p.avatar && p.avatar.startsWith('data:image')) avHtml = `<img src="${p.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
-                else { const emoji = p.avatarEmoji || '⭐'; const map = {'🎤':'fa-microphone-alt','⭐':'fa-star','🔥':'fa-fire'}; avHtml = `<i class="fas ${map[emoji] || 'fa-user'}"></i>`; }
-                return `<div class="post"><button class="delete-post-btn" onclick="deletePost(${p.id})"><i class="fas fa-trash"></i></button><div class="post-header"><div class="post-avatar" onclick="openAvatarUpload(${p.id})">${avHtml}</div><div><strong>${escapeHtml(p.author)}</strong> <span class="post-time">· ⏱️ ${getRelativeTime(p.time)}</span></div></div><div class="post-content">${escapeHtml(p.content)}</div>${p.image ? `<img src="${p.image}" class="post-image" onclick="window.open(this.src)">` : ''}<div class="post-actions"><i class="far fa-heart like-btn" data-id="${p.id}"></i><span class="post-stats" id="like-count-${p.id}">${postLikes[p.id] || 0} j'aime</span><i class="far fa-share-square share-btn" data-content="${encodeURIComponent(p.content)}"></i></div></div>`;
-            }).join('');
-            document.querySelectorAll('.like-btn').forEach(btn => btn.addEventListener('click', (e) => { const id = parseInt(btn.getAttribute('data-id')); postLikes[id] = (postLikes[id] || 0) + 1; document.getElementById(`like-count-${id}`).innerText = `${postLikes[id]} j'aime`; saveAllData(); updateTopFans(); addNotification('❤️ Vous avez aimé ce post !'); btn.classList.add('fas'); btn.classList.remove('far'); }));
-            document.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => { navigator.clipboard.writeText(`🔥 Découvrez ce post sur STARCONNECT : "${decodeURIComponent(btn.getAttribute('data-content'))}"`); addNotification('📋 Lien copié !'); }));
-        }
-
-        function deletePost(postId) {
-            if (confirm('⚠️ Supprimer définitivement ce post ?')) {
-                feedPosts = feedPosts.filter(p => p.id !== postId);
-                delete postLikes[postId];
-                saveAllData();
-                renderFeed();
-                updateTopFans();
-                addNotification('🗑️ Post supprimé');
-            }
-        }
-
         function updateTopFans() {
             const stats = {};
             feedPosts.forEach(p => { if (!stats[p.author]) stats[p.author] = { posts: 0, likes: 0 }; stats[p.author].posts++; stats[p.author].likes += (postLikes[p.id] || 0); });
             const fans = Object.entries(stats).map(([n,s]) => ({ name: n, score: s.posts * 5 + s.likes })).sort((a,b) => b.score - a.score).slice(0,5);
             const c = document.getElementById('topFansList');
             if (c) c.innerHTML = fans.length ? fans.map(f => { let badge='', cls=''; if (f.score>=100) { badge='🏆 Or'; cls='badge-gold'; } else if (f.score>=50) { badge='🥈 Argent'; cls='badge-silver'; } else if (f.score>=25) { badge='🥉 Bronze'; cls='badge-bronze'; } else { badge='⭐ Fan'; } return `<div class="fan-card"><div class="fan-avatar"><i class="fas fa-user"></i></div><div><strong>${escapeHtml(f.name)}</strong></div><div class="fan-badge ${cls}">${badge}</div><div style="font-size:0.6rem;">📊 ${f.score} pts</div></div>`; }).join('') : '<div style="text-align:center;padding:40px;">👑 Devenez le premier fan !</div>';
-        }
-
-        function openAvatarUpload(postId) {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        const post = feedPosts.find(p => p.id === postId);
-                        if (post) { post.avatar = ev.target.result; post.avatarType = "image"; post.avatarEmoji = null; saveAllData(); renderFeed(); updateTopFans(); addNotification('✅ Avatar modifié !'); }
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-            input.click();
-        }
-
-        function publishPost(content, imageData) {
-            feedPosts.unshift({ id: Date.now(), author: "Fan 🔥", avatar: null, avatarType: "emoji", avatarEmoji: "⭐", content: content, time: Date.now(), image: imageData });
-            postLikes[Date.now()] = 0;
-            renderFeed(); saveAllData(); updateTopFans();
-            addNotification('✅ Publication ajoutée !');
         }
 
         function refreshArtistsList() { 
@@ -3140,7 +3004,7 @@
             document.querySelectorAll('.delete-artist-btn').forEach(btn => btn.addEventListener('click', () => { 
                 const id = btn.getAttribute('data-id'); 
                 if (id === 'basta-lion') { addNotification('❌ Impossible de supprimer l\'artiste principal'); return; } 
-                if (confirm(`Supprimer ${ARTISTS_DB[id]?.name} ?`)) { delete ARTISTS_DB[id]; if (currentArtistId === id) currentArtistId = 'basta-lion'; saveAllData(); renderArtistSelect(); renderArtistProfile(); updateAdminSelects(); addNotification('✅ Artiste supprimé'); } 
+                if (confirm(`Supprimer ${ARTISTS_DB[id]?.name} ?`)) { delete ARTISTS_DB[id]; if (currentArtistId === id) currentArtistId = 'basta-lion'; saveAllData(); renderArtistSelect(); renderArtistProfile(); addNotification('✅ Artiste supprimé'); } 
             })); 
         }
 
@@ -3192,8 +3056,6 @@
             addNotification(`👑 Page de ${a.name}`); 
         }
 
-        function openStoryModal() { document.getElementById('storyModal').classList.add('show'); }
-        function closeStoryModal() { document.getElementById('storyModal').classList.remove('show'); }
         function openSubscribeModal() { document.getElementById('subscribeModal').classList.add('show'); }
         function closeSubscribeModal() { document.getElementById('subscribeModal').classList.remove('show'); }
 
@@ -3287,13 +3149,13 @@
                         const response = await fetch(proxyUrl);
                         const data = await response.json();
                         if (data.status === 'ok' && data.items) {
-                            const articles = data.items.slice(0, 5).map(item => ({ id: Date.now() + Math.random(), title: item.title, date: new Date(item.pubDate).getTime(), desc: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) : item.title, link: item.link, source: feedUrl.includes('orange') ? 'Orange Madagascar' : feedUrl.includes('moov') ? 'Moov Madagascar' : feedUrl.includes('lexpress') ? 'L\'Express de Madagascar' : 'Midi Madagasikara' }));
+                            const articles = data.items.slice(0, 5).map(item => ({ id: Date.now() + Math.random(), title: item.title, date: new Date(item.pubDate).getTime(), desc: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) : item.title, link: item.link, source: feedUrl.includes('orange') ? 'Orange Madagascar' : feedUrl.includes('moov') ? 'Moov Madagascar' : feedUrl.includes('lexpress') ? 'L\'Express de Madagascar' : 'Midi Madagasikara', image: item.enclosure ? item.enclosure.link : null }));
                             allArticles.push(...articles);
                         }
                     } catch(e) { console.warn(`Erreur sur flux ${feedUrl}:`, e); }
                 }
                 if (allArticles.length === 0) {
-                    allArticles = [{ id: Date.now(), title: "Basta Lion en concert à Antananarivo le 20 Mars", date: Date.now(), desc: "L'artiste malgache Basta Lion se produira au Palais des Sports.", link: "#", source: "Actualités" }];
+                    allArticles = [{ id: Date.now(), title: "Basta Lion en concert à Antananarivo le 20 Mars", date: Date.now(), desc: "L'artiste malgache Basta Lion se produira au Palais des Sports.", link: "#", source: "Actualités", image: "https://via.placeholder.com/300x150?text=Concert+Basta+Lion" }];
                 }
                 allArticles.sort((a,b) => b.date - a.date);
                 newsItems = [...allArticles, ...newsItems.filter(n => !n.source || n.source === 'Manuel')];
@@ -3311,7 +3173,7 @@
                 container.innerHTML = '<div style="text-align:center;padding:40px;">📭 Aucune actualité pour le moment<br><small>Les actualités se chargeront automatiquement via RSS</small></div>';
                 return;
             }
-            container.innerHTML = newsItems.map(item => `<div class="news-item"><div style="flex:1;"><strong>📰 ${escapeHtml(item.title)}</strong><br><small style="color:#888;">⏱️ ${getRelativeTime(item.date)} ${item.source ? `<span class="news-source">📡 ${escapeHtml(item.source)}</span>` : ''}</small><p style="margin-top:8px;">${escapeHtml(item.desc && item.desc.length > 200 ? item.desc.substring(0,200)+'...' : item.desc)}</p>${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="news-link"><i class="fas fa-external-link-alt"></i> Lire l'article complet →</a>` : ''}</div><div class="news-badge">📰</div></div>`).join('');
+            container.innerHTML = newsItems.map(item => `<div class="news-item"><div style="flex:1;"><strong>📰 ${escapeHtml(item.title)}</strong><br><small style="color:#888;">⏱️ ${getRelativeTime(item.date)} ${item.source ? `<span class="news-source">📡 ${escapeHtml(item.source)}</span>` : ''}</small><p style="margin-top:8px;">${escapeHtml(item.desc && item.desc.length > 200 ? item.desc.substring(0,200)+'...' : item.desc)}</p>${item.image ? `<img src="${item.image}" style="max-width:100px; border-radius:8px; margin-top:8px;">` : ''}${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="news-link"><i class="fas fa-external-link-alt"></i> Lire l'article complet →</a>` : ''}</div><div class="news-badge">📰</div></div>`).join('');
         }
 
         function startAutoRankingUpdate() {
@@ -3385,6 +3247,7 @@
             }
         }
 
+        // Événements
         document.getElementById('artistAvatar')?.addEventListener('click', () => {
             const a = getCurrentArtist();
             if (a.consentStatus === 'pending' || a.consentStatus === 'approved') {
@@ -3410,21 +3273,44 @@
         document.getElementById('artistSelect')?.addEventListener('change', (e) => switchArtist(e.target.value));
         document.getElementById('searchBtn')?.addEventListener('click', () => { const q = document.getElementById('searchInput')?.value.trim(); if (q) searchYouTubeVideos(q); else searchYouTubeVideos('Basta Lion Malagasy'); });
         document.getElementById('searchInput')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') { const q = e.target.value.trim(); if (q) searchYouTubeVideos(q); else searchYouTubeVideos('Basta Lion Malagasy'); } });
-        document.getElementById('publishPostBtn')?.addEventListener('click', () => { 
+        
+        // Publication avec Google Sheets
+        document.getElementById('publishPostGSBtn')?.addEventListener('click', () => { 
             if (maintenanceMode) { addNotification('⚠️ Mode maintenance, publication désactivée'); return; } 
-            const c = document.getElementById('postContent')?.value.trim();
+            const author = document.getElementById('postAuthorName')?.value.trim();
+            const content = document.getElementById('postContent')?.value.trim();
             const file = document.getElementById('postImageInput')?.files[0];
-            if (c) {
+            if (author && content) {
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = (e) => { publishPost(c, e.target.result); document.getElementById('postContent').value = ''; document.getElementById('postImageInput').value = ''; };
+                    reader.onload = (e) => { 
+                        publishPostToSheets(author, content, e.target.result);
+                        document.getElementById('postContent').value = ''; 
+                        document.getElementById('postAuthorName').value = '';
+                        document.getElementById('postImageInput').value = ''; 
+                    };
                     reader.readAsDataURL(file);
-                } else { publishPost(c, null); document.getElementById('postContent').value = ''; }
-            } else alert('Écrivez quelque chose'); 
+                } else { 
+                    publishPostToSheets(author, content, null);
+                    document.getElementById('postContent').value = ''; 
+                    document.getElementById('postAuthorName').value = '';
+                }
+            } else alert('Veuillez entrer votre pseudo et votre message'); 
         });
+        
         let evForm = false;
         document.getElementById('showEventForm')?.addEventListener('click', () => { const f = document.getElementById('eventFormContainer'); evForm = !evForm; f.style.display = evForm ? 'block' : 'none'; });
         document.getElementById('refreshRankingBtn')?.addEventListener('click', refreshRankingStats);
+        
+        // Bouton Tri qui monte en haut du classement
+        document.getElementById('rankingSortMoveTopBtn')?.addEventListener('click', () => {
+            const wrapper = document.querySelector('.ranking-table-wrapper');
+            if (wrapper) {
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                addNotification('📊 Retour en haut du classement');
+            }
+        });
+        
         document.getElementById('adminAddProduct')?.addEventListener('click', () => {
             const name = document.getElementById('adminProductName')?.value, price = parseFloat(document.getElementById('adminProductPrice')?.value), artist = document.getElementById('adminProductArtist')?.value, link = document.getElementById('adminProductLink')?.value;
             if (!name || !price || !artist) { alert('Nom, prix et artiste requis'); return; }
@@ -3433,6 +3319,7 @@
             document.getElementById('adminProductName').value = ''; document.getElementById('adminProductPrice').value = ''; document.getElementById('adminProductArtist').value = ''; document.getElementById('adminProductLink').value = ''; 
             addNotification('✅ Produit ajouté'); 
         });
+        
         const adminPanel = document.getElementById('adminPanel');
         const mz = document.getElementById('mobileAdminZone');
         let tc = 0, tt;
@@ -3444,7 +3331,7 @@
                 adminAuthenticated = true;
                 if (adminContent) adminContent.style.display = 'block';
                 addNotification('✅ Accès admin autorisé');
-                refreshArtistsList(); refreshProductsList(); refreshCustomList(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs(); updateAdminSelects();
+                refreshArtistsList(); refreshProductsList(); refreshCustomList(); renderPartnerRequests(); renderPendingApprovals(); renderConsentProofs();
             } else if (passwordInput && passwordInput.value) { alert('Mot de passe incorrect'); passwordInput.value = ''; }
         }
         document.getElementById('adminPassword')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAdminPassword(); });
@@ -3459,8 +3346,8 @@
             const id = document.getElementById('newArtistId')?.value.trim().toLowerCase().replace(/\s/g, '-'), name = document.getElementById('newArtistName')?.value.trim(), avatar = document.getElementById('newArtistAvatar')?.value.trim(), bio = document.getElementById('newArtistBio')?.value.trim(), yt = document.getElementById('newArtistYoutube')?.value.trim(), sp = document.getElementById('newArtistSpotify')?.value.trim(), cd = document.getElementById('newArtistConcertDate')?.value;
             if (!id || !name) { alert('ID et Nom sont requis'); return; }
             if (ARTISTS_DB[id]) { alert('Cet ID existe déjà'); return; }
-            ARTISTS_DB[id] = { id, name: name.toUpperCase(), avatar: avatar || '🎤', location: 'Madagascar', age: 0, awards: 'Nouvel artiste', bio: bio || 'Artiste malgache', youtubeStats: yt || '0', spotifyStats: sp || '0', nominations: '0', manaScore: 1000, tags: ['📍 Madagascar', '⭐ Nouvel artiste'], tracks: [{ title: "🎵 Nouveau titre", url: "#" }], nextConcert: { name: "À venir", date: cd || "2026-12-31" }, gallery: ["https://via.placeholder.com/300x150?text=" + encodeURIComponent(name)], searchQuery: name, active: true, customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null, certification: "bronze", genre: "Non spécifié", scoreDetails: { stream: 10, social: 10, awards: 5, media: 8, impact: 5, activity: 5 }, style: "Découvert", trend: "+0%", streams: "0", socialCount: 0, awardsList: ["Nouvel artiste"], hot: false, trendBase: 0, instagram: "", facebook: "", tiktok: "" };
-            saveAllData(); renderArtistSelect(); refreshArtistsList(); updateAdminSelects(); addNotification(`✅ Artiste ${name} ajouté !`);
+            ARTISTS_DB[id] = { id, name: name.toUpperCase(), avatar: avatar || '🎤', location: 'Madagascar', age: 0, awards: 'Nouvel artiste', bio: bio || 'Artiste malgache', youtubeStats: yt || '0', spotifyStats: sp || '0', nominations: '0', manaScore: 1000, tags: ['📍 Madagascar', '⭐ Nouvel artiste'], tracks: [{ title: "🎵 Nouveau titre", url: "#" }], nextConcert: { name: "À venir", date: cd || "2026-12-31" }, gallery: ["https://via.placeholder.com/300x150?text=" + encodeURIComponent(name)], searchQuery: name, active: true, customAvatar: null, consentStatus: "none", consentRequestDate: null, consentImageData: null, consentProof: null, consentRole: null, consentManagerName: null, consentRelation: null, consentSignature: null, consentDate: null, certification: "bronze", genre: "Non spécifié", scoreDetails: { stream: 10, social: 10, awards: 5, media: 8, impact: 5, activity: 5 }, style: "Découvert", trend: "+0%", streams: "0", socialCount: 0, awardsList: ["Nouvel artiste"], hot: false, trendBase: 0, instagram: "", facebook: "", tiktok: "", starconnectCertified: false };
+            saveAllData(); renderArtistSelect(); refreshArtistsList(); addNotification(`✅ Artiste ${name} ajouté !`);
             document.getElementById('newArtistId').value = ''; document.getElementById('newArtistName').value = ''; document.getElementById('newArtistAvatar').value = ''; document.getElementById('newArtistBio').value = ''; document.getElementById('newArtistYoutube').value = ''; document.getElementById('newArtistSpotify').value = ''; document.getElementById('newArtistConcertDate').value = '';
         });
         document.getElementById('adminMaintenanceMode')?.addEventListener('click', () => { 
@@ -3474,9 +3361,9 @@
             if (maintenanceMode && manaUpdateInterval) { clearInterval(manaUpdateInterval); manaUpdateInterval = null; }
             else if (!maintenanceMode && !manaUpdateInterval) { startManaAutoUpdate(); }
         });
-        document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts supprimés'); } });
+        document.getElementById('adminClearFeed')?.addEventListener('click', () => { if (confirm('⚠️ Supprimer TOUS les posts locaux ? Cette action est irréversible.')) { feedPosts = []; postLikes = {}; saveAllData(); renderFeed(); updateTopFans(); addNotification('🗑️ Tous les posts locaux supprimés'); } });
         document.getElementById('adminResetMana')?.addEventListener('click', () => { if (confirm('Réinitialiser le score MANA à sa valeur d\'origine ?')) { const a = getCurrentArtist(); if (a) { a.manaScore = a.manaScore; updateManaDisplay(a.manaScore, true); saveAllData(); loadRankingData(); addNotification('🔄 MANA réinitialisé'); } } });
-        document.getElementById('adminExportData')?.addEventListener('click', () => { const data = { artists: ARTISTS_DB, products: PRODUCTS_DB, custom: CUSTOM_ITEMS, partners: PARTNER_REQUESTS, news: newsItems, events: eventsList, feed: feedPosts, likes: postLikes, notifications: notifications, certifiedArtists: certifiedArtistsList, spotlight: { active: spotlightActive, data: spotlightData }, exportDate: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `starconnect_backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url); addNotification('📤 Données exportées'); });
+        document.getElementById('adminExportData')?.addEventListener('click', () => { const data = { artists: ARTISTS_DB, products: PRODUCTS_DB, custom: CUSTOM_ITEMS, partners: PARTNER_REQUESTS, news: newsItems, events: eventsList, feed: feedPosts, likes: postLikes, notifications: notifications, spotlight: spotlightData, exportDate: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `starconnect_backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url); addNotification('📤 Données exportées'); });
         document.getElementById('adminExportConsentProofs')?.addEventListener('click', () => {
             const proofs = {};
             for (const [id, artist] of Object.entries(ARTISTS_DB)) {
@@ -3494,7 +3381,7 @@
             addNotification('📄 Preuves de consentement exportées');
         });
         document.getElementById('adminImportData')?.addEventListener('click', () => { document.getElementById('importFile')?.click(); });
-        document.getElementById('importFile')?.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (ev) => { try { const data = JSON.parse(ev.target.result); if (data.artists) ARTISTS_DB = data.artists; if (data.products) PRODUCTS_DB = data.products; if (data.custom) CUSTOM_ITEMS = data.custom; if (data.partners) PARTNER_REQUESTS = data.partners; if (data.news) newsItems = data.news; if (data.events) eventsList = data.events; if (data.feed) feedPosts = data.feed; if (data.likes) postLikes = data.likes; if (data.notifications) notifications = data.notifications; if (data.certifiedArtists) certifiedArtistsList = data.certifiedArtists; if (data.spotlight) { spotlightActive = data.spotlight.active; spotlightData = data.spotlight.data; } saveAllData(); loadAllData(); addNotification('✅ Import réussi !'); } catch(err) { alert('Fichier invalide'); } }; reader.readAsText(file); e.target.value = ''; });
+        document.getElementById('importFile')?.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (ev) => { try { const data = JSON.parse(ev.target.result); if (data.artists) ARTISTS_DB = data.artists; if (data.products) PRODUCTS_DB = data.products; if (data.custom) CUSTOM_ITEMS = data.custom; if (data.partners) PARTNER_REQUESTS = data.partners; if (data.news) newsItems = data.news; if (data.events) eventsList = data.events; if (data.feed) feedPosts = data.feed; if (data.likes) postLikes = data.likes; if (data.notifications) notifications = data.notifications; if (data.spotlight) spotlightData = data.spotlight; saveAllData(); loadAllData(); addNotification('✅ Import réussi !'); } catch(err) { alert('Fichier invalide'); } }; reader.readAsText(file); e.target.value = ''; });
         document.getElementById('adminSetSubscribers')?.addEventListener('click', () => {
             const newCount = prompt('Entrez le nouveau nombre d\'abonnés :', subscriberCount);
             if (newCount !== null && !isNaN(parseInt(newCount))) {
@@ -3505,92 +3392,36 @@
                 addNotification(`📊 Nombre d'abonnés modifié : ${formatSubscriberCount(subscriberCount)}`);
             }
         });
-        
-        // Gestion Spotlight (payant)
-        document.getElementById('adminEnableSpotlight')?.addEventListener('click', () => {
-            const artistId = document.getElementById('adminSpotlightArtist')?.value;
-            const message = document.getElementById('adminSpotlightMessage')?.value || "🎤 En vedette cette semaine !";
-            const link = document.getElementById('adminSpotlightLink')?.value || "";
-            
-            if (!artistId) {
-                alert('Veuillez sélectionner un artiste');
-                return;
-            }
-            
-            const artist = ARTISTS_DB[artistId];
-            if (!artist) return;
-            
-            spotlightActive = true;
-            spotlightData = {
-                artistId: artistId,
-                message: message,
-                link: link
-            };
-            
-            saveSpotlight();
-            
-            const spotlightDiv = document.getElementById('spotlightSection');
-            if (spotlightDiv) {
-                spotlightDiv.style.display = 'block';
-                document.getElementById('spotlightName').innerHTML = `${artist.avatar || '🎤'} ${artist.name}`;
-                document.getElementById('spotlightDesc').innerHTML = message;
-                const linkElement = document.getElementById('spotlightLink');
-                if (link) {
-                    linkElement.href = link;
-                    linkElement.style.display = 'inline-block';
+        document.getElementById('adminSetSpotlight')?.addEventListener('click', () => {
+            const artistList = Object.values(ARTISTS_DB).map(a => `${a.id}|${a.name}`).join(',');
+            const artistId = prompt('ID de l\'artiste à mettre en avant (ex: basta-lion, denise) :\nListe: ' + artistList);
+            if (artistId && ARTISTS_DB[artistId]) {
+                const description = prompt('Description (ex: Nouvel album disponible) :', '✨ En vedette cette semaine');
+                const link = prompt('Lien (YouTube, Spotify, etc.) :', '#');
+                const weeks = parseInt(prompt('Durée en semaines (1-4) :', '1'));
+                if (!isNaN(weeks) && weeks >= 1 && weeks <= 4) {
+                    const expiryDate = new Date();
+                    expiryDate.setDate(expiryDate.getDate() + (weeks * 7));
+                    spotlightData = {
+                        enabled: true,
+                        artistId: artistId,
+                        artistName: ARTISTS_DB[artistId].name,
+                        artistAvatar: ARTISTS_DB[artistId].avatar || '🎤',
+                        description: description || '✨ En vedette cette semaine',
+                        link: link || '#',
+                        expiryDate: expiryDate.toISOString()
+                    };
+                    saveSpotlightData();
+                    updateSpotlightDisplay();
+                    addNotification(`✨ Spotlight activé pour ${ARTISTS_DB[artistId].name} (${weeks} semaine(s))`);
                 } else {
-                    linkElement.style.display = 'none';
+                    alert('Durée invalide (1-4 semaines)');
                 }
+            } else {
+                alert('ID artiste invalide');
             }
-            
-            addNotification(`✨ Spotlight activé pour ${artist.name} (simulation payante)`);
         });
         
-        document.getElementById('adminDisableSpotlight')?.addEventListener('click', () => {
-            spotlightActive = false;
-            spotlightData = { artistId: null, message: "", link: "" };
-            saveSpotlight();
-            
-            const spotlightDiv = document.getElementById('spotlightSection');
-            if (spotlightDiv) spotlightDiv.style.display = 'none';
-            
-            addNotification('❌ Spotlight désactivé');
-        });
-        
-        // Gestion badges certifiés (payant)
-        document.getElementById('adminAddCertifiedBadge')?.addEventListener('click', () => {
-            const artistId = document.getElementById('adminCertifiedArtist')?.value;
-            if (!artistId) {
-                alert('Veuillez sélectionner un artiste');
-                return;
-            }
-            
-            if (certifiedArtistsList.includes(artistId)) {
-                alert('Cet artiste a déjà le badge certifié');
-                return;
-            }
-            
-            certifiedArtistsList.push(artistId);
-            saveCertifiedArtists();
-            updateAdminSelects();
-            loadRankingData();
-            addNotification(`🏆 Badge "Certifié STARCONNECT" ajouté pour ${ARTISTS_DB[artistId]?.name} (simulation payante)`);
-        });
-        
-        document.getElementById('adminRemoveCertifiedBadge')?.addEventListener('click', () => {
-            const artistId = document.getElementById('adminCertifiedArtist')?.value;
-            if (!artistId) {
-                alert('Veuillez sélectionner un artiste');
-                return;
-            }
-            
-            certifiedArtistsList = certifiedArtistsList.filter(id => id !== artistId);
-            saveCertifiedArtists();
-            updateAdminSelects();
-            loadRankingData();
-            addNotification(`❌ Badge retiré pour ${ARTISTS_DB[artistId]?.name}`);
-        });
-
         const themeBtn = document.getElementById('themeToggleBtn');
         if (localStorage.getItem('starconnect_theme') === 'light') { 
             document.body.classList.add('light-mode'); 
@@ -3606,6 +3437,7 @@
                 localStorage.setItem('starconnect_theme','dark'); 
             } 
         });
+        
         document.getElementById('subscribeBtn')?.addEventListener('click', (e) => { e.preventDefault(); openSubscribeModal(); });
         document.getElementById('subscribeForm')?.addEventListener('submit', function(e) { addManualSubscriber(); closeSubscribeModal(); });
         document.getElementById('confirmConsentMailto')?.addEventListener('click', () => {
@@ -3679,24 +3511,23 @@
             addNotification('✅ Demande d\'interview envoyée par email !');
         });
 
-        function initRankingSortListeners() {
-            const rankingSortBtns = document.querySelectorAll('.ranking-sort-btn');
-            rankingSortBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const key = btn.getAttribute('data-sort');
-                    const columnName = btn.innerText.trim();
-                    let columnId = '';
-                    switch(key) {
-                        case 'score': columnId = 'col-score'; break;
-                        case 'stream': columnId = 'col-stream'; break;
-                        case 'trend': columnId = 'col-trend'; break;
-                        case 'social': columnId = 'col-social'; break;
-                        case 'awards': columnId = 'col-awards'; break;
-                    }
-                    sortRanking(key, columnId, columnName);
-                });
+        // Écouteurs pour le classement
+        const rankingSortBtns = document.querySelectorAll('.ranking-sort-btn');
+        rankingSortBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.getAttribute('data-sort');
+                const columnName = btn.innerText.trim();
+                let columnId = '';
+                switch(key) {
+                    case 'score': columnId = 'col-score'; break;
+                    case 'stream': columnId = 'col-stream'; break;
+                    case 'trend': columnId = 'col-trend'; break;
+                    case 'social': columnId = 'col-social'; break;
+                    case 'awards': columnId = 'col-awards'; break;
+                }
+                sortRanking(key, columnId, columnName);
             });
-        }
+        });
 
         startAutoRankingUpdate();
         startSubscriberGrowthCheck();
@@ -3705,10 +3536,9 @@
         checkCookieConsent();
         initSmoothScroll();
         initRankingButton();
-        initRankingSortListeners();
         initYouTubeAPI();
         let newsInterval = setInterval(() => { if (!maintenanceMode) { fetchRSSNews(); } }, 2 * 60 * 60 * 1000);
         window.addEventListener('beforeunload', () => { if (autoRankingInterval) clearInterval(autoRankingInterval); if (manaUpdateInterval) clearInterval(manaUpdateInterval); });
     </script>
 </body>
-    </html>
+</html>
