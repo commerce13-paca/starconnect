@@ -1888,7 +1888,7 @@
 
     <script>
         // =============================================
-        // YOUTUBE API (identique à l'original)
+        // YOUTUBE API
         // =============================================
         const YOUTUBE_API_KEY = 'AIzaSyDhfy-hOznVoLMAaJnpfcw3w7r4uj0Q-zo';
         let gapiInitialized = false;
@@ -2022,7 +2022,7 @@
         function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
         // =============================================
-        // BASE DE DONNÉES DES ARTISTES AVEC LEURS HISTOIRES
+        // BASE DE DONNÉES DES ARTISTES - CORRIGÉE AVEC TOUS LES ARTISTES ACTIFS
         // =============================================
         let ARTISTS_DB = {
             "denise": {
@@ -2105,28 +2105,168 @@
                     title: "BASTA LION - DU FOOTBALL À LA SCÈNE INTERNATIONALE",
                     content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>De son vrai nom Veloarson Maurizio Loïc</strong>, l'artiste malgache est né le <strong>27 décembre 1991 à Mahajanga</strong>.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Auteur-compositeur-interprète autodidacte, il puise son inspiration dans le <strong>reggae, le dancehall et l'afrobeat</strong>, mêlant messages conscients et énergie festive.</p></div><h3><i class='fas fa-futbol'></i> ⚽ Du Football à la Musique : Ses Débuts à Madagascar</h3><p>Avant la musique, le football était sa passion, avec l'ambition de faire carrière dans ce sport. Cependant, tout a basculé à la suite de deux événements clés :</p><p><strong>• Le déménagement déclencheur :</strong> Son installation à Nosy Be a été un tournant décisif. Loin de ses repères, il y rencontre <strong>Rijade</strong>, qui l'initie au chant et à la scène dancehall.</p><p><strong>• Des débuts sur le tard :</strong> Il a débuté sa carrière aux alentours de 2006, mais c'est en <strong>2013</strong> qu'il sort son premier titre, <strong>'Za Hialà'</strong>.</p><h3><i class='fas fa-globe-africa'></i> 🎵 Un Parcours Vers l'International</h3><p><strong>• Conquête du public malgache :</strong> Pour se faire connaître, il collabore avec des figures locales comme <strong>Wawa et Rycia</strong>.</p><p><strong>• Le tournant 'Colombian' :</strong> Ce titre, fruit d'une collaboration fortuite avec Kybba et Tribal Kush, l'a propulsé sur le devant de la scène, remportant notamment le prix du <strong>Titre de l'année 2024</strong> aux RDJ Mozika Awards.</p><p><strong>• La consécration internationale :</strong> Le single <strong>'Wyfl Riddim'</strong>, créé avec le sound system suisse Little Lion Sound, a été classé <strong>numéro un à Kingston, en Jamaïque</strong>, berceau du reggae. Cette reconnaissance lui a valu le prix du <strong>Meilleur artiste Reggae/Dancehall aux African Entertainment Awards USA (AEAUSA) 2025</strong>.</p><div class='story-section'><p><i class='fas fa-map-marker-alt' style='color:#e0a500;'></i> <strong>Aujourd'hui installé en France</strong>, Basta Lion continue de concrétiser son ambition internationale avec de nouveaux projets en préparation.</p></div>"
                 }
+            },
+            "madmax": {
+                id: "madmax", name: "MAD MAX", avatar: "🎙️", location: "Antananarivo", age: 42, awards: "Pionnier du rap malgache",
+                bio: "🎙️ <strong>Mad Max</strong> est l'un des pionniers du rap malgache. 20 ans de carrière et 8 albums. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                youtubeStats: "3.8M", spotifyStats: "890K", nominations: "8", manaScore: 1600,
+                tags: ["📍 Antananarivo", "🎵 Rap/Hip-hop", "🏆 Pionnier", "🎙️ Légende vivante", "⚪ ÉTOILE ARGENT"],
+                tracks: [{ title: "🎤 Malagasy Rap", url: "#" }, { title: "⚡ Tana City", url: "#" }, { title: "💪 Anosy", url: "#" }],
+                nextConcert: { name: "🎤 Mad Max - Concert Anniversaire", date: "2026-07-10" },
+                gallery: ["https://via.placeholder.com/300x150?text=Mad+Max+Concert", "https://via.placeholder.com/300x150?text=Mad+Max+Studio"],
+                searchQuery: "Mad Max Malagasy rap", active: true,
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Hip-Hop",
+                youtubeChannelId: null, scoreDetails: { stream: 85, social: 75, awards: 80, media: 82, impact: 85, activity: 75 },
+                trend: "+3%", streams: "4.2M", style: "Rap/Hip-hop",
+                socialCount: 320000, awardsList: ["Prix d'Honneur 2020", "Meilleur Clip 2018", "Pionnier du Rap"], hot: false, trendBase: 3,
+                instagram: "https://www.instagram.com/madmax", facebook: "https://www.facebook.com/madmax", tiktok: "",
+                active: true,
+                story: {
+                    title: "MAD MAX - LE PIONNIER DU RAP MALGACHE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Mad Max</strong> est l'un des premiers rappeurs malgaches à avoir professionalisé le hip-hop à Madagascar.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Rap engagé, lyrics percutants sur les réalités sociales malgaches, flows inspirés du hip-hop new-yorkais.</p></div><h3><i class='fas fa-microphone-alt'></i> 🎤 20 ans de carrière</h3><p>Depuis 2006, Mad Max enchaîne les albums et les concerts à travers Madagascar. Il est considéré comme le parrain du rap malgache.</p><div class='story-section'><p><i class='fas fa-crown' style='color:#e0a500;'></i> <strong>Légende vivante</strong>, il continue d'inspirer les nouvelles générations d'artistes urbains.</p></div>"
+                }
+            },
+            "ceasar": {
+                id: "ceasar", name: "CEASAR", avatar: "🌟", location: "Majunga", age: 27, awards: "Révélation 2025",
+                bio: "🌟 <strong>Ceasar</strong> est la nouvelle révélation dancehall malgache. Plus de 2M de vues sur TikTok. <strong>🟤 Certifié ÉTOILE BRONZE</strong>",
+                youtubeStats: "2.2M", spotifyStats: "450K", nominations: "2", manaScore: 1300,
+                tags: ["📍 Majunga", "🎵 Dancehall", "🏆 Révélation 2025", "🔥 Tendance", "🟤 ÉTOILE BRONZE"],
+                tracks: [{ title: "🔥 Mamaky", url: "#" }, { title: "⚡ Dancehall flow", url: "#" }, { title: "💪 Majunga", url: "#" }],
+                nextConcert: { name: "🎤 Ceasar - Tournée des plages", date: "2026-09-01" },
+                gallery: ["https://via.placeholder.com/300x150?text=Ceasar+Concert", "https://via.placeholder.com/300x150?text=Ceasar+Studio"],
+                searchQuery: "Ceasar Malagasy dancehall", active: true,
+                customAvatar: null, consentStatus: "none", certification: "bronze", genre: "Dancehall",
+                youtubeChannelId: null, scoreDetails: { stream: 78, social: 82, awards: 70, media: 75, impact: 80, activity: 85 },
+                trend: "+18%", streams: "2.8M", style: "Dancehall/Afro",
+                socialCount: 450000, awardsList: ["Meilleure Collaboration 2025", "Révélation RDJ 2025"], hot: true, trendBase: 18,
+                instagram: "https://www.instagram.com/ceasar", facebook: "https://www.facebook.com/ceasar", tiktok: "https://www.tiktok.com/@ceasar",
+                active: true,
+                story: {
+                    title: "CEASAR - LA NOUVELLE VAGUE DANCEHALL",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Ceasar</strong> est originaire de Majunga. Il a grandi entre Madagascar et la France, ce qui lui donne une double culture musicale.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Dancehall moderne avec des influences afrobeat et rnb.</p></div><h3><i class='fas fa-chart-line'></i> 📈 Ascension fulgurante</h3><p>En seulement 2 ans, Ceasar a conquis le public avec ses morceaux entraînants et ses chorégraphies virales sur TikTok.</p><div class='story-section'><p><i class='fas fa-fire' style='color:#e0a500;'></i> <strong>Révélation 2025</strong>, il prépare son premier album pour 2027.</p></div>"
+                }
+            },
+            "lowis": {
+                id: "lowis", name: "LOWIS", avatar: "💫", location: "Antananarivo", age: 24, awards: "Révélation RDJ 2025",
+                bio: "💫 <strong>Lowis</strong> est la nouvelle voix du RnB malgache. Premier EP 'Mbola Tsara' écouté 2M de fois. <strong>🟤 Certifié ÉTOILE BRONZE</strong>",
+                youtubeStats: "1.9M", spotifyStats: "520K", nominations: "1", manaScore: 1200,
+                tags: ["📍 Antananarivo", "🎵 RnB", "🏆 Révélation RDJ 2025", "💫 Nouvelle voix", "🟤 ÉTOILE BRONZE"],
+                tracks: [{ title: "💫 Mbola Tsara", url: "#" }, { title: "💕 Amour", url: "#" }, { title: "🌟 Etoile", url: "#" }],
+                nextConcert: { name: "🎤 Lowis - Live Acoustique", date: "2026-07-25" },
+                gallery: ["https://via.placeholder.com/300x150?text=Lowis+Concert", "https://via.placeholder.com/300x150?text=Lowis+Studio"],
+                searchQuery: "Lowis Malagasy RnB", active: true,
+                customAvatar: null, consentStatus: "none", certification: "bronze", genre: "RnB",
+                youtubeChannelId: null, scoreDetails: { stream: 75, social: 78, awards: 68, media: 72, impact: 70, activity: 80 },
+                trend: "+22%", streams: "2.1M", style: "RnB/Urban",
+                socialCount: 280000, awardsList: ["Révélation RDJ 2025", "Meilleure voix 2025"], hot: false, trendBase: 22,
+                instagram: "https://www.instagram.com/lowis", facebook: "https://www.facebook.com/lowis", tiktok: "https://www.tiktok.com/@lowis",
+                active: true,
+                story: {
+                    title: "LOWIS - LA RELÈVE RNB",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Lowis</strong> est une jeune artiste de 24 ans, révélée par l'émission 'La Voix de Madagascar'.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> RnB moderne avec des textes sur l'amour et la vie à Antananarivo.</p></div><h3><i class='fas fa-star'></i> ⭐ Révélation RDJ Mozika 2025</h3><p>Son premier EP 'Mbola Tsara' a été écouté plus de 2 millions de fois sur Spotify, faisant d'elle la révélation de l'année.</p>"
+                }
+            },
+            "wawa-sali": {
+                id: "wawa-sali", name: "WAWA SALI", avatar: "🎵", location: "Antananarivo", age: 55, awards: "Artiste engagé",
+                bio: "🎵 <strong>Wawa Sali</strong> est une légende vivante de la musique malgache, reconnu pour son engagement social. <strong>🟡 Certifié ÉTOILE OR</strong>",
+                youtubeStats: "3.2M", spotifyStats: "680K", nominations: "6", manaScore: 1750,
+                tags: ["📍 Antananarivo", "🎵 Reggae/Pop", "🏆 Artiste engagé", "💖 Voix du peuple", "🟡 ÉTOILE OR"],
+                tracks: [{ title: "🎵 Malagasy", url: "#" }, { title: "💪 Mampionona", url: "#" }, { title: "🌟 Etoile", url: "#" }],
+                nextConcert: { name: "🎤 Wawa Sali - Concert Caritatif", date: "2026-08-15" },
+                gallery: ["https://via.placeholder.com/300x150?text=Wawa+Sali+Concert", "https://via.placeholder.com/300x150?text=Wawa+Sali+Studio"],
+                searchQuery: "Wawa Sali Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "gold", genre: "Reggae",
+                youtubeChannelId: null, scoreDetails: { stream: 86, social: 84, awards: 88, media: 82, impact: 90, activity: 80 },
+                trend: "+6%", streams: "3.5M", style: "Reggae/Pop",
+                socialCount: 680000, awardsList: ["Artiste engagé 2022", "Meilleur Concert 2024", "Prix Humanitaire"], hot: false, trendBase: 6,
+                instagram: "https://www.instagram.com/wawasali", facebook: "https://www.facebook.com/wawasali", tiktok: "",
+                active: true,
+                story: {
+                    title: "WAWA SALI - LA VOIX DU PEUPLE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Wawa Sali</strong> est une légende vivante de la musique malgache, reconnu pour son engagement social.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Reggae et pop engagée, des textes qui parlent au peuple malgache.</p></div><h3><i class='fas fa-heart'></i> 💖 Un artiste au grand cœur</h3><p>Wawa Sali organise chaque année des concerts caritatifs pour les enfants défavorisés d'Antananarivo.</p>"
+                }
+            },
+            "niu-raza": {
+                id: "niu-raza", name: "NIU RAZA", avatar: "🌊", location: "Nosy Be", age: 0, awards: "Groupe légendaire",
+                bio: "🌊 <strong>Niu Raza</strong> est un groupe mythique de reggae roots malgache, formé à Nosy Be dans les années 90. <strong>🔵 Certifié ÉTOILE BLEUE</strong>",
+                youtubeStats: "3.6M", spotifyStats: "580K", nominations: "5", manaScore: 1850,
+                tags: ["📍 Nosy Be", "🎵 Reggae Roots", "🏆 Groupe légendaire", "🌊 Ambassadeurs", "🔵 ÉTOILE BLEUE"],
+                tracks: [{ title: "🌊 Nosy Be", url: "#" }, { title: "🎵 Malagasy Roots", url: "#" }, { title: "💪 Mampionona", url: "#" }],
+                nextConcert: { name: "🎤 Niu Raza - Festival Nosy Be", date: "2026-10-05" },
+                gallery: ["https://via.placeholder.com/300x150?text=Niu+Raza+Concert", "https://via.placeholder.com/300x150?text=Niu+Raza+Studio"],
+                searchQuery: "Niu Raza Malagasy reggae", active: true,
+                customAvatar: null, consentStatus: "none", certification: "blue", genre: "Reggae",
+                youtubeChannelId: null, scoreDetails: { stream: 88, social: 80, awards: 85, media: 86, impact: 88, activity: 82 },
+                trend: "+4%", streams: "4.1M", style: "Reggae Roots",
+                socialCount: 420000, awardsList: ["Groupe légendaire", "Festival International 2023", "Prix d'Honneur"], hot: false, trendBase: 4,
+                instagram: "https://www.instagram.com/niuraza", facebook: "https://www.facebook.com/niuraza", tiktok: "",
+                active: true,
+                story: {
+                    title: "NIU RAZA - LE REGGAE ROOTS MALGACHE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Niu Raza</strong> est un groupe mythique formé à Nosy Be dans les années 90.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Reggae roots avec des influences traditionnelles malgaches.</p></div><h3><i class='fas fa-leaf'></i> 🌿 Ambassadeurs du reggae malgache</h3><p>Ils ont participé à de nombreux festivals internationaux et sont considérés comme les ambassadeurs du reggae malgache dans le monde.</p>"
+                }
+            },
+            "tence-mena": {
+                id: "tence-mena", name: "TENCE MENA", avatar: "⭐", location: "Antananarivo", age: 29, awards: "Clip de l'année 2025",
+                bio: "⭐ <strong>Thierra Bruno</strong>, alias Tence Mena, est un artiste urbain complet : rappeur, chanteur et danseur. <strong>⚪ Certifié ÉTOILE ARGENT</strong>",
+                youtubeStats: "2.8M", spotifyStats: "620K", nominations: "3", manaScore: 1450,
+                tags: ["📍 Antananarivo", "🎵 Urbain", "🏆 Clip de l'année 2025", "⭐ Artiste complet", "⚪ ÉTOILE ARGENT"],
+                tracks: [{ title: "⭐ Mampionona", url: "#" }, { title: "🎵 Tana", url: "#" }, { title: "💪 Malagasy", url: "#" }],
+                nextConcert: { name: "🎤 Tence Mena - Urban Show", date: "2026-11-20" },
+                gallery: ["https://via.placeholder.com/300x150?text=Tence+Mena+Concert", "https://via.placeholder.com/300x150?text=Tence+Mena+Studio"],
+                searchQuery: "Tence Mena Malagasy", active: true,
+                customAvatar: null, consentStatus: "none", certification: "silver", genre: "Urban",
+                youtubeChannelId: null, scoreDetails: { stream: 78, social: 82, awards: 80, media: 78, impact: 82, activity: 85 },
+                trend: "+10%", streams: "3.2M", style: "Urban/Hip-hop",
+                socialCount: 390000, awardsList: ["Clip de l'année 2025", "Meilleure Performance 2024"], hot: false, trendBase: 10,
+                instagram: "https://www.instagram.com/tencemena", facebook: "https://www.facebook.com/tencemena", tiktok: "https://www.tiktok.com/@tencemena",
+                active: true,
+                story: {
+                    title: "TENCE MENA - L'URBAIN VIRTUOSE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Thierra Bruno</strong>, alias Tence Mena, est un artiste urbain complet : rappeur, chanteur et danseur.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Hip-hop urbain fusionné avec des sonorités traditionnelles.</p></div><h3><i class='fas fa-trophy'></i> 🏆 Clip de l'année 2025</h3><p>Son clip 'Mampionona' a remporté le prix du meilleur clip aux RDJ Mozika Awards 2025.</p>"
+                }
+            },
+            "big-mj": {
+                id: "big-mj", name: "BIG MJ", avatar: "🔥", location: "Antananarivo", age: 27, awards: "Phénomène viral",
+                bio: "🔥 <strong>Big MJ</strong> est un phénomène de l'afro-clip malgache. Ses vidéos dépassent le million de vues. <strong>🟤 Certifié ÉTOILE BRONZE</strong>",
+                youtubeStats: "4.3M", spotifyStats: "780K", nominations: "2", manaScore: 1400,
+                tags: ["📍 Antananarivo", "🎵 Afrobeat", "🏆 Phénomène viral", "🔥 Tendance TikTok", "🟤 ÉTOILE BRONZE"],
+                tracks: [{ title: "🔥 Afro Clip", url: "#" }, { title: "⚡ Dance", url: "#" }, { title: "💪 Malagasy", url: "#" }],
+                nextConcert: { name: "🎤 Big MJ - Afro Party", date: "2026-12-01" },
+                gallery: ["https://via.placeholder.com/300x150?text=Big+MJ+Concert", "https://via.placeholder.com/300x150?text=Big+MJ+Studio"],
+                searchQuery: "Big MJ Malagasy afro", active: true,
+                customAvatar: null, consentStatus: "none", certification: "bronze", genre: "Afrobeat",
+                youtubeChannelId: null, scoreDetails: { stream: 82, social: 88, awards: 70, media: 80, impact: 85, activity: 90 },
+                trend: "+25%", streams: "4.8M", style: "Afrobeat/Dance",
+                socialCount: 610000, awardsList: ["Phénomène viral 2025", "Meilleure Danse 2025"], hot: true, trendBase: 25,
+                instagram: "https://www.instagram.com/bigmj", facebook: "https://www.facebook.com/bigmj", tiktok: "https://www.tiktok.com/@bigmj",
+                active: true,
+                story: {
+                    title: "BIG MJ - LE PHÉNOMÈNE AFRO-CLIP",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Big MJ</strong> est un jeune artiste de 27 ans, révélé sur TikTok avec ses danses afro.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Afrobeat et dance, des morceaux qui font danser toute l'Afrique.</p></div><h3><i class='fas fa-fire'></i> 🔥 Phénomène viral</h3><p>Ses clips dépassent régulièrement le million de vues en quelques jours sur YouTube. Il est considéré comme le pionnier de l'afro-clip malgache.</p>"
+                }
+            },
+            "mahaleo": {
+                id: "mahaleo", name: "MAHALEO", avatar: "🎶", location: "Antananarivo", age: 0, awards: "Groupe mythique",
+                bio: "🎶 <strong>Mahaleo</strong> est un groupe mythique de folk malgache, fondé dans les années 70. 50 ans de carrière. <strong>🔵 Certifié ÉTOILE BLEUE - Légende nationale</strong>",
+                youtubeStats: "3.9M", spotifyStats: "420K", nominations: "10", manaScore: 1950,
+                tags: ["📍 Antananarivo", "🎵 Folk engagé", "🏆 Groupe mythique", "🎶 50 ans de carrière", "🔵 ÉTOILE BLEUE"],
+                tracks: [{ title: "🎶 Malagasy Folk", url: "#" }, { title: "💪 Mampionona", url: "#" }, { title: "🌟 Etoile", url: "#" }],
+                nextConcert: { name: "🎤 Mahaleo - Concert Anniversaire 50 ans", date: "2026-11-25" },
+                gallery: ["https://via.placeholder.com/300x150?text=Mahaleo+Concert", "https://via.placeholder.com/300x150?text=Mahaleo+Legend"],
+                searchQuery: "Mahaleo Malagasy folk", active: true,
+                customAvatar: null, consentStatus: "none", certification: "blue", genre: "Folk",
+                youtubeChannelId: null, scoreDetails: { stream: 85, social: 75, awards: 92, media: 88, impact: 95, activity: 78 },
+                trend: "+3%", streams: "4.5M", style: "Folk engagé",
+                socialCount: 180000, awardsList: ["Légende nationale", "Prix d'Honneur 2020", "50 ans de carrière"], hot: false, trendBase: 3,
+                instagram: "https://www.instagram.com/mahaleo", facebook: "https://www.facebook.com/mahaleo", tiktok: "",
+                active: true,
+                story: {
+                    title: "MAHALEO - LE GROUPE LÉGENDAIRE",
+                    content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Mahaleo</strong> est un groupe mythique de folk malgache, fondé dans les années 70.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Folk engagé, des textes qui ont marqué l'histoire de Madagascar.</p></div><h3><i class='fas fa-history'></i> 📜 Un demi-siècle de musique</h3><p>Depuis plus de 50 ans, Mahaleo est la voix de la conscience malgache, avec des chansons qui traversent les générations.</p>"
+                }
             }
-            // Les autres artistes (madmax, ceasar, lowis, wawa-sali, niu-raza, tence-mena, big-mj, mahaleo) gardent leurs stories par défaut ou peuvent être ajoutées
         };
-
-        // Ajout des stories pour les autres artistes pour qu'ils aient chacun une histoire
-        const defaultStories = {
-            "madmax": { title: "MAD MAX - LE PIONNIER DU RAP MALGACHE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Mad Max</strong> est l'un des premiers rappeurs malgaches à avoir professionalisé le hip-hop à Madagascar.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Rap engagé, lyrics percutants sur les réalités sociales malgaches, flows inspirés du hip-hop new-yorkais.</p></div><h3><i class='fas fa-microphone-alt'></i> 🎤 20 ans de carrière</h3><p>Depuis 2006, Mad Max enchaîne les albums et les concerts à travers Madagascar. Il est considéré comme le parrain du rap malgache.</p><div class='story-section'><p><i class='fas fa-crown' style='color:#e0a500;'></i> <strong>Légende vivante</strong>, il continue d'inspirer les nouvelles générations d'artistes urbains.</p></div>" },
-            "ceasar": { title: "CEASAR - LA NOUVELLE VAGUE DANCEHALL", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Ceasar</strong> est originaire de Majunga. Il a grandi entre Madagascar et la France, ce qui lui donne une double culture musicale.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Dancehall moderne avec des influences afrobeat et rnb.</p></div><h3><i class='fas fa-chart-line'></i> 📈 Ascension fulgurante</h3><p>En seulement 2 ans, Ceasar a conquis le public avec ses morceaux entraînants et ses chorégraphies virales sur TikTok.</p><div class='story-section'><p><i class='fas fa-fire' style='color:#e0a500;'></i> <strong>Révélation 2025</strong>, il prépare son premier album pour 2027.</p></div>" },
-            "lowis": { title: "LOWIS - LA RELÈVE RNB", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Lowis</strong> est une jeune artiste de 24 ans, révélée par l'émission 'La Voix de Madagascar'.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> RnB moderne avec des textes sur l'amour et la vie à Antananarivo.</p></div><h3><i class='fas fa-star'></i> ⭐ Révélation RDJ Mozika 2025</h3><p>Son premier EP 'Mbola Tsara' a été écouté plus de 2 millions de fois sur Spotify, faisant d'elle la révélation de l'année.</p>" },
-            "wawa-sali": { title: "WAWA SALI - LA VOIX DU PEUPLE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Wawa Sali</strong> est une légende vivante de la musique malgache, reconnu pour son engagement social.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Reggae et pop engagée, des textes qui parlent au peuple malgache.</p></div><h3><i class='fas fa-heart'></i> 💖 Un artiste au grand cœur</h3><p>Wawa Sali organise chaque année des concerts caritatifs pour les enfants défavorisés d'Antananarivo.</p>" },
-            "niu-raza": { title: "NIU RAZA - LE REGGAE ROOTS MALGACHE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Niu Raza</strong> est un groupe mythique formé à Nosy Be dans les années 90.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Reggae roots avec des influences traditionnelles malgaches.</p></div><h3><i class='fas fa-leaf'></i> 🌿 Ambassadeurs du reggae malgache</h3><p>Ils ont participé à de nombreux festivals internationaux et sont considérés comme les ambassadeurs du reggae malgache dans le monde.</p>" },
-            "tence-mena": { title: "TENCE MENA - L'URBAIN VIRTUOSE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Thierra Bruno</strong>, alias Tence Mena, est un artiste urbain complet : rappeur, chanteur et danseur.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Hip-hop urbain fusionné avec des sonorités traditionnelles.</p></div><h3><i class='fas fa-trophy'></i> 🏆 Clip de l'année 2025</h3><p>Son clip 'Mampionona' a remporté le prix du meilleur clip aux RDJ Mozika Awards 2025.</p>" },
-            "big-mj": { title: "BIG MJ - LE PHÉNOMÈNE AFRO-CLIP", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Big MJ</strong> est un jeune artiste de 27 ans, révélé sur TikTok avec ses danses afro.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Afrobeat et dance, des morceaux qui font danser toute l'Afrique.</p></div><h3><i class='fas fa-fire'></i> 🔥 Phénomène viral</h3><p>Ses clips dépassent régulièrement le million de vues en quelques jours sur YouTube. Il est considéré comme le pionnier de l'afro-clip malgache.</p>" },
-            "mahaleo": { title: "MAHALEO - LE GROUPE LÉGENDAIRE", content: "<div class='story-section'><p><span class='story-badge'>👤 IDENTITÉ</span> <strong>Mahaleo</strong> est un groupe mythique de folk malgache, fondé dans les années 70.</p><p><span class='story-badge'>🎵 STYLE MUSICAL</span> Folk engagé, des textes qui ont marqué l'histoire de Madagascar.</p></div><h3><i class='fas fa-history'></i> 📜 Un demi-siècle de musique</h3><p>Depuis plus de 50 ans, Mahaleo est la voix de la conscience malgache, avec des chansons qui traversent les générations.</p>" }
-        };
-
-        // Appliquer les histoires aux artistes qui n'en ont pas
-        for (const [id, story] of Object.entries(defaultStories)) {
-            if (ARTISTS_DB[id] && !ARTISTS_DB[id].story) {
-                ARTISTS_DB[id].story = story;
-            }
-        }
 
         let CUSTOM_ITEMS = [
             { id: 1, name: "T-shirt Exclusif Artiste", price: 29.99, desc: "T-shirt 100% coton avec design exclusif.", icon: "fa-tshirt", image: "https://mcusercontent.com/40a9f1a77d46874eba2309d88/images/51d70529-816c-c2f3-cae7-c2b57349bb03.png" },
@@ -2155,15 +2295,6 @@
         // =============================================
         // GOOGLE SHEETS POUR LA COMMUNAUTÉ
         // =============================================
-        // Configuration Google Sheets (à remplacer par vos IDs)
-        // Pour utiliser Google Sheets comme base de données :
-        // 1. Créez un Google Sheet avec les colonnes : timestamp, author, content, imageUrl, likes
-        // 2. Publiez le sheet en Web App (Google Apps Script)
-        // 3. Remplacez l'URL ci-dessous par l'URL de votre Web App déployée
-        
-        const GOOGLE_SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXx/exec"; // À remplacer par votre URL
-        let gsheetsConnected = false;
-
         async function loadCommunityPostsFromSheets() {
             const container = document.getElementById('communityFeedList');
             if (container) {
@@ -2171,16 +2302,11 @@
             }
             
             try {
-                // Pour l'exemple, on utilise un fallback localStorage si Google Sheets n'est pas configuré
-                // Quand vous aurez déployé votre Web App, remplacez cette partie
-                
-                // Tentative de chargement depuis localStorage d'abord
                 let posts = [];
                 const localPosts = localStorage.getItem('starconnect_community_posts');
                 if (localPosts) {
                     posts = JSON.parse(localPosts);
                 } else {
-                    // Posts d'exemple
                     posts = [
                         { id: 1, timestamp: Date.now() - 3600000, author: "Fan_Gasy", content: "Basta Lion est le meilleur ! 🔥", imageUrl: null, likes: 12 },
                         { id: 2, timestamp: Date.now() - 7200000, author: "Tana_City", content: "J'adore le nouveau son de Denise ! 💖", imageUrl: null, likes: 8 },
@@ -2209,7 +2335,6 @@
                             </div>
                         `).join('');
                         
-                        // Attacher les événements like
                         document.querySelectorAll('.like-post-btn').forEach(btn => {
                             btn.addEventListener('click', (e) => {
                                 const id = parseInt(btn.getAttribute('data-id'));
@@ -2236,9 +2361,8 @@
                 const statusDiv = document.getElementById('gsheetsStatus');
                 if (statusDiv) {
                     statusDiv.className = 'gsheets-status connected';
-                    statusDiv.innerHTML = '<i class="fas fa-database"></i> Communauté via Google Sheets (stockage local actif)';
+                    statusDiv.innerHTML = '<i class="fas fa-database"></i> Communauté via stockage local actif';
                 }
-                gsheetsConnected = true;
             } catch (error) {
                 console.error('Erreur chargement communauté:', error);
                 if (container) {
@@ -2286,7 +2410,7 @@
         }
 
         // =============================================
-        // FONCTIONS PRINCIPALES (conservées de l'original)
+        // FONCTIONS PRINCIPALES
         // =============================================
         function getCertificationBadge(certification) {
             switch(certification) {
@@ -2471,7 +2595,7 @@
             const now = new Date();
             const statsBadge = document.getElementById('rankingTopStats');
             if (statsBadge) {
-                statsBadge.innerHTML = `<span>📊</span> Données YouTube LIVE + Réseaux sociaux • Mise à jour: ${now.toLocaleTimeString()}`;
+                statsBadge.innerHTML = `<span>📊</span> Données YouTube LIVE + Réseaux sociaux • Mise à jour: ${now.toLocaleTimeString()} • ${rankingArtistsList.length} artistes`;
             }
             
             updateSpotlightDisplay();
